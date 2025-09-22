@@ -1,3 +1,5 @@
+import logo from "@/assets/unicatolica-logo.svg";
+
 export default function Header() {
   return (
     <header className="bg-white text-gray-600 shadow-lg border-b border-gray-200">
@@ -5,7 +7,7 @@ export default function Header() {
         <div className="flex justify-between items-center py-4">
           <div className="flex items-center space-x-4">
             <img
-              src="./src/assets/unicatolica-logo.svg"
+              src={logo}
               alt="UNICATÓLICA"
               className="h-[80px] w-auto max-w-[220px] md:max-w-[280px]"
             />
