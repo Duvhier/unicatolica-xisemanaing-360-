@@ -8,7 +8,7 @@ export default function Hero() {
     >
       {/* Imagen de fondo más horizontal */}
       <motion.img
-        src="/src/assets/XISemana360.svg"
+        src="./src/assets/XISemana360.svg"
         alt="XI Semana 360°"
         className="absolute inset-0 w-full h-full object-contain md:object-cover"
         initial={{ opacity: 0, scale: 1.05 }}
