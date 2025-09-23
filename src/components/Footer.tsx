@@ -1,3 +1,5 @@
+import logo from "@/assets/unicatolica-logo.svg";
+
 export default function Footer() {
     return (
       <footer id="contacto" className="bg-uniblue text-white">
@@ -54,7 +56,7 @@ export default function Footer() {
                   Inicio
                 </a>
                 <a href="#info" className="block text-gray-300 hover:text-unigold transition-colors duration-200">
-                  Ejes Temáticos
+                  Información
                 </a>
                 <a href="#agenda" className="block text-gray-300 hover:text-unigold transition-colors duration-200">
                   Agenda del Evento
@@ -95,7 +97,7 @@ export default function Footer() {
                 </p>
               </div>
               <div className="mt-4 md:mt-0">
-                <img src="/src/assets/unicatolica-logo.svg" alt="UNICATÓLICA" className="w-[90px] h-[40px] opacity-80" />
+                <img src={logo} alt="UNICATÓLICA" className="w-[90px] h-[40px] opacity-80" />
               </div>
             </div>
           </div>
