@@ -11,7 +11,7 @@ export default function Hero() {
       <motion.img
         src={heroImage}
         alt="XI Semana 360°"
-        className="absolute inset-0 w-full h-full object-contain md:object-cover"
+        className="absolute inset-0 w-full h-full object-cover"
         initial={{ opacity: 0, scale: 1.05 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 1 }}
