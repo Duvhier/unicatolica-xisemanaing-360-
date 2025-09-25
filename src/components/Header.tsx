@@ -35,12 +35,14 @@ export default function Header() {
             >
               INFORMACIÓN
             </a>
+            {/** AGENDA ocultada temporalmente
             <a
               href="#agenda"
               className="hover:text-unigold transition-colors duration-200 font-medium"
             >
               AGENDA
             </a>
+            */}
             <a
               href="#inscripcion"
               className="hover:text-unigold transition-colors duration-200 font-medium"
