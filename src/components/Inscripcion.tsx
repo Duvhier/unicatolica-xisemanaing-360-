@@ -1,4 +1,3 @@
-import { Button } from "@/components/ui/button";
 import qrFormulario from "@/assets/qr_formulario.png";
 
 export default function Inscripcion() {
@@ -10,33 +9,39 @@ export default function Inscripcion() {
             Inscríbete al Evento
           </h2>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Escanea el código QR para preinscribirte. Pronto activaremos el formulario completo.
+            Escanea el código QR o haz clic en él para acceder al formulario de inscripción.
           </p>
         </div>
 
         <div className="bg-gray-50 rounded-2xl p-8 shadow-xl flex flex-col items-center gap-8">
-          <div className="bg-white p-4 rounded-2xl shadow-inner ring-2 ring-uniblue/70 hover:ring-uniblue transition-colors flex flex-col items-center justify-center">
+          <a 
+            href="/formulario-inscripcion.html" 
+            target="_blank" 
+            rel="noopener noreferrer"
+            className="bg-white p-4 rounded-2xl shadow-inner ring-2 ring-uniblue/70 hover:ring-uniblue transition-colors flex flex-col items-center justify-center cursor-pointer hover:shadow-lg"
+          >
             <img
               src={qrFormulario}
-              alt="QR de inscripción"
+              alt="QR de inscripción - Haz clic para abrir el formulario"
               className="h-40 w-40 md:h-64 md:w-64 object-contain"
             />
-            <p className="mt-3 text-center text-xs md:text-sm text-gray-600">Escanea este código con la cámara de tu celular</p>
-          </div>
+            <p className="mt-3 text-center text-xs md:text-sm text-gray-600">Haz clic aquí o escanea con tu celular</p>
+          </a>
 
           <div className="text-center space-y-2">
-            <p className="text-gray-600">Apunta la cámara de tu celular al código para continuar.</p>
-            <p className="text-gray-500 text-sm">También podrás inscribirte con el formulario cuando esté disponible.</p>
+            <p className="text-gray-600">Accede al formulario de inscripción haciendo clic en el QR o escaneándolo con tu celular.</p>
+            <p className="text-gray-500 text-sm">El formulario se abrirá en una nueva pestaña para tu comodidad.</p>
           </div>
 
           <div className="flex items-center gap-4">
-            <Button
-              type="button"
-              disabled
-              className="bg-unigold text-black px-8 py-3 rounded-full text-base font-semibold opacity-70 cursor-not-allowed"
+            <a 
+              href="/formulario-inscripcion.html" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="bg-uniblue text-white px-8 py-3 rounded-full text-base font-semibold hover:bg-uniblue/90 transition-colors"
             >
-              Abrir formulario (próximamente)
-            </Button>
+              Abrir formulario
+            </a>
             <a href={qrFormulario} download className="text-uniblue hover:underline">
               Descargar QR
             </a>
