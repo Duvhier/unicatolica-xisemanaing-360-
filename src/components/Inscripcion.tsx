@@ -15,7 +15,7 @@ export default function Inscripcion() {
 
         <div className="bg-gray-50 rounded-2xl p-8 shadow-xl flex flex-col items-center gap-8">
           <a 
-            href="/formulario-inscripcion.html" 
+            href="/formulario" 
             target="_blank" 
             rel="noopener noreferrer"
             className="bg-white p-4 rounded-2xl shadow-inner ring-2 ring-uniblue/70 hover:ring-uniblue transition-colors flex flex-col items-center justify-center cursor-pointer hover:shadow-lg"
@@ -35,7 +35,7 @@ export default function Inscripcion() {
 
           <div className="flex items-center gap-4">
             <a 
-              href="/formulario-inscripcion.html" 
+              href="/formulario" 
               target="_blank" 
               rel="noopener noreferrer"
               className="bg-uniblue text-white px-8 py-3 rounded-full text-base font-semibold hover:bg-uniblue/90 transition-colors"
