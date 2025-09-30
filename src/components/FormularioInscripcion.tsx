@@ -22,14 +22,6 @@ interface FormData {
   telefono_equipo: string;
 }
 
-interface QRData {
-  qr: string;
-  qrData: any;
-  estudiante: {
-    nombre: string;
-    cedula: string;
-  };
-}
 
 const FormularioInscripcion: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
@@ -51,8 +43,6 @@ const FormularioInscripcion: React.FC = () => {
 
   const [showTeamFields, setShowTeamFields] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [showQRModal, setShowQRModal] = useState(false);
-  const [qrData, setQrData] = useState<QRData | null>(null);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -97,59 +87,34 @@ const FormularioInscripcion: React.FC = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const payload = {
-      nombre: formData.nombre,
-      cedula: formData.cedula,
-      correo: formData.correo,
-      telefono: formData.telefono,
-      programa: formData.programa,
-      semestre: formData.semestre,
-      actividades: [formData.evento], // siempre un array
-      grupo: formData.evento === "hackathon" || formData.evento === "technological"
-        ? {
-          nombre: formData.nombre_equipo,
-          integrantes: [formData.nombre], // puedes mejorar esto para meter todos los integrantes
-          proyecto: {
-            nombre: formData.nombre_proyecto,
-            descripcion: formData.descripcion_proyecto,
-            categoria: formData.categoria_participacion
-          },
-          institucion: formData.institucion_equipo,
-          correo: formData.email_equipo,
-          telefono: formData.telefono_equipo
-        }
-        : null
-    };
+    // Simular delay de red
+    await new Promise(resolve => setTimeout(resolve, 1500));
 
-    try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL}/inscripciones/registro`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(payload)
-      });
+    // Simular registro exitoso
+    console.log("✅ Datos del formulario:", formData);
+    console.log("✅ Inscripción simulada exitosamente");
 
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Error en el registro");
-      }
-
-      const result = await response.json();
-      console.log("✅ Inscripción guardada en BD:", result);
-
-      alert("✅ Inscripción registrada con éxito");
-      setFormData({ ...formData, nombre: "", cedula: "", correo: "", telefono: "", programa: "", semestre: "", evento: "", nombre_equipo: "", nombre_proyecto: "", descripcion_proyecto: "", categoria_participacion: "", institucion_equipo: "", email_equipo: "", telefono_equipo: "" });
-      setShowTeamFields(false);
-
-    } catch (error) {
-      console.error(error);
-      alert("❌ Ocurrió un error al registrar la inscripción");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-  const closeQRModal = () => {
-    setShowQRModal(false);
-    setQrData(null);
+    alert("✅ Inscripción registrada con éxito (modo demo)");
+    
+    // Limpiar formulario
+    setFormData({
+      nombre: "",
+      cedula: "",
+      correo: "",
+      telefono: "",
+      programa: "",
+      semestre: "",
+      evento: "",
+      nombre_equipo: "",
+      nombre_proyecto: "",
+      descripcion_proyecto: "",
+      categoria_participacion: "",
+      institucion_equipo: "",
+      email_equipo: "",
+      telefono_equipo: ""
+    });
+    setShowTeamFields(false);
+    setIsSubmitting(false);
   };
 
   return (
@@ -442,27 +407,6 @@ const FormularioInscripcion: React.FC = () => {
         </button>
       </form>
 
-      {/* Modal QR */}
-      {showQRModal && qrData && (
-        <div className="modal" onClick={closeQRModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3>🎉 ¡Inscripción Exitosa!</h3>
-            <p>
-              <strong>{qrData.estudiante.nombre}</strong><br />
-              Cédula: {qrData.estudiante.cedula}
-            </p>
-            <div className="qr-container">
-              <img src={qrData.qr} alt="Código QR" />
-            </div>
-            <p className="qr-instructions">
-              Guarda este código QR para tu asistencia al evento
-            </p>
-            <button onClick={closeQRModal} className="close-btn">
-              Cerrar
-            </button>
-          </div>
-        </div>
-      )}
     </div>
   );
 };
