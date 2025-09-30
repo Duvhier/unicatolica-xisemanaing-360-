@@ -4,12 +4,12 @@ export default function Header() {
   return (
     <header className="bg-white text-gray-600 shadow-lg border-b border-gray-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center py-4">
+        <div className="flex justify-between items-center py-2">
           <div className="flex items-center space-x-4">
             <img
               src={logo}
               alt="UNICATÓLICA"
-              className="h-[80px] w-auto max-w-[220px] md:max-w-[280px]"
+              className="h-[64px] w-auto max-w-[220px] md:max-w-[260px]"
             />
 
             <div className="hidden md:block">

@@ -42,7 +42,7 @@ export default function Hero() {
   return (
     <section
       id="inicio"
-      className="relative w-full h-[70vh] md:h-screen bg-transparent overflow-hidden flex items-center justify-center"
+      className="relative w-full h-[64vh] md:h-[86vh] bg-transparent overflow-hidden flex items-center justify-center"
     >
       {/* Carrusel de fondo */}
       <div className="absolute inset-0 flex items-center justify-center">

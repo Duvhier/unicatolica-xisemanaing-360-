@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
 import './FormularioInscripcion.css';
 import HackathonImg from '@/assets/hackathonevento.jpg';
 import TechTouchImg from '@/assets/technologicaltouchevento.jpg';
@@ -43,6 +44,13 @@ const FormularioInscripcion: React.FC = () => {
 
   const [showTeamFields, setShowTeamFields] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const formSectionRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (formData.evento && formSectionRef.current) {
+      formSectionRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, [formData.evento]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -120,8 +128,14 @@ const FormularioInscripcion: React.FC = () => {
   return (
     <div className="formulario-container">
       {/* Encabezado */}
-      <div className="header">
+      <div className="header" style={{ position: 'relative' }}>
         <img src="/unicatolica-logo.svg" alt="UNICATÓLICA" />
+        <Link to="/" className="submit-btn-atras" style={{ position: 'absolute', top: '12px', right: '12px', textDecoration: 'none', padding: '0.5rem 0.9rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }} aria-label="Regresar">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <path d="M15 6L9 12L15 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          <span className="btn-text">Regresar</span>
+        </Link>
         <h1>XI Semana de la Ingeniería <br />"360°: Innovación, Liderazgo y Futuro"</h1>
         <p>
           <span className="highlight">Del 11 al 14 de noviembre de 2025</span> <br />
@@ -208,6 +222,14 @@ const FormularioInscripcion: React.FC = () => {
           </label>
         </div>
 
+        {!formData.evento && (
+          <p className="text-center" style={{ marginTop: '1rem', color: '#6b7280' }}>
+            Selecciona un evento para continuar con la inscripción.
+          </p>
+        )}
+
+        {formData.evento && (
+          <div ref={formSectionRef}>
         <h2>Datos del Estudiante</h2>
         <div className="form-group">
           <label>Nombre completo <span className="required">*</span></label>
@@ -405,6 +427,8 @@ const FormularioInscripcion: React.FC = () => {
         <button type="submit" className="submit-btn" disabled={isSubmitting}>
           {isSubmitting ? 'Registrando...' : 'Registrar mi participación'}
         </button>
+          </div>
+        )}
       </form>
 
     </div>

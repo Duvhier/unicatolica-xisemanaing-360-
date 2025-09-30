@@ -138,6 +138,7 @@ input:focus, select:focus, textarea:focus {
 }
 
 .submit-btn {
+  font-family: 'Poppins', system-ui, -apple-system, sans-serif;
   display: block;
   width: 100%;
   padding: 16px;
@@ -153,6 +154,28 @@ input:focus, select:focus, textarea:focus {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+}
+
+/* Botón regresar en header */
+.submit-btn-atras {
+  background: transparent;
+  color: var(--uniblue);
+  border: 2px solid var(--uniblue);
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 600;
+}
+
+.submit-btn-atras:hover {
+  background: var(--uniblue);
+  color: white;
+}
+
+/* Ocultar texto en móviles, mostrar en pantallas medianas+ */
+@media (max-width: 640px) {
+  .submit-btn-atras .btn-text {
+    display: none;
+  }
 }
 
 .submit-btn:hover:not(:disabled) {
