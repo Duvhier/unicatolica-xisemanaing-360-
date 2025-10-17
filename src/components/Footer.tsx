@@ -26,8 +26,8 @@ export default function Footer() {
 
             {/* Pance */}
             <div>
-              <h4 className="text-xl font-bold mb-4">PÁNCE</h4>
-              <ul className="space-y-2 text-gray-100">
+              <h4 className="text-xl font-bold mb-4">PANCE</h4>
+              <ul className="space-y-2 text-white-100">
                 <li>Cra. 122 No. 12 – 459</li>
                 <li>Ext. 2102 – 2104 – 2106 – 0100</li>
               </ul>
@@ -35,8 +35,8 @@ export default function Footer() {
 
             {/* Meléndez */}
             <div>
-              <h4 className="text-xl font-bold mb-4">MELÉNDEZ</h4>
-              <ul className="space-y-2 text-gray-100">
+              <h4 className="text-xl font-bold mb-4">MELENDEZ</h4>
+              <ul className="space-y-2 text-white-100">
                 <li>Cra. 94 No. 4C – 04</li>
                 <li>Ext. 3112 – 3116 – 3118 – 4100</li>
               </ul>
@@ -45,7 +45,7 @@ export default function Footer() {
             {/* Plaza de Cayzedo */}
             <div>
               <h4 className="text-xl font-bold mb-4">PLAZA DE CAICEDO</h4>
-              <ul className="space-y-2 text-gray-100 list-disc pl-5">
+              <ul className="space-y-2 text-white-100 list-disc pl-5">
                 <li>Cra 3 No. 5-50</li>
                 <li>Ext. 3832</li>
               </ul>

@@ -4,6 +4,8 @@ import IntroduccionImg from "@/assets/introduccion.png";
 import PoblacionObjetivoImg from "@/assets/poblacion.jpg";
 import SedesImg from "@/assets/sedes.webp";
 import TematicasImg from "@/assets/tematica.jpg";
+import ObjGeneralImg from "@/assets/objgeneral.jpg";
+import ObjEspecificosImg from "@/assets/objespecificos.jpg";
 
 export default function Info() {
   const fadeUp: Variants = {
@@ -139,130 +141,206 @@ export default function Info() {
           </section>
         </div>
 
-        <motion.div
-          className="mt-16 bg-gradient-to-r from-uniblue to-uniblueLight rounded-3xl p-8 sm:p-12 md:p-14 text-white"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.4 }}
-          variants={fadeUp}
-        >
-          <div className="grid md:grid-cols-2 gap-10 md:gap-14 items-start">
-            {/* Columna izquierda: Objetivo General */}
-            <div className="space-y-7">
-              <div className="flex items-center gap-5">
-                <div className="h-18 w-18 md:h-20 md:w-20 rounded-2xl bg-white/15 flex items-center justify-center shadow-inner">
-                  <svg viewBox="0 0 24 24" className="h-10 w-10 md:h-12 md:w-12 text-white" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M12 3v18"/>
-                    <path d="M3 12h18"/>
-                    <circle cx="12" cy="12" r="7"/>
-                    <circle cx="12" cy="12" r="3"/>
-                  </svg>
-                </div>
-                <h3 className="text-4xl md:text-5xl font-extrabold leading-tight">Objetivo General</h3>
-              </div>
-              <p className="text-white/90 leading-relaxed text-lg md:text-xl">
-                Consolidar la XI Semana de la Ingeniería como un espacio de innovación, liderazgo y futuro,
-                articulando la academia, el sector empresarial y la sociedad mediante actividades académicas,
-                investigativas, culturales y de emprendimiento.
-              </p>
-              {/* Icono 360° */}
-              <div className="mt-18 md:mt-20 lg:mt-24 flex justify-center">
-                <div className="relative h-36 w-36 md:h-44 md:w-44 lg:h-52 lg:w-52 group">
-                  <div className="absolute inset-0 rounded-full bg-white/10 backdrop-blur-sm shadow-inner" />
-                  <svg viewBox="0 0 120 120" className="absolute inset-0 h-full w-full" fill="none" aria-hidden="true">
-                    <defs>
-                      <linearGradient id="grad360" x1="0" y1="0" x2="1" y2="1">
-                        <stop offset="0%" stopColor="#ffffff" stopOpacity="0.95" />
-                        <stop offset="100%" stopColor="#c7d2fe" stopOpacity="0.9" />
-                      </linearGradient>
-                    </defs>
-                    <g className="origin-center animate-[spin_18s_linear_infinite] group-hover:animate-[spin_6s_linear_infinite]">
-                      <circle cx="60" cy="60" r="46" stroke="url(#grad360)" strokeWidth="6" />
-                      <path d="M96 60a36 36 0 1 1-10.55-25.45" stroke="#a5b4fc" strokeWidth="6" strokeLinecap="round"/>
-                      <path d="M86 26l8 2-2 8" fill="none" stroke="#a5b4fc" strokeWidth="6" strokeLinecap="round" strokeLinejoin="round"/>
-                    </g>
-                    <text x="60" y="70" textAnchor="middle" fontSize="28" fontWeight="800" fill="#ffffff">360°</text>
-                  </svg>
-                </div>
-              </div>
-            </div>
+        {/* === OBJETIVOS (con animaciones mejoradas) === */}
+        <section className="mt-20 space-y-20 text-gray-700">
+          <motion.h3 
+            className="mb-3 text-center"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.6 }}
+            variants={fadeUp}
+          > <h2 className="px-8 py-4 rounded-full bg-uniblue text-white text-3xl md:text-4xl font-extrabold shadow-lg tracking-wide">
+            OBJETIVOS
+            </h2>
+          </motion.h3>
 
-            {/* Columna derecha: Objetivos específicos */}
-            <div>
-              <div className="inline-flex mb-7">
-                <span className="px-8 py-4 rounded-full bg-[#7c4dff] text-white text-2xl md:text-3xl font-extrabold shadow-md">
-                  Objetivos Específicos
-                </span>
-              </div>
-
-              <motion.div className="space-y-5" variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.3 }}>
-                <motion.div variants={fadeUp} className="group bg-white text-uniblue rounded-2xl p-6 md:p-7 shadow-lg flex items-start gap-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:ring-2 hover:ring-indigo-200">
-                  <div className="h-14 w-14 md:h-16 md:w-16 rounded-2xl bg-indigo-100 flex items-center justify-center ring-1 ring-indigo-200 transition-colors group-hover:bg-indigo-200">
-                    <svg viewBox="0 0 24 24" className="h-8 w-8 md:h-9 md:w-9 text-indigo-600" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M7 9a5 5 0 0 1 10 0c0 2-1 3-2 4-.6.6-1 1.2-1 2v1H10v-1c0-.8-.4-1.4-1-2-1-1-2-2-2-4Z"/>
-                      <path d="M9 19h6"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="text-xl md:text-2xl font-extrabold text-uniblue">Explorar el futuro digital</h4>
-                    <p className="text-gray-600 mt-2 text-base md:text-lg">
-                      Fomentar la reflexión y actualización sobre tendencias en inteligencia artificial y transformación digital.
-                    </p>
-                  </div>
+          {/* Objetivo General - Izquierda con imagen derecha */}
+          <motion.section
+            className="mb-20"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.4 }}
+            variants={fadeUp}
+          >
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
+              {/* Contenido del Objetivo General */}
+              <motion.div 
+                className="space-y-6"
+                variants={slideRight}
+              >
+                <motion.div className="flex items-center gap-4" variants={fadeUp}>
+                <span className="px-6 py-3 rounded-full bg-uniblue text-white text-xl md:text-2xl font-bold shadow-lg">
+                    Objetivo General
+                  </span>
                 </motion.div>
 
-                <motion.div variants={fadeUp} className="group bg-white text-uniblue rounded-2xl p-6 md:p-7 shadow-lg flex items-start gap-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:ring-2 hover:ring-indigo-200">
-                  <div className="h-14 w-14 md:h-16 md:w-16 rounded-2xl bg-indigo-100 flex items-center justify-center ring-1 ring-indigo-200 transition-colors group-hover:bg-indigo-200">
-                    <svg viewBox="0 0 24 24" className="h-8 w-8 md:h-9 md:w-9 text-indigo-600" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M12 12l3 3a3 3 0 0 1-6 0l-5-5a3 3 0 1 1 4-4l2 2"/>
-                      <path d="M22 8l-7 7"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="text-xl md:text-2xl font-extrabold text-uniblue">Potenciar el talento humano</h4>
-                    <p className="text-gray-600 mt-2 text-base md:text-lg">
-                      Fortalecer habilidades blandas y competencias clave para el liderazgo y el trabajo colaborativo.
-                    </p>
-                  </div>
-                </motion.div>
+                <motion.p 
+                  className="text-lg leading-relaxed text-gray-700"
+                  variants={fadeUp}
+                >
+                  Consolidar la XI Semana de la Ingeniería como un espacio de innovación, liderazgo y futuro, articulando la academia, el sector empresarial y la sociedad mediante actividades académicas, investigativas, culturales y de emprendimiento.
+                </motion.p>
+              </motion.div>
 
-                <motion.div variants={fadeUp} className="group bg-white text-uniblue rounded-2xl p-6 md:p-7 shadow-lg flex items-start gap-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:ring-2 hover:ring-indigo-200">
-                  <div className="h-14 w-14 md:h-16 md:w-16 rounded-2xl bg-indigo-100 flex items-center justify-center ring-1 ring-indigo-200 transition-colors group-hover:bg-indigo-200">
-                    <svg viewBox="0 0 24 24" className="h-8 w-8 md:h-9 md:w-9 text-indigo-600" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <path d="M3 11v2"/>
-                      <path d="M7 9v6"/>
-                      <path d="M21 8l-8 4v4l8 4V8Z"/>
-                      <path d="M13 12H7"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="text-xl md:text-2xl font-extrabold text-uniblue">Visibilizar el conocimiento</h4>
-                    <p className="text-gray-600 mt-2 text-base md:text-lg">
-                      Generar espacios para la divulgación de proyectos académicos, investigativos y de grado.
-                    </p>
-                  </div>
-                </motion.div>
-
-                <motion.div variants={fadeUp} className="group bg-white text-uniblue rounded-2xl p-6 md:p-7 shadow-lg flex items-start gap-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:ring-2 hover:ring-indigo-200">
-                  <div className="h-14 w-14 md:h-16 md:w-16 rounded-2xl bg-indigo-100 flex items-center justify-center ring-1 ring-indigo-200 transition-colors group-hover:bg-indigo-200">
-                    <svg viewBox="0 0 24 24" className="h-8 w-8 md:h-9 md:w-9 text-indigo-600" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                      <circle cx="12" cy="12" r="8"/>
-                      <path d="M2 12h20"/>
-                      <path d="M12 2a15 15 0 0 1 0 20"/>
-                      <path d="M12 2a15 15 0 0 0 0 20"/>
-                    </svg>
-                  </div>
-                  <div>
-                    <h4 className="text-xl md:text-2xl font-extrabold text-uniblue">Conectar con el ecosistema empresarial</h4>
-                    <p className="text-gray-600 mt-2 text-base md:text-lg">
-                      Establecer y fortalecer vínculos con empresas aliadas y comunidades de emprendimiento.
-                    </p>
+              {/* Imagen del Objetivo General */}
+              <motion.div 
+                className="flex justify-center lg:justify-end relative"
+                variants={slideRight}
+              >
+                {/* Elemento decorativo de fondo */}
+                <div className="absolute -top-4 -right-4 w-32 h-32 bg-gradient-to-br from-uniblue/10 to-blue-600/10 rounded-full blur-3xl" />
+                <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-tr from-blue-500/20 to-transparent rounded-full blur-2xl" />
+                <motion.div 
+                  className="relative w-full max-w-lg group"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="aspect-[3 /4] rounded-3xl overflow-hidden shadow-2xl">
+                    <motion.img
+                      src={ObjGeneralImg}
+                      alt="Objetivo General - Innovación 360°"
+                      className="h-full w-full object-cover"
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ duration: 0.4 }}
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-uniblue/30 via-transparent to-transparent" />
                   </div>
                 </motion.div>
               </motion.div>
             </div>
-          </div>
-        </motion.div>
+          </motion.section>
+
+          {/* Objetivos Específicos - Derecha con imagen izquierda */}
+          <motion.section
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.4 }}
+            variants={fadeUp}
+          >
+            <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
+              {/* Imagen de los Objetivos Específicos */}
+              <motion.div 
+                className="flex justify-center lg:justify-start order-2 lg:order-1 relative"
+                variants={slideRight}
+              >
+                {/* Elemento decorativo de fondo */}
+                <div className="absolute -top-4 -left-4 w-32 h-32 bg-gradient-to-br from-purple-500/10 to-indigo-600/10 rounded-full blur-3xl" />
+                <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-gradient-to-tl from-purple-500/20 to-transparent rounded-full blur-2xl" />
+                <motion.div 
+                  className="relative w-full max-w-lg group"
+                  whileHover={{ scale: 1.02 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <div className="aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl">
+                    <motion.img
+                      src={ObjEspecificosImg}
+                      alt="Objetivos Específicos - Desarrollo Integral"
+                      className="h-full w-full object-cover"
+                      whileHover={{ scale: 1.1 }}
+                      transition={{ duration: 0.4 }}
+                    />
+                  </div>
+                </motion.div>
+              </motion.div>
+
+              {/* Contenido de los Objetivos Específicos */}
+              <motion.div 
+                className="space-y-6 order-1 lg:order-2"
+                variants={fadeUp}
+              >
+                <motion.div className="inline-flex" variants={fadeUp}>
+                  <span className="px-6 py-3 rounded-full bg-uniblue text-white text-xl md:text-2xl font-bold shadow-lg">
+                    Objetivos Específicos
+                  </span>
+                </motion.div>
+
+                <motion.div
+                  className="space-y-4"
+                  variants={stagger}
+                >
+                  {[
+                    {
+                      title: "Explorar el futuro digital",
+                      text: "Fomentar la reflexión y actualización sobre tendencias en inteligencia artificial y transformación digital.",
+                      icon: (
+                        <>
+                          <path d="M7 9a5 5 0 0 1 10 0c0 2-1 3-2 4-.6.6-1 1.2-1 2v1H10v-1c0-.8-.4-1.4-1-2-1-1-2-2-2-4Z" />
+                          <path d="M9 19h6" />
+                        </>
+                      ),
+                    },
+                    {
+                      title: "Potenciar el talento humano",
+                      text: "Fortalecer habilidades blandas y competencias clave para el liderazgo y el trabajo colaborativo.",
+                      icon: (
+                        <>
+                          <path d="M12 12l3 3a3 3 0 0 1-6 0l-5-5a3 3 0 1 1 4-4l2 2" />
+                          <path d="M22 8l-7 7" />
+                        </>
+                      ),
+                    },
+                    {
+                      title: "Visibilizar el conocimiento",
+                      text: "Generar espacios para la divulgación de proyectos académicos, investigativos y de grado.",
+                      icon: (
+                        <>
+                          <path d="M3 11v2" />
+                          <path d="M7 9v6" />
+                          <path d="M21 8l-8 4v4l8 4V8Z" />
+                          <path d="M13 12H7" />
+                        </>
+                      ),
+                    },
+                    {
+                      title: "Conectar con el ecosistema empresarial",
+                      text: "Establecer y fortalecer vínculos con empresas aliadas y comunidades de emprendimiento.",
+                      icon: (
+                        <>
+                          <circle cx="12" cy="12" r="8" />
+                          <path d="M2 12h20" />
+                          <path d="M12 2a15 15 0 0 1 0 20" />
+                          <path d="M12 2a15 15 0 0 0 0 20" />
+                        </>
+                      ),
+                    },
+                  ].map((obj, idx) => (
+                    <motion.div
+                      key={idx}
+                      className="group bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100"
+                      variants={fadeUp}
+                      whileHover={{ scale: 1.02 }}
+                    >
+                      <div className="flex items-start gap-4">
+                        <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center ring-1 ring-purple-200 transition-colors group-hover:from-purple-200 group-hover:to-indigo-200">
+                          <svg
+                            viewBox="0 0 24 24"
+                            className="h-6 w-6 text-purple-600"
+                            fill="none"
+                            stroke="currentColor"
+                            strokeWidth="1.5"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            aria-hidden="true"
+                          >
+                            {obj.icon}
+                          </svg>
+                        </div>
+                        <div className="flex-1">
+                          <h4 className="text-lg md:text-xl font-bold text-uniblue mb-2">
+                            {obj.title}
+                          </h4>
+                          <p className="text-gray-600 text-sm md:text-base leading-relaxed">
+                            {obj.text}
+                          </p>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </motion.div>
+              </motion.div>
+            </div>
+          </motion.section>
+        </section>
       </div>
     </section>
   );
@@ -280,7 +358,7 @@ function AnimatedStats() {
 
   React.useEffect(() => {
     if (!isInView) return;
-    const targets = { asistentes: 1200, aliados: 25, actividades: 40 };
+    const targets = { asistentes: 500, aliados: 15, actividades: 20 };
     const duration = 1200;
     const start = performance.now();
 
@@ -325,4 +403,3 @@ function AnimatedStats() {
 function easeOutCubic(t: number) {
   return 1 - Math.pow(1 - t, 3);
 }
-  

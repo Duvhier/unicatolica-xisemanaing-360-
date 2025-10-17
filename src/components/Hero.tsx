@@ -42,7 +42,7 @@ export default function Hero() {
   return (
     <section
       id="inicio"
-      className="relative w-full h-[64vh] md:h-[86vh] bg-transparent overflow-hidden flex items-center justify-center"
+      className="relative w-full h-[56vh] md:h-[68vh] bg-transparent overflow-hidden flex items-center justify-center"
     >
       {/* Carrusel de fondo */}
       <div className="absolute inset-0 flex items-center justify-center">
@@ -97,7 +97,7 @@ export default function Hero() {
               pauseAutoplay();
             }}
             className={
-              "h-2.5 w-2.5 rounded-full transition border border-white/70 " +
+              "h-2.0 w-2.0 rounded-full transition border border-white/70 " +
               (idx === currentIndex ? "bg-white" : "bg-white/30 hover:bg-white/60")
             }
           />
