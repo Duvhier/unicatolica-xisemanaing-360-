@@ -1,6 +1,8 @@
-import qrFormulario from "@/assets/qr_formulario.png";
+// QR dinámico vía servicio externo para apuntar a la URL exacta
 
 export default function Inscripcion() {
+  const FORM_URL = "https://unicatolica-xisemanaing-360.vercel.app/formulario";
+  const QR_URL = `https://api.qrserver.com/v1/create-qr-code/?size=512x512&data=${encodeURIComponent(FORM_URL)}`;
   return (
     <section id="inscripcion" className="py-20 bg-white">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -15,13 +17,13 @@ export default function Inscripcion() {
 
         <div className="bg-gray-50 rounded-2xl p-8 shadow-xl flex flex-col items-center gap-8">
           <a 
-            href="/formulario" 
+            href={FORM_URL} 
             target="_blank" 
             rel="noopener noreferrer"
             className="bg-white p-4 rounded-2xl shadow-inner ring-2 ring-uniblue/70 hover:ring-uniblue transition-colors flex flex-col items-center justify-center cursor-pointer hover:shadow-lg"
           >
             <img
-              src={qrFormulario}
+              src={QR_URL}
               alt="QR de inscripción - Haz clic para abrir el formulario"
               className="h-40 w-40 md:h-64 md:w-64 object-contain"
             />
@@ -35,14 +37,14 @@ export default function Inscripcion() {
 
           <div className="flex items-center gap-4">
             <a 
-              href="/formulario" 
+              href={FORM_URL} 
               target="_blank" 
               rel="noopener noreferrer"
               className="bg-uniblue text-white px-8 py-3 rounded-full text-base font-semibold hover:bg-uniblue/90 transition-colors"
             >
               Abrir formulario
             </a>
-            <a href={qrFormulario} download className="text-uniblue hover:underline">
+            <a href={QR_URL} download className="text-uniblue hover:underline">
               Descargar QR
             </a>
           </div>
