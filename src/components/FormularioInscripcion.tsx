@@ -44,6 +44,8 @@ const FormularioInscripcion: React.FC = () => {
 
   const [showTeamFields, setShowTeamFields] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [successOpen, setSuccessOpen] = useState(false);
+  const [qrSrc, setQrSrc] = useState<string | null>(null);
   const formSectionRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -91,41 +93,91 @@ const FormularioInscripcion: React.FC = () => {
     handleEventChange(fakeEvent);
   };
 
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simular delay de red
-    await new Promise(resolve => setTimeout(resolve, 1500));
+    try {
+      // construir payload para el backend
+      const actividades = formData.evento ? [formData.evento] : [];
+      const hasGrupo = showTeamFields;
 
-    // Simular registro exitoso
-    console.log("✅ Datos del formulario:", formData);
-    console.log("✅ Inscripción simulada exitosamente");
+      const payload: any = {
+        nombre: formData.nombre.trim(),
+        cedula: formData.cedula.trim(),
+        correo: formData.correo.trim(),
+        telefono: formData.telefono.trim(),
+        programa: formData.programa,
+        semestre: formData.semestre,
+        actividades
+      };
 
-    alert("✅ Inscripción registrada con éxito (modo demo)");
-    
-    // Limpiar formulario
-    setFormData({
-      nombre: "",
-      cedula: "",
-      correo: "",
-      telefono: "",
-      programa: "",
-      semestre: "",
-      evento: "",
-      nombre_equipo: "",
-      nombre_proyecto: "",
-      descripcion_proyecto: "",
-      categoria_participacion: "",
-      institucion_equipo: "",
-      email_equipo: "",
-      telefono_equipo: ""
-    });
-    setShowTeamFields(false);
-    setIsSubmitting(false);
+      if (hasGrupo) {
+        payload.grupo = {
+          nombre: formData.nombre_equipo.trim(),
+          integrantes: [formData.nombre.trim()], // puedes agregar más integrantes si luego los capturas
+          proyecto: {
+            nombre: formData.nombre_proyecto.trim(),
+            descripcion: formData.descripcion_proyecto.trim(),
+            categoria: formData.categoria_participacion
+          },
+          institucion: formData.institucion_equipo.trim(),
+          correo: formData.email_equipo.trim(),
+          telefono: formData.telefono_equipo?.trim() || undefined
+        };
+      }
+
+      console.log('🚀 Enviando payload:', payload);
+
+
+      const res = await fetch(`${API_URL}/inscripciones/registro`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+      });
+
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        const msg = err?.message || 'Error registrando la inscripción';
+        const errors = Array.isArray(err?.errors) ? `\n- ${err.errors.join('\n- ')}` : '';
+        throw new Error(`${msg}${errors}`);
+      }
+
+      const data = await res.json();
+      // data: { message, id, qr, qrData, estudiante }
+      const qrFromApi: string | undefined = data?.qr || data?.qrData;
+      setQrSrc(qrFromApi || null);
+      setSuccessOpen(true);
+
+      // limpiar formulario
+      setFormData({
+        nombre: '',
+        cedula: '',
+        correo: '',
+        telefono: '',
+        programa: '',
+        semestre: '',
+        evento: '',
+        nombre_equipo: '',
+        nombre_proyecto: '',
+        descripcion_proyecto: '',
+        categoria_participacion: '',
+        institucion_equipo: '',
+        email_equipo: '',
+        telefono_equipo: ''
+      });
+      setShowTeamFields(false);
+    } catch (error: any) {
+      alert(`❌ ${error.message || 'Error inesperado'}`);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
+    <>
     <div className="formulario-container">
       {/* Encabezado */}
       <div className="header" style={{ position: 'relative' }}>
@@ -432,6 +484,30 @@ const FormularioInscripcion: React.FC = () => {
       </form>
 
     </div>
+
+      {successOpen && (
+        <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center">
+          <div className="absolute inset-0 bg-black/50" onClick={() => setSuccessOpen(false)} />
+          <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6 text-center">
+            <h3 className="text-2xl font-bold text-uniblue">Inscripción registrada</h3>
+            <p className="text-gray-600 mt-2">Guarda o escanea tu código para confirmar.</p>
+            <div className="mt-4 flex items-center justify-center">
+              {qrSrc ? (
+                <img src={qrSrc as string} alt="Código QR de confirmación" className="h-56 w-56 object-contain" />
+              ) : (
+                <div className="text-gray-500 text-sm">QR no proporcionado por el servidor.</div>
+              )}
+            </div>
+            <div className="mt-6 flex items-center justify-center gap-3">
+              {qrSrc && (
+                <a href={qrSrc as string} target="_blank" rel="noopener noreferrer" className="bg-uniblue text-white px-5 py-2 rounded-full font-semibold hover:bg-uniblue/90">Abrir QR</a>
+              )}
+              <button type="button" onClick={() => setSuccessOpen(false)} className="px-5 py-2 rounded-full border border-gray-300 font-semibold text-gray-700 hover:bg-gray-50">Cerrar</button>
+            </div>
+          </div>
+        </div>
+      )}
+  </>
   );
 };
 
