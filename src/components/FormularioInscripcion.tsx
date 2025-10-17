@@ -95,6 +95,7 @@ const FormularioInscripcion: React.FC = () => {
 
   const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
 
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
