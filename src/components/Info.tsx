@@ -143,14 +143,14 @@ export default function Info() {
 
         {/* === OBJETIVOS (con animaciones mejoradas) === */}
         <section className="mt-20 space-y-20 text-gray-700">
-          <motion.h3 
+          <motion.h3
             className="mb-3 text-center"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.6 }}
             variants={fadeUp}
           > <h2 className="px-8 py-4 rounded-full bg-uniblue text-white text-3xl md:text-4xl font-extrabold shadow-lg tracking-wide">
-            OBJETIVOS
+              OBJETIVOS
             </h2>
           </motion.h3>
 
@@ -164,17 +164,17 @@ export default function Info() {
           >
             <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-center">
               {/* Contenido del Objetivo General */}
-              <motion.div 
+              <motion.div
                 className="space-y-6"
                 variants={slideRight}
               >
                 <motion.div className="flex items-center gap-4" variants={fadeUp}>
-                <span className="px-6 py-3 rounded-full bg-uniblue text-white text-xl md:text-2xl font-bold shadow-lg">
+                  <span className="px-6 py-3 rounded-full bg-uniblue text-white text-xl md:text-2xl font-bold shadow-lg">
                     Objetivo General
                   </span>
                 </motion.div>
 
-                <motion.p 
+                <motion.p
                   className="text-lg leading-relaxed text-gray-700"
                   variants={fadeUp}
                 >
@@ -183,14 +183,14 @@ export default function Info() {
               </motion.div>
 
               {/* Imagen del Objetivo General */}
-              <motion.div 
+              <motion.div
                 className="flex justify-center lg:justify-end relative"
                 variants={slideRight}
               >
                 {/* Elemento decorativo de fondo */}
                 <div className="absolute -top-4 -right-4 w-32 h-32 bg-gradient-to-br from-uniblue/10 to-blue-600/10 rounded-full blur-3xl" />
                 <div className="absolute -bottom-8 -left-8 w-24 h-24 bg-gradient-to-tr from-blue-500/20 to-transparent rounded-full blur-2xl" />
-                <motion.div 
+                <motion.div
                   className="relative w-full max-w-lg group"
                   whileHover={{ scale: 1.02 }}
                   transition={{ duration: 0.3 }}
@@ -214,37 +214,34 @@ export default function Info() {
           <motion.section
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.4 }}
+            viewport={{ once: true, amount: 0.1 }}
             variants={fadeUp}
           >
             <div className="grid lg:grid-cols-2 gap-8 lg:gap-16 items-start">
-              {/* Imagen de los Objetivos Específicos */}
-              <motion.div 
+              <motion.div
                 className="flex justify-center lg:justify-start order-2 lg:order-1 relative"
                 variants={slideRight}
               >
-                {/* Elemento decorativo de fondo */}
                 <div className="absolute -top-4 -left-4 w-32 h-32 bg-gradient-to-br from-purple-500/10 to-indigo-600/10 rounded-full blur-3xl" />
                 <div className="absolute -bottom-8 -right-8 w-24 h-24 bg-gradient-to-tl from-purple-500/20 to-transparent rounded-full blur-2xl" />
-                <motion.div 
+                <motion.div
                   className="relative w-full max-w-lg group"
                   whileHover={{ scale: 1.02 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.25 }}
                 >
                   <div className="aspect-[3/4] rounded-3xl overflow-hidden shadow-2xl">
                     <motion.img
                       src={ObjEspecificosImg}
                       alt="Objetivos Específicos - Desarrollo Integral"
                       className="h-full w-full object-cover"
-                      whileHover={{ scale: 1.1 }}
-                      transition={{ duration: 0.4 }}
+                      whileHover={{ scale: 1.08 }}
+                      transition={{ duration: 0.3 }}
                     />
                   </div>
                 </motion.div>
               </motion.div>
 
-              {/* Contenido de los Objetivos Específicos */}
-              <motion.div 
+              <motion.div
                 className="space-y-6 order-1 lg:order-2"
                 variants={fadeUp}
               >
@@ -256,84 +253,28 @@ export default function Info() {
 
                 <motion.div
                   className="space-y-4"
-                  variants={stagger}
+                  variants={{
+                    hidden: {},
+                    visible: { transition: { staggerChildren: 0.05 } }
+                  }}
                 >
                   {[
-                    {
-                      title: "Explorar el futuro digital",
-                      text: "Fomentar la reflexión y actualización sobre tendencias en inteligencia artificial y transformación digital.",
-                      icon: (
-                        <>
-                          <path d="M7 9a5 5 0 0 1 10 0c0 2-1 3-2 4-.6.6-1 1.2-1 2v1H10v-1c0-.8-.4-1.4-1-2-1-1-2-2-2-4Z" />
-                          <path d="M9 19h6" />
-                        </>
-                      ),
-                    },
-                    {
-                      title: "Potenciar el talento humano",
-                      text: "Fortalecer habilidades blandas y competencias clave para el liderazgo y el trabajo colaborativo.",
-                      icon: (
-                        <>
-                          <path d="M12 12l3 3a3 3 0 0 1-6 0l-5-5a3 3 0 1 1 4-4l2 2" />
-                          <path d="M22 8l-7 7" />
-                        </>
-                      ),
-                    },
-                    {
-                      title: "Visibilizar el conocimiento",
-                      text: "Generar espacios para la divulgación de proyectos académicos, investigativos y de grado.",
-                      icon: (
-                        <>
-                          <path d="M3 11v2" />
-                          <path d="M7 9v6" />
-                          <path d="M21 8l-8 4v4l8 4V8Z" />
-                          <path d="M13 12H7" />
-                        </>
-                      ),
-                    },
-                    {
-                      title: "Conectar con el ecosistema empresarial",
-                      text: "Establecer y fortalecer vínculos con empresas aliadas y comunidades de emprendimiento.",
-                      icon: (
-                        <>
-                          <circle cx="12" cy="12" r="8" />
-                          <path d="M2 12h20" />
-                          <path d="M12 2a15 15 0 0 1 0 20" />
-                          <path d="M12 2a15 15 0 0 0 0 20" />
-                        </>
-                      ),
-                    },
+                    { title: "Explorar el futuro digital", text: "Fomentar la reflexión y actualización sobre tendencias en inteligencia artificial y transformación digital." },
+                    { title: "Potenciar el talento humano", text: "Fortalecer habilidades blandas y competencias clave para el liderazgo y el trabajo colaborativo." },
+                    { title: "Visibilizar el conocimiento", text: "Generar espacios para la divulgación de proyectos académicos, investigativos y de grado." },
+                    { title: "Conectar con el ecosistema empresarial", text: "Establecer y fortalecer vínculos con empresas aliadas y comunidades de emprendimiento." },
                   ].map((obj, idx) => (
                     <motion.div
                       key={idx}
                       className="group bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100"
-                      variants={fadeUp}
+                      variants={{
+                        hidden: { opacity: 0, y: 16 },
+                        visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } }
+                      }}
                       whileHover={{ scale: 1.02 }}
                     >
-                      <div className="flex items-start gap-4">
-                        <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-purple-100 to-indigo-100 flex items-center justify-center ring-1 ring-purple-200 transition-colors group-hover:from-purple-200 group-hover:to-indigo-200">
-                          <svg
-                            viewBox="0 0 24 24"
-                            className="h-6 w-6 text-purple-600"
-                            fill="none"
-                            stroke="currentColor"
-                            strokeWidth="1.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            aria-hidden="true"
-                          >
-                            {obj.icon}
-                          </svg>
-                        </div>
-                        <div className="flex-1">
-                          <h4 className="text-lg md:text-xl font-bold text-uniblue mb-2">
-                            {obj.title}
-                          </h4>
-                          <p className="text-gray-600 text-sm md:text-base leading-relaxed">
-                            {obj.text}
-                          </p>
-                        </div>
-                      </div>
+                      <h4 className="text-lg md:text-xl font-bold text-uniblue mb-2">{obj.title}</h4>
+                      <p className="text-gray-600 text-sm md:text-base leading-relaxed">{obj.text}</p>
                     </motion.div>
                   ))}
                 </motion.div>
