@@ -1,4 +1,4 @@
-import { MapPin, Phone, Mail } from "lucide-react";
+import { MapPin, Phone } from "lucide-react";
 import logo from "@/assets/unicatolica-logo.svg";
 
 export default function Footer() {
