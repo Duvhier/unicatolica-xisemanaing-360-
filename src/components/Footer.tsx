@@ -1,5 +1,5 @@
 import { MapPin, Phone } from "lucide-react";
-import logo from "@/assets/unicatolica-logo.svg";
+import logo from "@/assets/unicatolica-logo-blanco.png";
 
 export default function Footer() {
   return (
