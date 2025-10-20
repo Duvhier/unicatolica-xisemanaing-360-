@@ -152,6 +152,25 @@ const FormularioInscripcion: React.FC = () => {
       setQrSrc(qrFromApi || null);
       setSuccessOpen(true);
 
+      // Enviar correo de confirmación (best-effort, sin bloquear UX)
+      try {
+        const emailPayload = {
+          to: formData.correo.trim(),
+          nombre: formData.nombre.trim(),
+          evento: formData.evento,
+          cedula: formData.cedula.trim(),
+          programa: formData.programa,
+          semestre: formData.semestre,
+          qrSrc: qrFromApi,
+          id: data?.id
+        };
+        fetch('/api/send-confirmation', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(emailPayload)
+        }).catch(() => {});
+      } catch {}
+
       // limpiar formulario
       setFormData({
         nombre: '',
