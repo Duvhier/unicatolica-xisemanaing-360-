@@ -2,6 +2,7 @@ import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./FormularioInscripcionLiderazgo.css";
 import ConferenciaImg from "../assets/CONFERENCIA COACHING-8.png";
+import ximena from "@/assets/ximenaotero.jpg";
 
 const FormularioInscripcionLiderazgo: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -155,7 +156,7 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                             <section className="speaker-section">
                                 <div className="speaker-card">
                                     <div className="speaker-photo">
-                                        <img src="/src/assets/ximenaotero.jpg" alt="Ximena Otero Pilonieta" />
+                                        <img src={ximena} alt="Ximena Otero Pilonieta" />
                                     </div>
                                     <div className="speaker-info">
                                         <span className="speaker-role">Ponente</span>
