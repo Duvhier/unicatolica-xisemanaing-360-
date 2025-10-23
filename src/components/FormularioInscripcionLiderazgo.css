@@ -170,6 +170,7 @@
     border-bottom-right-radius: var(--border-radius);
     background: var(--surface-color);
     box-shadow: var(--shadow-md);
+    padding-top: 20px;
   }
   
   /* SECCIÓN DEL PONENTE */
