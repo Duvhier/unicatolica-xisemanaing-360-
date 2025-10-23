@@ -132,7 +132,7 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                     <div className="event-details">
                         <h3 className="event-name">Conferencia: Desarrollo Personal y Liderazgo</h3>
                         <div className="event-meta">
-                            <span className="location">Auditorio 1 | Sede Pance</span>
+                            <span className="location">Auditorio 1 | Sede Pance | </span>
                             <span className="time">3:00 pm – 5:00 pm</span>
                         </div>
                     </div>
