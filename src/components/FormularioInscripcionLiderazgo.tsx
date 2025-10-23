@@ -20,11 +20,32 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
     const [successOpen, setSuccessOpen] = useState(false);
     const [qrSrc, setQrSrc] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
+    
+    // Nuevos estados para modales específicos
+    const [modalOpen, setModalOpen] = useState(false);
+    const [modalTitle, setModalTitle] = useState("");
+    const [modalMessage, setModalMessage] = useState("");
+    const [modalType, setModalType] = useState<"error" | "warning" | "success">("error");
 
     const expandableRef = useRef<HTMLDivElement | null>(null);
     const formularioRef = useRef<HTMLDivElement | null>(null);
 
     const API_URL = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
+    // 🔹 Función para mostrar modales
+    const showModal = (title: string, message: string, type: "error" | "warning" | "success" = "error") => {
+        setModalTitle(title);
+        setModalMessage(message);
+        setModalType(type);
+        setModalOpen(true);
+    };
+
+    // 🔹 Función para cerrar modal
+    const closeModal = () => {
+        setModalOpen(false);
+        setModalTitle("");
+        setModalMessage("");
+    };
 
     // ✅ Conexión con backend
     const handleSubmit = async (e: React.FormEvent) => {
@@ -48,15 +69,35 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                 body: JSON.stringify(payload),
             });
 
+            const responseData = await res.json();
+
             if (!res.ok) {
-                const errorText = await res.text();
-                throw new Error(errorText || `Error ${res.status}`);
+                // 🔹 Manejo específico de errores del backend
+                if (responseData.message?.includes("correo institucional")) {
+                    showModal(
+                        "Correo no válido", 
+                        "El correo debe ser institucional (ejemplo@unicatolica.edu.co)",
+                        "warning"
+                    );
+                    return;
+                }
+
+                if (responseData.message?.includes("Ya existe un registro")) {
+                    showModal(
+                        "Registro duplicado", 
+                        responseData.message || "Ya existe un registro con estos datos",
+                        "warning"
+                    );
+                    return;
+                }
+
+                // 🔹 Error genérico
+                throw new Error(responseData.message || `Error ${res.status}`);
             }
 
-            const data = await res.json();
-
-            setQrSrc(data?.qr || data?.qrData || null);
-            setSuccessOpen(true); // ✅ Mostrar modal de éxito
+            // 🔹 Éxito
+            setQrSrc(responseData?.qr || responseData?.qrData || null);
+            setSuccessOpen(true);
             setFormData({
                 nombre: "",
                 cedula: "",
@@ -65,9 +106,15 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                 rol: "",
                 area: "",
             });
+
         } catch (err: any) {
             console.error(err);
-            setError(err.message || "Error inesperado al enviar el formulario.");
+            // 🔹 Error de conexión o genérico
+            showModal(
+                "Error de conexión", 
+                err.message || "Error inesperado al enviar el formulario. Por favor, intente nuevamente.",
+                "error"
+            );
         } finally {
             setIsSubmitting(false);
         }
@@ -255,20 +302,16 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                 </div>
             </main>
 
+            {/* 🔹 MODAL DE ÉXITO (QR) */}
             {successOpen && (
                 <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center">
-                    {/* Fondo oscuro */}
                     <div
                         className="absolute inset-0 bg-black/50"
                         onClick={() => setSuccessOpen(false)}
                     />
-
-                    {/* Contenedor del modal */}
                     <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-8 text-center">
-                        {/* Título y subtítulo */}
                         <h3 className="text-2xl font-bold text-[#001b5e]">Inscripción registrada</h3>
                         <p className="text-gray-600 mt-2">Guarda o escanea tu código para confirmar.</p>
-                        {/* QR */}
                         <div className="mt-5 flex items-center justify-center">
                             {qrSrc ? (
                                 <img
@@ -280,8 +323,6 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                                 <div className="text-gray-500 text-sm">QR no proporcionado por el servidor.</div>
                             )}
                         </div>
-
-                        {/* Botones */}
                         <div className="mt-6 flex items-center justify-center gap-4">
                             {qrSrc && (
                                 <a
@@ -299,6 +340,67 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                                 className="px-6 py-2.5 rounded-full border border-gray-300 font-semibold text-gray-700 hover:bg-gray-100 transition-all"
                             >
                                 Cerrar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {/* 🔹 MODAL DE ERRORES Y ADVERTENCIAS */}
+            {modalOpen && (
+                <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center">
+                    <div
+                        className="absolute inset-0 bg-black/50"
+                        onClick={closeModal}
+                    />
+                    <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-8 text-center">
+                        {/* Icono según el tipo */}
+                        <div className="flex justify-center mb-4">
+                            {modalType === "error" && (
+                                <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
+                                    <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                            )}
+                            {modalType === "warning" && (
+                                <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center">
+                                    <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                    </svg>
+                                </div>
+                            )}
+                            {modalType === "success" && (
+                                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
+                                    <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
+                                </div>
+                            )}
+                        </div>
+
+                        {/* Título y mensaje */}
+                        <h3 className={`text-2xl font-bold ${
+                            modalType === "error" ? "text-red-600" : 
+                            modalType === "warning" ? "text-yellow-600" : 
+                            "text-green-600"
+                        }`}>
+                            {modalTitle}
+                        </h3>
+                        <p className="text-gray-600 mt-4 whitespace-pre-line">{modalMessage}</p>
+
+                        {/* Botón de acción */}
+                        <div className="mt-6 flex justify-center">
+                            <button
+                                type="button"
+                                onClick={closeModal}
+                                className={`px-8 py-3 rounded-full font-semibold text-white transition-all ${
+                                    modalType === "error" ? "bg-red-600 hover:bg-red-700" : 
+                                    modalType === "warning" ? "bg-yellow-600 hover:bg-yellow-700" : 
+                                    "bg-green-600 hover:bg-green-700"
+                                }`}
+                            >
+                                Entendido
                             </button>
                         </div>
                     </div>

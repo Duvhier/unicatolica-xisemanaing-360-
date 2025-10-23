@@ -451,4 +451,50 @@
       transform: translateY(0);
     }
   }
+
+  /* Agrega esto a tu FormularioInscripcionLiderazgo.css */
+
+/* Animaciones para modales */
+@keyframes modalEnter {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.fixed.inset-0 {
+    animation: modalEnter 0.2s ease-out;
+}
+
+/* Estilos específicos para iconos de modal */
+.modal-icon-error {
+    background-color: #fef2f2;
+    color: #dc2626;
+}
+
+.modal-icon-warning {
+    background-color: #fffbeb;
+    color: #d97706;
+}
+
+.modal-icon-success {
+    background-color: #f0fdf4;
+    color: #16a34a;
+}
+
+/* Responsive para modales */
+@media (max-width: 640px) {
+    .fixed.inset-0 .relative {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+    
+    .fixed.inset-0 .text-2xl {
+        font-size: 1.25rem;
+    }
+}
   
