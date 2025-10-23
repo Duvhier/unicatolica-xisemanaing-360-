@@ -10,9 +10,9 @@ export default function App() {
     <div className="font-sans text-gray-800">
       <Header />
       <Hero />
+      <Inscripcion />
       <Info />
       <Agenda />
-      <Inscripcion />
       <Footer />
     </div>
   );

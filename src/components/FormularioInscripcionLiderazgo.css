@@ -1,0 +1,441 @@
+/* 🎓 Paleta oficial UNICATÓLICA */
+:root {
+    /* Colores principales */
+    --primary-color: #00aafb;       /* Azul institucional brillante */
+    --primary-dark: #2b97ed;        /* Azul oscuro para hover o énfasis */
+    --secondary-color: #656565;     /* Gris neutro para texto secundario */
+    --accent-color: #fed584;        /* Amarillo suave para acentos */
+    --success-color: #69c33b;       /* Verde institucional */
+    --error-color: #ff5953;         /* Rojo de error */
+    --warning-color: #ff5226;       /* Naranja de alerta */
+  
+    /* Fondo y superficie */
+    --background-color: #f0f0f0;    /* Fondo general claro */
+    --surface-color: #ffffff;       /* Superficies blancas */
+    --inside-content: #e6e6e6;      /* Fondo interno suave */
+    --inside-content-alt: #e0e0e0;  /* Variante gris */
+  
+    /* Tipografía */
+    --font-primary: 'Poppins', sans-serif;
+    --font-secondary: 'Noto Sans', Arial, sans-serif;
+    --font-weight-strong: 800;
+  
+    /* Texto */
+    --text-primary: #202124;        /* Texto principal (negro institucional) */
+    --text-secondary: #656565;      /* Texto secundario */
+    --text-muted: rgb(0 0 0 / 40%); /* Texto deshabilitado o auxiliar */
+  
+    /* Bordes y sombras */
+    --border-color: #d4d4d4;
+    --border-radius: 12px;
+    --shadow-sm: 0 1px 2px rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.15);
+  
+    /* Enlaces y acciones */
+    --link-color: #2b97ed;
+    --link-hover: #00aafb;
+  
+    /* Transiciones */
+    --transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  
+  /* BASE GENERAL */
+  .formulario-profesional {
+    min-height: 100vh;
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    font-family: "Inter", system-ui, sans-serif;
+    color: var(--text-primary);
+  }
+  
+  /* HEADER */
+  .liderazgo-header {
+    text-align: center;
+    padding: 2rem 1rem 3rem;
+    background-color: var(--surface-color);
+    border-bottom: 1px solid var(--border-color);
+    position: relative;
+  }
+  
+  .liderazgo-logo {
+    height: 60px;
+    margin-bottom: 1rem;
+  }
+  
+  .liderazgo-header h1 {
+    color: var(--text-primary);
+    font-weight: 700;
+    font-size: 1.8rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .liderazgo-header .subtext {
+    color: var(--text-secondary);
+    font-style: italic;
+    font-size: 0.9rem;
+  }
+  
+  .btn-atras {
+    color: var(--text-primary);
+    font-weight: 500;
+    transition: var(--transition);
+  }
+  .btn-atras:hover {
+    color: var(--primary-color);
+  }
+  
+  /* CONTENIDO PRINCIPAL */
+  .form-main-content {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 2rem;
+  }
+  
+  /* TARJETA DEL EVENTO */
+  .event-card {
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-md);
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  
+  .event-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-2px);
+  }
+  
+  .event-date {
+    background: var(--primary-color);
+    color: #fff;
+    padding: 1rem;
+    border-radius: 10px;
+    text-align: center;
+    min-width: 80px;
+    box-shadow: var(--shadow-sm);
+  }
+  
+  .date-day {
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+  .date-month {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  
+  .event-details {
+    flex: 1;
+  }
+  .event-name {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  .event-meta {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+  }
+  .event-arrow {
+    color: var(--text-muted);
+    transition: var(--transition);
+  }
+  .event-card.expanded .event-arrow {
+    transform: rotate(180deg);
+    color: var(--primary-color);
+  }
+  
+  /* EXPANDABLE CASCADA */
+  .expandable-content {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transform: translateY(-10px);
+    transition: all 0.6s ease-in-out;
+  }
+  .expandable-content.expanded {
+    max-height: 2000px;
+    opacity: 1;
+    transform: translateY(0);
+    border: 1px solid var(--border-color);
+    border-top: none;
+    border-bottom-left-radius: var(--border-radius);
+    border-bottom-right-radius: var(--border-radius);
+    background: var(--surface-color);
+    box-shadow: var(--shadow-md);
+  }
+  
+  /* SECCIÓN DEL PONENTE */
+  .speaker-section {
+    animation: fadeInUp 0.4s ease-out 0.1s both;
+    margin-bottom: 1.5rem;
+  }
+  .speaker-card {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    background: var(--surface-color);
+    padding: 2rem;
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+  }
+  .speaker-photo {
+    width: 120px;
+    height: 120px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 4px solid #e2e8f0;
+  }
+  .speaker-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .speaker-info .speaker-role {
+    display: inline-block;
+    background: #dbeafe;
+    color: var(--primary-color);
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .speaker-name {
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin: 0.4rem 0;
+  }
+  .speaker-bio {
+    color: var(--text-secondary);
+  }
+  
+  /* DETALLES EXPANDIDOS */
+  .event-expanded-details {
+    padding: 2rem;
+    animation: fadeInUp 0.4s ease-out 0.2s both;
+  }
+  .event-image-container {
+    margin-bottom: 1.5rem;
+  }
+  .event-image {
+    width: 100%;
+    border-radius: 12px;
+    box-shadow: var(--shadow-sm);
+  }
+  
+  /* BOTÓN CTA */
+  .cta-button {
+    width: 100%;
+    padding: 1rem 2rem;
+    background: var(--primary-color);
+    color: #fff;
+    font-weight: 600;
+    border: none;
+    border-radius: var(--border-radius);
+    transition: var(--transition);
+    cursor: pointer;
+  }
+  .cta-button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+  }
+  
+  /* FORMULARIO */
+  .registration-form-section {
+    animation: fadeInUp 0.4s ease-out 0.3s both;
+  }
+  .registration-form {
+    background: var(--surface-color);
+    border-radius: var(--border-radius);
+    padding: 2rem;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-color);
+  }
+  .form-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .form-group {
+    display: flex;
+    flex-direction: column;
+  }
+  .form-label {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+  }
+  .required {
+    color: var(--error-color);
+  }
+  .form-input,
+  .form-select {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: var(--transition);
+  }
+  .form-input:focus,
+  .form-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgb(37 99 235 / 0.1);
+  }
+  .submit-button {
+    width: 100%;
+    padding: 1rem;
+    background: var(--success-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: var(--transition);
+    cursor: pointer;
+  }
+  .submit-button:hover {
+    background: #059669;
+    transform: translateY(-2px);
+  }
+  
+  /* ANIMACIONES */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .form-grid {
+      grid-template-columns: 1fr;
+    }
+    .speaker-card {
+      flex-direction: column;
+      text-align: center;
+    }
+    .event-card {
+      flex-direction: column;
+      text-align: center;
+    }
+  }
+
+ /* ==============================
+   🎓 MODAL ESTILO UNICATÓLICA
+   ============================== */
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background-color: rgba(0, 0, 0, 0.35);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 50;
+  }
+  
+  .modal-container {
+    background-color: var(--surface-color);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-lg);
+    width: 400px;
+    max-width: 90%;
+    overflow: hidden;
+    animation: fadeInModal 0.4s var(--transition);
+    font-family: var(--font-primary);
+  }
+  
+  .modal-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: var(--evo_color_white);
+    text-align: center;
+    padding: 1rem 1.5rem;
+    font-weight: var(--font-weight-strong);
+    font-size: 1.3rem;
+    letter-spacing: 0.5px;
+  }
+  
+  .modal-body {
+    padding: 1.5rem;
+    color: var(--text-primary);
+    background-color: var(--background-color);
+    line-height: 1.5;
+  }
+  
+  .modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+    background-color: var(--inside-content);
+    border-top: 1px solid var(--border-color);
+  }
+  
+  /* ==============================
+     🎯 BOTONES DEL MODAL
+     ============================== */
+  
+  .btn {
+    font-family: var(--font-secondary);
+    font-weight: 600;
+    border-radius: var(--border-radius);
+    padding: 0.6rem 1.2rem;
+    border: none;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  
+  .btn-primary {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: var(--evo_color_white);
+  }
+  
+  .btn-primary:hover {
+    opacity: 0.9;
+    transform: scale(1.03);
+  }
+  
+  .btn-secondary {
+    background-color: var(--inside-content-alt);
+    color: var(--text-secondary);
+  }
+  
+  .btn-secondary:hover {
+    background-color: var(--border-color);
+  }
+  
+  /* ==============================
+     ✨ ANIMACIONES
+     ============================== */
+  
+  @keyframes fadeInModal {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
