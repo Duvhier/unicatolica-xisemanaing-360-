@@ -79,8 +79,6 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
-    const closeSuccess = () => setSuccessOpen(false);
-
     const toggleEvento = () => {
         setShowEvento((prev) => {
             const newState = !prev;
