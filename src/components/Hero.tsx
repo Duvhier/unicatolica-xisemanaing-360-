@@ -1,13 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import hackathonImage from "@/assets/Hackaton.png";
-import techTouchImage from "@/assets/Technologicaltouch.png";
 import xiSemanaImage from "@/assets/BANNER DE PAGINA-8.png";
 
 export default function Hero() {
   const images = [
-    { src: hackathonImage, alt: "Hackathon" },
-    { src: techTouchImage, alt: "Technological Touch" },
     { src: xiSemanaImage, alt: "XI Semana 360°" },
   ];
 

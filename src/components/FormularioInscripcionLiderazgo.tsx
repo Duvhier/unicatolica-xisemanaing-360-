@@ -20,7 +20,7 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
     const [successOpen, setSuccessOpen] = useState(false);
     const [qrSrc, setQrSrc] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
-    
+
     // Nuevos estados para modales específicos
     const [modalOpen, setModalOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
@@ -75,7 +75,7 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                 // 🔹 Manejo específico de errores del backend
                 if (responseData.message?.includes("correo institucional")) {
                     showModal(
-                        "Correo no válido", 
+                        "Correo no válido",
                         "El correo debe ser institucional (ejemplo@unicatolica.edu.co)",
                         "warning"
                     );
@@ -84,7 +84,7 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
 
                 if (responseData.message?.includes("Ya existe un registro")) {
                     showModal(
-                        "Registro duplicado", 
+                        "Registro duplicado",
                         responseData.message || "Ya existe un registro con estos datos",
                         "warning"
                     );
@@ -111,7 +111,7 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
             console.error(err);
             // 🔹 Error de conexión o genérico
             showModal(
-                "Error de conexión", 
+                "Error de conexión",
                 err.message || "Error inesperado al enviar el formulario. Por favor, intente nuevamente.",
                 "error"
             );
@@ -154,126 +154,238 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
     return (
         <div className="formulario-profesional">
             {/* HEADER */}
-            <header className="liderazgo-header">
-                <img src="/unicatolica-logo.svg" alt="UNICATÓLICA" className="liderazgo-logo" />
-                <Link to="/" className="btn-atras">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                        <path d="M15 6L9 12L15 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                    </svg>
-                    <span className="btn-text">Regresar</span>
-                </Link>
-                <h1>XI Semana de la Ingeniería <br />"360°: Innovación, Liderazgo y Futuro"</h1>
-                <p className="subtext">Exclusiva para docentes y administrativos de UNICATÓLICA</p>
+            <header className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 relative mb-8">
+                {/* Logo y botón de regresar */}
+                <div className="flex justify-between items-start mb-6">
+                    <img
+                        src="/unicatolica-logo.svg"
+                        alt="UNICATÓLICA"
+                        className="h-16 w-auto"
+                    />
+                    <Link
+                        to="/"
+                        className="inline-flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-uniblue hover:bg-gray-50 rounded-lg transition-all duration-200 border border-gray-300 hover:border-gray-400 font-medium"
+                    >
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 6L9 12L15 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                        <span>Regresar</span>
+                    </Link>
+                </div>
+
+                {/* Contenido principal */}
+                <div className="text-center">
+                    <div className="border-l-4 border-uniblue pl-4 mb-4 inline-block">
+                        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 leading-tight">
+                            XI SEMANA DE LA INGENIERÍA
+                        </h1>
+                    </div>
+
+                    <p className="text-lg text-uniblue font-semibold mb-4">
+                        "360°: Innovación, Liderazgo y Futuro"
+                    </p>
+
+                    <div className="bg-unigold/20 rounded-full px-6 py-3 inline-block">
+                        <p className="text-sm font-medium text-gray-800">
+                            Exclusiva para docentes y administrativos de UNICATÓLICA
+                        </p>
+                    </div>
+                </div>
             </header>
 
             {/* CONTENIDO PRINCIPAL */}
             <main className="form-main-content">
-                <h2 className="agenda-title">Agenda</h2>
+                <div className="flex items-center gap-3 mb-8">
+                    <div className="w-2 h-8 bg-unigold rounded-full"></div>
+                    <h2 className="text-2xl font-bold text-gray-800">
+                        AGENDA
+                    </h2>
+                </div>
 
                 {/* Tarjeta Agenda */}
-                <section className={`event-card ${showEvento ? "expanded" : ""}`} onClick={toggleEvento}>
-                    <div className="event-date">
-                        <div className="date-day">10</div>
-                        <div className="date-month">NOV</div>
-                    </div>
-                    <div className="event-details">
-                        <h3 className="event-name">Conferencia: Desarrollo Personal y Liderazgo</h3>
-                        <div className="event-meta">
-                            <span className="location">Auditorio 1 | Sede Pance | </span>
-                            <span className="time">3:00 pm – 5:00 pm</span>
+                <section
+                    className={`bg-white rounded-lg border-l-4 transition-all duration-300 cursor-pointer ${showEvento ? "border-uniblue bg-blue-50" : "border-gray-300 hover:border-uniblue hover:bg-gray-50"
+                        }`}
+                    onClick={toggleEvento}
+                >
+                    <div className="flex items-center gap-4 p-4">
+                        {/* Fecha */}
+                        <div className="flex flex-col items-center justify-center bg-gray-100 rounded-md w-14 h-14 flex-shrink-0">
+                            <div className="text-lg font-bold text-gray-800">10</div>
+                            <div className="text-xs font-medium text-gray-600 uppercase">NOV</div>
+                        </div>
+
+                        {/* Contenido */}
+                        <div className="flex-1 min-w-0">
+                            <h3 className="font-semibold text-gray-800 mb-1">
+                                Conferencia: Desarrollo Personal y Liderazgo
+                            </h3>
+                            <div className="text-sm text-gray-600">
+                                <span>Auditorio 1 - Sede Pance • 3:00 PM - 5:00 PM</span>
+                            </div>
+                        </div>
+
+                        {/* Flecha */}
+                        <div className={`text-gray-400 transition-transform duration-300 ${showEvento ? "rotate-180 text-uniblue" : ""
+                            }`}>
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M6 9L12 15L18 9"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
                         </div>
                     </div>
-                    <div className="event-arrow">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                            <path
-                                d={showEvento ? "M6 15L12 9L18 15" : "M6 9L12 15L18 9"}
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                            />
-                        </svg>
-                    </div>
                 </section>
-
                 {/* DESPLIEGUE EN CASCADA */}
                 <div ref={expandableRef} className={`expandable-content ${showEvento ? "expanded" : ""}`}>
                     {showEvento && (
                         <>
                             {/* Coach Card */}
-                            <section className="speaker-section">
-                                <div className="speaker-card">
-                                    <div className="speaker-photo">
-                                        <img src={ximena} alt="Ximena Otero Pilonieta" />
+                            <section className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
+                                <div className="flex items-start gap-6">
+                                    {/* Imagen con estilo circular profesional */}
+                                    <div className="flex-shrink-0 relative">
+                                        <div className="relative">
+                                            <img
+                                                src={ximena}
+                                                alt="Ximena Otero Pilonieta"
+                                                className="w-32 h-32 rounded-full object-cover border-4 border-uniblue shadow-md"
+                                            />
+                                            <div className="absolute -bottom-2 -right-2 bg-unigold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">
+                                                <span className="text-xs">⭐</span>
+                                            </div>
+                                        </div>
                                     </div>
-                                    <div className="speaker-info">
-                                        <span className="speaker-role">Ponente</span>
-                                        <h3 className="speaker-name">Ximena Otero Pilonieta</h3>
-                                        <p className="speaker-bio">
-                                            Abogada & Coach en Eneagrama, Desarrollo Personal y Liderazgo.
-                                            Conferencista 🎤
+
+                                    {/* Contenido */}
+                                    <div className="flex-1">
+                                        <div className="flex items-center gap-2 mb-3">
+                                            <div className="w-3 h-3 bg-unigold rounded-full"></div>
+                                            <span className="text-sm font-bold text-uniblue uppercase tracking-wide">
+                                                Ponente Principal
+                                            </span>
+                                        </div>
+
+                                        <h3 className="text-2xl font-bold text-gray-800 mb-3">
+                                            Ximena Otero Pilonieta
+                                        </h3>
+
+                                        <p className="text-gray-600 leading-relaxed mb-4">
+                                            <strong>Abogada & Coach</strong> especializada en Eneagrama, Desarrollo Personal y Liderazgo.
+                                            Conferencista con enfoque en el crecimiento profesional y personal.
                                         </p>
+
+                                        <div className="flex items-center gap-4 text-sm text-gray-500">
+                                            <span className="flex items-center gap-1 font-medium">
+                                                <svg className="w-4 h-4 text-uniblue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                                </svg>
+                                                Coach Certificada
+                                            </span>
+                                            <span className="flex items-center gap-1 font-medium">
+                                                <svg className="w-4 h-4 text-uniblue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+                                                </svg>
+                                                Abogada
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </section>
 
                             {/* Imagen evento y botón */}
-                            <section className="event-expanded-details">
-                                <div className="event-image-container">
-                                    <img src={ConferenciaImg} alt="Conferencia Liderazgo" className="event-image" />
+                            <section className="flex flex-col gap-6">
+                                {/* Imagen con overlay */}
+                                <div className="relative rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
+                                    <img
+                                        src={ConferenciaImg}
+                                        alt="Conferencia Desarrollo Personal y Liderazgo"
+                                        className="w-full h-48 object-cover"
+                                    />
+                                    <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
+                                        <p className="text-white font-semibold text-sm">Desarrollo Personal y Liderazgo</p>
+                                    </div>
                                 </div>
-                                <button className="cta-button primary" onClick={toggleFormulario}>
-                                    {showFormulario ? "Ocultar formulario" : "Inscribirme en este evento"}
-                                </button>
+
+                                {/* Botón centrado */}
+                                <div className="text-center">
+                                    <button
+                                        className="bg-uniblue text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl w-full max-w-md"
+                                        onClick={toggleFormulario}
+                                    >
+                                        {showFormulario ? (
+                                            <span className="flex items-center justify-center gap-2">
+                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                                                </svg>
+                                                Cerrar formulario
+                                            </span>
+                                        ) : (
+                                            <span className="flex items-center justify-center gap-2">
+                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                                </svg>
+                                                Reservar mi cupo
+                                            </span>
+                                        )}
+                                    </button>
+
+                                    <p className="text-sm text-gray-500 mt-3">
+                                        ⚡ Confirmación inmediata
+                                    </p>
+                                </div>
                             </section>
                         </>
                     )}
 
                     {/* FORMULARIO */}
                     {showFormulario && (
-                        <section ref={formularioRef} className="registration-form-section">
-                            <form onSubmit={handleSubmit} className="registration-form">
-                                <div className="form-header">
-                                    <h2>Formulario de Inscripción</h2>
-                                    <p>Complete todos los campos obligatorios (*)</p>
+                        <section ref={formularioRef} className="bg-white rounded-xl shadow-md border border-gray-200 p-6 mt-6">
+                            <form onSubmit={handleSubmit} className="space-y-6">
+                                <div className="border-l-4 border-uniblue pl-4">
+                                    <h3 className="text-xl font-bold text-gray-800 mb-1">Formulario de Inscripción</h3>
+                                    <p className="text-sm text-gray-600">Complete la información requerida</p>
                                 </div>
 
-                                <div className="form-grid">
+                                <div className="grid gap-4">
                                     {[
-                                        { id: "nombre", label: "Nombre Completo", type: "text" },
-                                        { id: "cedula", label: "Cédula", type: "text" },
-                                        { id: "correo", label: "Correo Institucional", type: "email" },
+                                        { id: "nombre", label: "Nombre", type: "text" },
+                                        { id: "cedula", label: "Documento", type: "text" },
+                                        { id: "correo", label: "Correo", type: "email" },
                                         { id: "telefono", label: "Teléfono", type: "tel" },
-                                        { id: "area", label: "Área a la que pertenece", type: "text" },
+                                        { id: "area", label: "Área", type: "text" },
                                     ].map(({ id, label, type }) => (
-                                        <div className="form-group" key={id}>
-                                            <label htmlFor={id} className="form-label">
-                                                {label} <span className="required">*</span>
+                                        <div key={id}>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                                {label} <span className="text-red-500">*</span>
                                             </label>
                                             <input
-                                                id={id}
                                                 type={type}
                                                 name={id}
                                                 value={(formData as any)[id]}
                                                 onChange={handleInputChange}
                                                 required
-                                                className="form-input"
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent"
                                             />
                                         </div>
                                     ))}
 
-                                    <div className="form-group">
-                                        <label htmlFor="rol" className="form-label">
-                                            Rol <span className="required">*</span>
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                            Rol <span className="text-red-500">*</span>
                                         </label>
                                         <select
-                                            id="rol"
                                             name="rol"
                                             value={formData.rol}
                                             onChange={handleInputChange}
                                             required
-                                            className="form-select"
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent bg-white"
                                         >
-                                            <option value="">Seleccionar Rol</option>
+                                            <option value="">Seleccionar rol</option>
                                             <option value="Docente">Docente</option>
                                             <option value="Administrativo">Administrativo</option>
                                             <option value="Directivo">Directivo</option>
@@ -283,19 +395,17 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
 
                                 <button
                                     type="submit"
-                                    className={`submit-button ${isSubmitting ? "loading" : ""}`}
                                     disabled={isSubmitting}
+                                    className="w-full bg-uniblue text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition-colors duration-200"
                                 >
-                                    {isSubmitting ? (
-                                        <>
-                                            <div className="spinner"></div> Registrando...
-                                        </>
-                                    ) : (
-                                        "Confirmar mi participación"
-                                    )}
+                                    {isSubmitting ? 'Enviando...' : 'Confirmar inscripción'}
                                 </button>
 
-                                {error && <p className="error-message">❌ {error}</p>}
+                                {error && (
+                                    <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg">
+                                        {error}
+                                    </div>
+                                )}
                             </form>
                         </section>
                     )}
@@ -380,11 +490,10 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                         </div>
 
                         {/* Título y mensaje */}
-                        <h3 className={`text-2xl font-bold ${
-                            modalType === "error" ? "text-red-600" : 
-                            modalType === "warning" ? "text-yellow-600" : 
-                            "text-green-600"
-                        }`}>
+                        <h3 className={`text-2xl font-bold ${modalType === "error" ? "text-red-600" :
+                            modalType === "warning" ? "text-yellow-600" :
+                                "text-green-600"
+                            }`}>
                             {modalTitle}
                         </h3>
                         <p className="text-gray-600 mt-4 whitespace-pre-line">{modalMessage}</p>
@@ -394,11 +503,10 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={closeModal}
-                                className={`px-8 py-3 rounded-full font-semibold text-white transition-all ${
-                                    modalType === "error" ? "bg-red-600 hover:bg-red-700" : 
-                                    modalType === "warning" ? "bg-yellow-600 hover:bg-yellow-700" : 
-                                    "bg-green-600 hover:bg-green-700"
-                                }`}
+                                className={`px-8 py-3 rounded-full font-semibold text-white transition-all ${modalType === "error" ? "bg-red-600 hover:bg-red-700" :
+                                    modalType === "warning" ? "bg-yellow-600 hover:bg-yellow-700" :
+                                        "bg-green-600 hover:bg-green-700"
+                                    }`}
                             >
                                 Entendido
                             </button>

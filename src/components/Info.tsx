@@ -33,8 +33,8 @@ export default function Info() {
           viewport={{ once: true, amount: 0.6 }}
           variants={fadeUp}
         >
-          <div className="inline-flex">
-            <h2 className="px-8 py-4 rounded-full bg-uniblue text-white text-3xl md:text-4xl font-extrabold shadow-lg tracking-wide">
+          <div className="inline-flex border-l-4 border-uniblue pl-4 py-2">
+            <h2 className="text-xl md:text-2xl font-bold text-gray-800 tracking-tight">
               INFORMACIÓN
             </h2>
           </div>
@@ -44,10 +44,19 @@ export default function Info() {
         <AnimatedStats />
 
         <div className="space-y-10 text-gray-700">
-          <section>
-            <h3 className="text-2xl font-semibold text-uniblue mb-3">Introducción</h3>
-            <div className="grid md:grid-cols-2 gap-6 items-center">
-              <motion.p className="leading-relaxed" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.4 }} variants={fadeUp}>
+          <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-3 h-8 bg-uniblue rounded-full"></div>
+              <h3 className="text-2xl font-bold text-gray-800">Introducción</h3>
+            </div>
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <motion.p
+                className="text-gray-700 leading-relaxed text-lg"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.4 }}
+                variants={fadeUp}
+              >
                 La Facultad de Ingeniería de la Fundación Universitaria Católica Lumen Gentium – UNICATÓLICA organiza la XI Semana de la Ingeniería – “360°: Innovación, Liderazgo y Futuro”, un evento académico, investigativo, cultural y empresarial que busca fortalecer la formación integral de los estudiantes, visibilizar los procesos académicos e investigativos de la institución y consolidar el relacionamiento con empresas y comunidades de emprendimiento de la región.
               </motion.p>
               <motion.div
@@ -57,47 +66,47 @@ export default function Info() {
                 variants={slideRight}
                 className="w-full"
               >
-                <img src={IntroduccionImg} alt="Introducción" style={{ height: 220, width: "100%", objectFit: "cover", borderRadius: 16 }} />
+                <img
+                  src={IntroduccionImg}
+                  alt="Introducción"
+                  className="w-full h-64 object-cover rounded-xl shadow-md"
+                />
               </motion.div>
             </div>
           </section>
 
-          <section>
-            <h3 className="text-2xl font-semibold text-uniblue mb-3">Población objetivo</h3>
-            <motion.ul
-              className="list-disc pl-6 space-y-2"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              variants={stagger}
-            >
-              {[
-                "Estudiantes de pregrado y posgrado de la Facultad de Ingeniería y de otros programas afines.",
-                "Docentes, egresados y directivos académicos.",
-                "Comunidades de emprendimiento y empresarios aliados.",
-                "Instituciones educativas de la región (colegios invitados a la Hackatón).",
-                "Público externo interesado en innovación, ingeniería y desarrollo tecnológico.",
-              ].map((text, idx) => (
-                <motion.li key={idx} variants={fadeUp}>{text}</motion.li>
-              ))}
-            </motion.ul>
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.4 }}
-              variants={slideRight}
-              className="w-full"
-            >
-              <img src={PoblacionObjetivoImg} alt="Población objetivo" style={{ height: 200, width: "100%", objectFit: "cover", borderRadius: 16, marginTop: 12 }} />
-            </motion.div>
-          </section>
+          <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-3 h-8 bg-uniblue rounded-full"></div>
+              <h3 className="text-2xl font-bold text-gray-800">Población objetivo</h3>
+            </div>
 
-          <section>
-            <h3 className="text-2xl font-semibold text-uniblue mb-3">Sedes</h3>
-            <div className="grid md:grid-cols-2 gap-6 items-center">
-              <motion.p className="leading-relaxed" initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.4 }} variants={fadeUp}>
-                Sede Pance y Meléndez : espacios académicos, culturales y deportivos, incluyendo el Auditorio Lumen, laboratorios, aulas especializadas, zonas deportivas y áreas de exposición para la feria empresarial y de emprendimiento.
-              </motion.p>
+            <div className="grid md:grid-cols-2 gap-8 items-start">
+              <motion.ul
+                className="space-y-3 text-gray-700"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.3 }}
+                variants={stagger}
+              >
+                {[
+                  "Estudiantes de pregrado y posgrado de la Facultad de Ingeniería y de otros programas afines.",
+                  "Docentes, egresados y directivos académicos.",
+                  "Comunidades de emprendimiento y empresarios aliados.",
+                  "Instituciones educativas de la región (colegios invitados a la Hackatón).",
+                  "Público externo interesado en innovación, ingeniería y desarrollo tecnológico.",
+                ].map((text, idx) => (
+                  <motion.li
+                    key={idx}
+                    variants={fadeUp}
+                    className="flex items-start gap-2"
+                  >
+                    <span className="w-2 h-2 bg-black rounded-full mt-2 flex-shrink-0"></span>
+                    <span>{text}</span>
+                  </motion.li>
+                ))}
+              </motion.ul>
+
               <motion.div
                 initial="hidden"
                 whileInView="visible"
@@ -105,53 +114,111 @@ export default function Info() {
                 variants={slideRight}
                 className="w-full"
               >
-                <img src={SedesImg} alt="Sedes" style={{ height: 220, width: "100%", objectFit: "cover", borderRadius: 16 }} />
+                <img
+                  src={PoblacionObjetivoImg}
+                  alt="Población objetivo"
+                  className="w-full h-56 object-cover rounded-xl shadow-md"
+                />
               </motion.div>
             </div>
           </section>
 
-          <section>
-            <h3 className="text-2xl font-semibold text-uniblue mb-3">Temáticas a trabajar</h3>
-            <motion.ul
-              className="list-disc pl-6 space-y-2"
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.3 }}
-              variants={stagger}
-            >
-              {[
-                "Inteligencia Artificial y transformación digital: aplicaciones, tendencias y retos en la ingeniería.",
-                "Habilidades y competencias profesionales: liderazgo, trabajo en equipo, comunicación efectiva y desarrollo personal.",
-                "Ingeniería aplicada: proyectos de investigación, innovación y desarrollo tecnológico.",
-                "Ámbito académico e investigativo: exposición de trabajos de grado, semilleros de investigación y producción académica de la Facultad.",
-                "Emprendimiento y relacionamiento empresarial: feria de emprendimiento y empresarial, participación de aliados estratégicos y visibilidad de proyectos innovadores.",
-              ].map((text, idx) => (
-                <motion.li key={idx} variants={fadeUp}>{text}</motion.li>
-              ))}
-            </motion.ul>
-            <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.4 }}
-              variants={slideRight}
-              className="w-full"
-            >
-              <img src={TematicasImg} alt="Temáticas" style={{ height: 200, width: "100%", objectFit: "cover", borderRadius: 16, marginTop: 12 }} />
-            </motion.div>
+          <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-3 h-8 bg-uniblue rounded-full"></div>
+              <h3 className="text-2xl font-bold text-gray-800">Sedes</h3>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-6 items-center">
+              <motion.p
+                className="text-gray-700 leading-relaxed text-lg"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.4 }}
+                variants={fadeUp}
+              >
+                Sede Pance y Meléndez: espacios académicos, culturales y deportivos, incluyendo el Auditorio Lumen, laboratorios, aulas especializadas, zonas deportivas y áreas de exposición para la feria empresarial y de emprendimiento.
+              </motion.p>
+
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.4 }}
+                variants={slideRight}
+                className="w-full"
+              >
+                <img
+                  src={SedesImg}
+                  alt="Sedes"
+                  className="w-full h-64 object-cover rounded-xl shadow-md"
+                />
+              </motion.div>
+            </div>
+          </section>
+
+          <section className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-3 h-8 bg-uniblue rounded-full"></div>
+              <h3 className="text-2xl font-bold text-gray-800">Temáticas a trabajar</h3>
+            </div>
+
+            <div className="grid md:grid-cols-2 gap-8 items-start">
+              <motion.ul
+                className="space-y-3 text-gray-700"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.3 }}
+                variants={stagger}
+              >
+                {[
+                  "Inteligencia Artificial y transformación digital: aplicaciones, tendencias y retos en la ingeniería.",
+                  "Habilidades y competencias profesionales: liderazgo, trabajo en equipo, comunicación efectiva y desarrollo personal.",
+                  "Ingeniería aplicada: proyectos de investigación, innovación y desarrollo tecnológico.",
+                  "Ámbito académico e investigativo: exposición de trabajos de grado, semilleros de investigación y producción académica de la Facultad.",
+                  "Emprendimiento y relacionamiento empresarial: feria de emprendimiento y empresarial, participación de aliados estratégicos y visibilidad de proyectos innovadores.",
+                ].map((text, idx) => (
+                  <motion.li
+                    key={idx}
+                    variants={fadeUp}
+                    className="flex items-start gap-2"
+                  >
+                    <span className="w-2 h-2 bg-black rounded-full mt-2 flex-shrink-0"></span>
+                    <span>{text}</span>
+                  </motion.li>
+                ))}
+              </motion.ul>
+
+              <motion.div
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.4 }}
+                variants={slideRight}
+                className="w-full"
+              >
+                <img
+                  src={TematicasImg}
+                  alt="Temáticas"
+                  className="w-full h-56 object-cover rounded-xl shadow-md"
+                />
+              </motion.div>
+            </div>
           </section>
         </div>
 
         {/* === OBJETIVOS (con animaciones mejoradas) === */}
         <section className="mt-20 space-y-20 text-gray-700">
           <motion.h3
-            className="mb-3 text-center"
+            className="mb-12 text-center"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.6 }}
             variants={fadeUp}
-          > <h2 className="px-8 py-4 rounded-full bg-uniblue text-white text-3xl md:text-4xl font-extrabold shadow-lg tracking-wide">
-              OBJETIVOS
-            </h2>
+          >
+            <div className="inline-flex border-l-4 border-uniblue pl-4 py-2">
+              <h2 className="text-2xl md:text-3xl font-bold text-gray-800 tracking-tight">
+                OBJETIVOS
+              </h2>
+            </div>
           </motion.h3>
 
           {/* Objetivo General - Izquierda con imagen derecha */}
@@ -169,13 +236,15 @@ export default function Info() {
                 variants={slideRight}
               >
                 <motion.div className="flex items-center gap-4" variants={fadeUp}>
-                  <span className="px-6 py-3 rounded-full bg-uniblue text-white text-xl md:text-2xl font-bold shadow-lg">
-                    Objetivo General
-                  </span>
+                  <div className="inline-flex border-l-4 border-uniblue pl-4 py-2">
+                    <span className="text-xl md:text-2xl font-bold text-gray-800 tracking-tight">
+                      Objetivo General
+                    </span>
+                  </div>
                 </motion.div>
 
                 <motion.p
-                  className="text-lg leading-relaxed text-gray-700"
+                  className="text-gray-700 leading-relaxed"
                   variants={fadeUp}
                 >
                   Consolidar la XI Semana de la Ingeniería como un espacio de innovación, liderazgo y futuro, articulando la academia, el sector empresarial y la sociedad mediante actividades académicas, investigativas, culturales y de emprendimiento.
@@ -246,16 +315,18 @@ export default function Info() {
                 variants={fadeUp}
               >
                 <motion.div className="inline-flex" variants={fadeUp}>
-                  <span className="px-6 py-3 rounded-full bg-uniblue text-white text-xl md:text-2xl font-bold shadow-lg">
-                    Objetivos Específicos
-                  </span>
+                  <div className="border-l-4 border-uniblue pl-4 py-2">
+                    <span className="text-xl md:text-2xl font-bold text-gray-800 tracking-tight">
+                      Objetivos Específicos
+                    </span>
+                  </div>
                 </motion.div>
 
                 <motion.div
-                  className="space-y-4"
+                  className="grid md:grid-cols-2 gap-6"
                   variants={{
                     hidden: {},
-                    visible: { transition: { staggerChildren: 0.05 } }
+                    visible: { transition: { staggerChildren: 0.1 } }
                   }}
                 >
                   {[
@@ -266,15 +337,18 @@ export default function Info() {
                   ].map((obj, idx) => (
                     <motion.div
                       key={idx}
-                      className="group bg-white rounded-2xl p-5 shadow-lg hover:shadow-xl transition-all duration-300 hover:-translate-y-1 border border-gray-100"
+                      className="group bg-white rounded-xl p-6 shadow-sm hover:shadow-md transition-all duration-300 border-l-4 border-uniblue hover:border-unigold"
                       variants={{
-                        hidden: { opacity: 0, y: 16 },
-                        visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease: "easeOut" } }
+                        hidden: { opacity: 0, x: -20 },
+                        visible: { opacity: 1, x: 0, transition: { duration: 0.4, ease: "easeOut" } }
                       }}
-                      whileHover={{ scale: 1.02 }}
+                      whileHover={{ y: -2 }}
                     >
-                      <h4 className="text-lg md:text-xl font-bold text-uniblue mb-2">{obj.title}</h4>
-                      <p className="text-gray-600 text-sm md:text-base leading-relaxed">{obj.text}</p>
+                      <div className="flex items-start gap-3 mb-3">
+                        <div className="w-3 h-3 bg-black rounded-full mt-2 flex-shrink-0"></div>
+                        <h4 className="text-lg font-bold text-gray-800 leading-tight">{obj.title}</h4>
+                      </div>
+                      <p className="text-gray-600 text-sm leading-relaxed pl-6">{obj.text}</p>
                     </motion.div>
                   ))}
                 </motion.div>

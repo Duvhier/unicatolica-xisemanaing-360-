@@ -168,8 +168,8 @@ const FormularioInscripcion: React.FC = () => {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(emailPayload)
-        }).catch(() => {});
-      } catch {}
+        }).catch(() => { });
+      } catch { }
 
       // limpiar formulario
       setFormData({
@@ -198,312 +198,479 @@ const FormularioInscripcion: React.FC = () => {
 
   return (
     <>
-    <div className="formulario-container">
-      {/* Encabezado */}
-      <div className="header" style={{ position: 'relative' }}>
-        <img src="/unicatolica-logo.svg" alt="UNICATÓLICA" />
-        <Link to="/" className="submit-btn-atras" style={{ position: 'absolute', top: '12px', right: '12px', textDecoration: 'none', padding: '0.5rem 0.9rem', display: 'inline-flex', alignItems: 'center', gap: '8px' }} aria-label="Regresar">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M15 6L9 12L15 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-          <span className="btn-text">Regresar</span>
-        </Link>
-        <h1>XI Semana de la Ingeniería <br />"360°: Innovación, Liderazgo y Futuro"</h1>
-        <p>
-          <span className="highlight">Del 11 al 14 de noviembre de 2025</span> <br />
-          Sedes Pance y Meléndez
-        </p>
-        <p>Un espacio académico, investigativo, cultural y de relacionamiento con nuestros aliados estratégicos.</p>
-      </div>
-
-      <form onSubmit={handleSubmit}>
-        {/* Selección de Actividades */}
-        <h2>Eventos</h2>
-        <div className="events-grid">
-          <label className={`event-card ${formData.evento === 'hackathon' ? 'selected' : ''}`}>
-            <input
-              className="event-radio"
-              type="radio"
-              name="evento"
-              value="hackathon"
-              checked={formData.evento === 'hackathon'}
-              onChange={handleEventChange}
-              required
+      <div className="formulario-container">
+        {/* Encabezado */}
+        <div className="bg-gradient-to-r from-gray-50 to-white rounded-xl p-8 relative mb-8 border">
+          <div className="flex justify-between items-start mb-8">
+            <img
+              src="/unicatolica-logo.svg"
+              alt="UNICATÓLICA"
+              className="h-14 w-auto"
             />
-            <img className="event-image" src={HackathonImg} alt="Hackathon" />
-            <div className="event-content">
-              <div className="event-meta">Mié, Nov 12 | Sede Pance</div>
-              <div className="event-title">Hackathon</div>
-              <div className="event-description">Competencia de programación y desarrollo (máx. 12 grupos de 3–5 estudiantes)</div>
-              <button type="button" className="event-cta" onClick={() => handleSelectEvent('hackathon')}>Inscribirse</button>
-            </div>
-          </label>
+            <Link
+              to="/"
+              className="flex items-center gap-2 text-gray-500 hover:text-uniblue transition-colors duration-200 font-medium text-sm"
+              aria-label="Regresar al inicio"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M15 6L9 12L15 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+              Regresar
+            </Link>
+          </div>
 
-          <label className={`event-card ${formData.evento === 'technological' ? 'selected' : ''}`}>
-            <input
-              className="event-radio"
-              type="radio"
-              name="evento"
-              value="technological"
-              checked={formData.evento === 'technological'}
-              onChange={handleEventChange}
-            />
-            <img className="event-image" src={TechTouchImg} alt="Technological Touch" />
-            <div className="event-content">
-              <div className="event-meta">Jue, Nov 13 | Sede Meléndez</div>
-              <div className="event-title">Technological Touch</div>
-              <div className="event-description">Presentación de proyectos innovadores y demostraciones tecnológicas</div>
-              <button type="button" className="event-cta" onClick={() => handleSelectEvent('technological')}>Inscribirse</button>
-            </div>
-          </label>
+          <div className="text-center">
+            <h1 className="text-2xl font-bold text-gray-800 mb-2">
+              XI SEMANA DE LA INGENIERÍA
+            </h1>
+            <p className="text-lg text-uniblue font-semibold mb-4">
+              "360°: Innovación, Liderazgo y Futuro"
+            </p>
 
-          <label className={`event-card ${formData.evento === 'visitas' ? 'selected' : ''}`}>
-            <input
-              className="event-radio"
-              type="radio"
-              name="evento"
-              value="visitas"
-              checked={formData.evento === 'visitas'}
-              onChange={handleEventChange}
-            />
-            <img className="event-image" src={SemanaImg} alt="Visitas Empresariales" />
-            <div className="event-content">
-              <div className="event-meta">Mié 12 y Jue 13 | Zona América</div>
-              <div className="event-title">Visitas Empresariales</div>
-              <div className="event-description">Recorridos guiados por empresas líderes en tecnología e innovación</div>
-              <button type="button" className="event-cta" onClick={() => handleSelectEvent('visitas')}>Inscribirse</button>
-            </div>
-          </label>
-
-          <label className={`event-card ${formData.evento === 'asistencia' ? 'selected' : ''}`}>
-            <input
-              className="event-radio"
-              type="radio"
-              name="evento"
-              value="asistencia"
-              checked={formData.evento === 'asistencia'}
-              onChange={handleEventChange}
-            />
-            <img className="event-image" src={AsistenciaImg} alt="Asistencia a Eventos" />
-            <div className="event-content">
-              <div className="event-meta">Del Mar al Vie, Nov 11 al 14</div>
-              <div className="event-title">Asistencia a Eventos</div>
-              <div className="event-description">Participación como público en foros, conferencias y actividades académicas</div>
-              <button type="button" className="event-cta" onClick={() => handleSelectEvent('asistencia')}>Confirmar asistencia</button>
-            </div>
-          </label>
-        </div>
-
-        {!formData.evento && (
-          <p className="text-center" style={{ marginTop: '1rem', color: '#6b7280' }}>
-            Selecciona un evento para continuar con la inscripción.
-          </p>
-        )}
-
-        {formData.evento && (
-          <div ref={formSectionRef}>
-        <h2>Datos del Estudiante</h2>
-        <div className="form-group">
-          <label>Nombre completo <span className="required">*</span></label>
-          <input
-            type="text"
-            name="nombre"
-            value={formData.nombre}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Número de documento <span className="required">*</span></label>
-          <input
-            type="text"
-            name="cedula"
-            value={formData.cedula}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Correo institucional <span className="required">*</span></label>
-          <input
-            type="email"
-            name="correo"
-            value={formData.correo}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Teléfono <span className="required">*</span></label>
-          <input
-            type="tel"
-            name="telefono"
-            value={formData.telefono}
-            onChange={handleInputChange}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label>Programa Académico <span className="required">*</span></label>
-          <select
-            name="programa"
-            value={formData.programa}
-            onChange={handleInputChange}
-            required
-          >
-            <option value="">Seleccionar Programa</option>
-            <option value="ingenieria-industrial">Ingeniería Industrial</option>
-            <option value="ingenieria-sistemas">Ingeniería de Sistemas</option>
-            <option value="tecnologia-desarrollo-software">Tecnología en Desarrollo de Software</option>
-            <option value="tecnologia-gestion-logistica">Tecnología en Gestión Logística Empresarial</option>
-          </select>
-        </div>
-
-        <div className="form-group">
-          <label>Semestre<span className="required">*</span></label>
-          <select
-            name="semestre"
-            value={formData.semestre}
-            onChange={handleInputChange}
-            required
-          >
-            <option value="">Seleccionar Semestre</option>
-            <option value="I">I</option>
-            <option value="II">II</option>
-            <option value="III">III</option>
-            <option value="IV">IV</option>
-            <option value="V">V</option>
-            <option value="VI">VI</option>
-            <option value="VII">VII</option>
-            <option value="VIII">VIII</option>
-            <option value="IX">IX</option>
-            <option value="X">X</option>
-          </select>
-        </div>
-
-        
-
-        {/* Campos del equipo */}
-        {showTeamFields && (
-          <div>
-            <h2>Datos del Equipo</h2>
-
-            <div className="form-group">
-              <label>Nombre del equipo <span className="required">*</span></label>
-              <input
-                type="text"
-                name="nombre_equipo"
-                value={formData.nombre_equipo}
-                onChange={handleInputChange}
-                placeholder="Un nombre único que lo identifique en la competencia"
-                required
-              />
+            <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4">
+              <span className="bg-uniblue text-white px-4 py-2 rounded-full text-sm font-medium">
+                Del 11 al 14 de noviembre de 2025
+              </span>
+              <span className="text-gray-600 font-medium">
+                Sedes Pance y Meléndez
+              </span>
             </div>
 
-            <div className="form-group">
-              <label>Proyecto <span className="required">*</span></label>
-              <input
-                type="text"
-                name="nombre_proyecto"
-                value={formData.nombre_proyecto}
-                onChange={handleInputChange}
-                placeholder="Nombre del proyecto de ingeniería"
-                required
-              />
+            <p className="text-gray-600 max-w-2xl mx-auto">
+              Un espacio académico, investigativo, cultural y de relacionamiento
+              con nuestros aliados estratégicos.
+            </p>
+          </div>
+        </div>
+
+        <form onSubmit={handleSubmit}>
+          {/* Selección de Actividades */}
+          <div className="mb-8">
+            <div className="border-l-4 border-uniblue pl-4 mb-6">
+              <h2 className="text-2xl font-bold text-gray-800">Eventos Disponibles</h2>
             </div>
 
-            <div className="form-group">
-              <label>Descripción del proyecto <span className="required">*</span></label>
-              <textarea
-                name="descripcion_proyecto"
-                value={formData.descripcion_proyecto}
-                onChange={handleInputChange}
-                rows={4}
-                placeholder="Breve descripción del concepto y los objetivos principales del proyecto"
-                required
-              />
-            </div>
+            <div className="grid md:grid-cols-2 gap-6">
+              {/* Hackathon */}
+              <label className={`bg-white rounded-xl shadow-sm border-2 transition-all duration-300 cursor-pointer hover:shadow-md ${formData.evento === 'hackathon' ? 'border-uniblue shadow-md' : 'border-gray-200 hover:border-gray-300'
+                }`}>
+                <input
+                  className="hidden"
+                  type="radio"
+                  name="evento"
+                  value="hackathon"
+                  checked={formData.evento === 'hackathon'}
+                  onChange={handleEventChange}
+                  required
+                />
+                <img
+                  className="w-full h-48 object-cover rounded-t-xl"
+                  src={HackathonImg}
+                  alt="Hackathon"
+                />
+                <div className="p-6">
+                  <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                    <span>📅</span>
+                    <span>Mié, Nov 12 | Sede Pance</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-3">Hackathon</h3>
+                  <p className="text-gray-600 leading-relaxed mb-4">
+                    Competencia de programación y desarrollo (máx. 12 grupos de 3–5 estudiantes)
+                  </p>
+                  <button
+                    type="button"
+                    className={`w-full py-3 rounded-lg font-semibold transition-colors duration-200 ${formData.evento === 'hackathon'
+                        ? 'bg-uniblue text-white hover:bg-blue-700'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    onClick={() => handleSelectEvent('hackathon')}
+                  >
+                    {formData.evento === 'hackathon' ? 'Seleccionado' : 'Inscribirse'}
+                  </button>
+                </div>
+              </label>
 
-            <div className="form-group">
-              <label>Categoría de participación <span className="required">*</span></label>
-              <select
-                name="categoria_participacion"
-                value={formData.categoria_participacion}
-                onChange={handleInputChange}
-                required
+              {/* Technological Touch */}
+              <label className={`bg-white rounded-xl shadow-sm border-2 transition-all duration-300 cursor-pointer hover:shadow-md ${formData.evento === 'technological' ? 'border-uniblue shadow-md' : 'border-gray-200 hover:border-gray-300'
+                }`}>
+                <input
+                  className="hidden"
+                  type="radio"
+                  name="evento"
+                  value="technological"
+                  checked={formData.evento === 'technological'}
+                  onChange={handleEventChange}
+                />
+                <img
+                  className="w-full h-48 object-cover rounded-t-xl"
+                  src={TechTouchImg}
+                  alt="Technological Touch"
+                />
+                <div className="p-6">
+                  <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                    <span>📅</span>
+                    <span>Jue, Nov 13 | Sede Meléndez</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-3">Technological Touch</h3>
+                  <p className="text-gray-600 leading-relaxed mb-4">
+                    Presentación de proyectos innovadores y demostraciones tecnológicas
+                  </p>
+                  <button
+                    type="button"
+                    className={`w-full py-3 rounded-lg font-semibold transition-colors duration-200 ${formData.evento === 'technological'
+                        ? 'bg-uniblue text-white hover:bg-blue-700'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    onClick={() => handleSelectEvent('technological')}
+                  >
+                    {formData.evento === 'technological' ? 'Seleccionado' : 'Inscribirse'}
+                  </button>
+                </div>
+              </label>
+
+              {/* Visitas Empresariales */}
+              <label className={`bg-white rounded-xl shadow-sm border-2 transition-all duration-300 cursor-pointer hover:shadow-md ${formData.evento === 'visitas' ? 'border-uniblue shadow-md' : 'border-gray-200 hover:border-gray-300'
+                }`}>
+                <input
+                  className="hidden"
+                  type="radio"
+                  name="evento"
+                  value="visitas"
+                  checked={formData.evento === 'visitas'}
+                  onChange={handleEventChange}
+                />
+                <img
+                  className="w-full h-48 object-cover rounded-t-xl"
+                  src={SemanaImg}
+                  alt="Visitas Empresariales"
+                />
+                <div className="p-6">
+                  <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                    <span>📅</span>
+                    <span>Mié 12 y Jue 13 | Zona América</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-3">Visitas Empresariales</h3>
+                  <p className="text-gray-600 leading-relaxed mb-4">
+                    Recorridos guiados por empresas líderes en tecnología e innovación
+                  </p>
+                  <button
+                    type="button"
+                    className={`w-full py-3 rounded-lg font-semibold transition-colors duration-200 ${formData.evento === 'visitas'
+                        ? 'bg-uniblue text-white hover:bg-blue-700'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    onClick={() => handleSelectEvent('visitas')}
+                  >
+                    {formData.evento === 'visitas' ? 'Seleccionado' : 'Inscribirse'}
+                  </button>
+                </div>
+              </label>
+
+              {/* Asistencia a Eventos */}
+              <label className={`bg-white rounded-xl shadow-sm border-2 transition-all duration-300 cursor-pointer hover:shadow-md ${formData.evento === 'asistencia' ? 'border-uniblue shadow-md' : 'border-gray-200 hover:border-gray-300'
+                }`}>
+                <input
+                  className="hidden"
+                  type="radio"
+                  name="evento"
+                  value="asistencia"
+                  checked={formData.evento === 'asistencia'}
+                  onChange={handleEventChange}
+                />
+                <img
+                  className="w-full h-48 object-cover rounded-t-xl"
+                  src={AsistenciaImg}
+                  alt="Asistencia a Eventos"
+                />
+                <div className="p-6">
+                  <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
+                    <span>📅</span>
+                    <span>Del Mar al Vie, Nov 11 al 14</span>
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-800 mb-3">Asistencia a Eventos</h3>
+                  <p className="text-gray-600 leading-relaxed mb-4">
+                    Participación como público en foros, conferencias y actividades académicas
+                  </p>
+                  <button
+                    type="button"
+                    className={`w-full py-3 rounded-lg font-semibold transition-colors duration-200 ${formData.evento === 'asistencia'
+                        ? 'bg-uniblue text-white hover:bg-blue-700'
+                        : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                      }`}
+                    onClick={() => handleSelectEvent('asistencia')}
+                  >
+                    {formData.evento === 'asistencia' ? 'Seleccionado' : 'Confirmar asistencia'}
+                  </button>
+                </div>
+              </label>
+            </div>
+          </div>
+
+          {!formData.evento && (
+            <div className="text-center py-6 bg-gray-50 rounded-xl border border-gray-200">
+              <p className="text-gray-500 font-medium">
+                Selecciona un evento para continuar con la inscripción
+              </p>
+            </div>
+          )}
+
+          {formData.evento && (
+            <div ref={formSectionRef} className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
+              {/* Sección de Datos del Estudiante */}
+              <div className="mb-8">
+                <div className="border-l-4 border-uniblue pl-4 mb-6">
+                  <h2 className="text-2xl font-bold text-gray-800">Datos del Estudiante</h2>
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-6">
+                  <div className="form-group">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Nombre completo <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="nombre"
+                      value={formData.nombre}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Número de documento <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="text"
+                      name="cedula"
+                      value={formData.cedula}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Correo institucional <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="email"
+                      name="correo"
+                      value={formData.correo}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Teléfono <span className="text-red-500">*</span>
+                    </label>
+                    <input
+                      type="tel"
+                      name="telefono"
+                      value={formData.telefono}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200"
+                      required
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Programa Académico <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      name="programa"
+                      value={formData.programa}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 bg-white"
+                      required
+                    >
+                      <option value="">Seleccionar Programa</option>
+                      <option value="ingenieria-industrial">Ingeniería Industrial</option>
+                      <option value="ingenieria-sistemas">Ingeniería de Sistemas</option>
+                      <option value="tecnologia-desarrollo-software">Tecnología en Desarrollo de Software</option>
+                      <option value="tecnologia-gestion-logistica">Tecnología en Gestión Logística Empresarial</option>
+                    </select>
+                  </div>
+
+                  <div className="form-group">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                      Semestre <span className="text-red-500">*</span>
+                    </label>
+                    <select
+                      name="semestre"
+                      value={formData.semestre}
+                      onChange={handleInputChange}
+                      className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 bg-white"
+                      required
+                    >
+                      <option value="">Seleccionar Semestre</option>
+                      <option value="I">I</option>
+                      <option value="II">II</option>
+                      <option value="III">III</option>
+                      <option value="IV">IV</option>
+                      <option value="V">V</option>
+                      <option value="VI">VI</option>
+                      <option value="VII">VII</option>
+                      <option value="VIII">VIII</option>
+                      <option value="IX">IX</option>
+                      <option value="X">X</option>
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              {/* Campos del equipo */}
+              {showTeamFields && (
+                <div className="border-t border-gray-200 pt-8">
+                  <div className="border-l-4 border-unigold pl-4 mb-6">
+                    <h2 className="text-2xl font-bold text-gray-800">Datos del Equipo</h2>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <div className="form-group md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Nombre del equipo <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="nombre_equipo"
+                        value={formData.nombre_equipo}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200"
+                        placeholder="Un nombre único que lo identifique en la competencia"
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Proyecto <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="nombre_proyecto"
+                        value={formData.nombre_proyecto}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200"
+                        placeholder="Nombre del proyecto de ingeniería"
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group md:col-span-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Descripción del proyecto <span className="text-red-500">*</span>
+                      </label>
+                      <textarea
+                        name="descripcion_proyecto"
+                        value={formData.descripcion_proyecto}
+                        onChange={handleInputChange}
+                        rows={4}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 resize-vertical"
+                        placeholder="Breve descripción del concepto y los objetivos principales del proyecto"
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Categoría de participación <span className="text-red-500">*</span>
+                      </label>
+                      <select
+                        name="categoria_participacion"
+                        value={formData.categoria_participacion}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 bg-white"
+                        required
+                      >
+                        <option value="">Seleccionar categoría</option>
+                        <option value="robotica">Robótica</option>
+                        <option value="construccion">Construcción</option>
+                        <option value="programacion">Programación</option>
+                        <option value="diseno-sostenible">Diseño Sostenible</option>
+                        <option value="inteligencia-artificial">Inteligencia Artificial</option>
+                        <option value="iot">Internet de las Cosas (IoT)</option>
+                        <option value="realidad-virtual">Realidad Virtual/Aumentada</option>
+                        <option value="otra">Otra</option>
+                      </select>
+                    </div>
+
+                    <div className="form-group">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Institución o empresa <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="text"
+                        name="institucion_equipo"
+                        value={formData.institucion_equipo}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200"
+                        placeholder="Universidad, colegio o empresa que representa el equipo"
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Correo electrónico del equipo <span className="text-red-500">*</span>
+                      </label>
+                      <input
+                        type="email"
+                        name="email_equipo"
+                        value={formData.email_equipo}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200"
+                        placeholder="Correo para comunicaciones oficiales del equipo"
+                        required
+                      />
+                    </div>
+
+                    <div className="form-group">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Teléfono del equipo (opcional)
+                      </label>
+                      <input
+                        type="tel"
+                        name="telefono_equipo"
+                        value={formData.telefono_equipo}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200"
+                        placeholder="Número de contacto del equipo"
+                      />
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Confirmación */}
+              <div className="form-group">
+                <label className="checkbox-modern">
+                  <input type="checkbox" required />
+                  <div className="checkbox-label">
+                    Acepto el tratamiento de mis datos personales. <span className="required">*</span>
+                    <span className="text-sm">Acepto que mis datos personales sean utilizados para fines académicos, investigativos y de relacionamiento con empresas y comunidades de emprendimiento de la región.</span>
+                  </div>
+                </label>
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full bg-uniblue text-white py-3 px-6 rounded-md font-medium text-base hover:bg-blue-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed transition-colors duration-200 border-b-4 border-blue-800 hover:border-blue-900 disabled:border-gray-400"
               >
-                <option value="">Seleccionar categoría</option>
-                <option value="robotica">Robótica</option>
-                <option value="construccion">Construcción</option>
-                <option value="programacion">Programación</option>
-                <option value="diseno-sostenible">Diseño Sostenible</option>
-                <option value="inteligencia-artificial">Inteligencia Artificial</option>
-                <option value="iot">Internet de las Cosas (IoT)</option>
-                <option value="realidad-virtual">Realidad Virtual/Aumentada</option>
-                <option value="otra">Otra</option>
-              </select>
+                {isSubmitting ? 'Enviando...' : 'Finalizar inscripción'}
+              </button>
             </div>
+          )}
+        </form>
 
-            <div className="form-group">
-              <label>Institución o empresa <span className="required">*</span></label>
-              <input
-                type="text"
-                name="institucion_equipo"
-                value={formData.institucion_equipo}
-                onChange={handleInputChange}
-                placeholder="Universidad, colegio o empresa que representa el equipo"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Correo electrónico del equipo <span className="required">*</span></label>
-              <input
-                type="email"
-                name="email_equipo"
-                value={formData.email_equipo}
-                onChange={handleInputChange}
-                placeholder="Correo para comunicaciones oficiales del equipo"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label>Teléfono del equipo (opcional)</label>
-              <input
-                type="tel"
-                name="telefono_equipo"
-                value={formData.telefono_equipo}
-                onChange={handleInputChange}
-                placeholder="Número de contacto del equipo"
-              />
-            </div>
-          </div>
-        )}
-
-        {/* Confirmación */}
-        <div className="form-group">
-          <label className="checkbox-modern">
-            <input type="checkbox" required />
-            <div className="checkbox-label">
-              Acepto el tratamiento de mis datos personales. <span className="required">*</span>
-              <span className="text-sm">Acepto que mis datos personales sean utilizados para fines académicos, investigativos y de relacionamiento con empresas y comunidades de emprendimiento de la región.</span>
-            </div>
-          </label>
-        </div>
-
-        <button type="submit" className="submit-btn" disabled={isSubmitting}>
-          {isSubmitting ? 'Registrando...' : 'Registrar mi participación'}
-        </button>
-          </div>
-        )}
-      </form>
-
-    </div>
+      </div>
 
       {successOpen && (
         <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center">
@@ -527,7 +694,7 @@ const FormularioInscripcion: React.FC = () => {
           </div>
         </div>
       )}
-  </>
+    </>
   );
 };
 

@@ -9,52 +9,35 @@ export default function Header() {
             <img
               src={logo}
               alt="UNICATÓLICA"
-              className="h-[64px] w-auto max-w-[220px] md:max-w-[260px]"
+              className="h-[80px] w-auto max-w-[220px] md:max-w-[260px]"
             />
 
-            <div className="hidden md:block">
-              <h1 className="text-xl font-bold text-gray-600">
-                XI SEMANA DE LA INGENIERÍA
+            <div className="hidden md:block border-l-2 border-unigold pl-3">
+              <h1 className="text-base font-bold text-gray-800 uppercase tracking-wide">
+                XI Semana de la Ingeniería
               </h1>
-              <p className="text-sm text-gray-600">
-                360° - Innovación, Liderazgo y Futuro
+              <p className="text-xs text-gray-600 mt-1">
+                360° • Innovación, Liderazgo y Futuro
               </p>
             </div>
           </div>
 
-          <nav className="hidden md:flex space-x-8 text-gray-600">
-            <a
-              href="#inicio"
-              className="hover:text-unigold transition-colors duration-200 font-medium"
-            >
-              INICIO
-            </a>
-            <a
-              href="#info"
-              className="hover:text-unigold transition-colors duration-200 font-medium"
-            >
-              INFORMACIÓN
-            </a>
-            {/** AGENDA ocultada temporalmente
-            <a
-              href="#agenda"
-              className="hover:text-unigold transition-colors duration-200 font-medium"
-            >
-              AGENDA
-            </a>
-            */}
-            <a
-              href="#inscripcion"
-              className="hover:text-unigold transition-colors duration-200 font-medium"
-            >
-              INSCRIPCIÓN
-            </a>
-            <a
-              href="#contacto"
-              className="hover:text-unigold transition-colors duration-200 font-medium"
-            >
-              CONTACTO
-            </a>
+          <nav className="hidden md:flex space-x-6 text-gray-700">
+            {[
+              { name: "INICIO", href: "#inicio" },
+              { name: "AGENDATE", href: "#agenda" },
+              { name: "INFORMACIÓN", href: "#info" },
+              { name: "CONTACTO", href: "#contacto" }
+            ].map((item) => (
+              <a
+                key={item.name}
+                href={item.href}
+                className="relative font-semibold hover:text-uniblue transition-colors duration-300 group"
+              >
+                {item.name}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-uniblue transition-all duration-300 group-hover:w-full"></span>
+              </a>
+            ))}
           </nav>
 
           <div className="md:hidden">
