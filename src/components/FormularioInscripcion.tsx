@@ -44,7 +44,6 @@ const FormularioInscripcion: React.FC = () => {
     telefono_equipo: ''
   });
 
-  const [showTeamFields, setShowTeamFields] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [qrSrc, setQrSrc] = useState<string | null>(null);
