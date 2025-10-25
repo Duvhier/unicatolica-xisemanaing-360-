@@ -3,6 +3,7 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import App from './App.tsx'
+import './index.css';
 import Formulario from './pages/Formulario.tsx'
 import VistaOrganizador from './components/VistaOrganizador.tsx'
 import FormularioInscripcionLiderazgo from './components/FormularioInscripcionLiderazgo.tsx'
