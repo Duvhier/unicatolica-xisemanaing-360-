@@ -1,0 +1,160 @@
+{
+  "facultades": [
+    {
+      "id": "educacion-ciencias-sociales-humanas-derecho",
+      "nombre": "Facultad de Educación, Ciencias Sociales, Humanas y Derecho",
+      "programas": [
+        {
+          "id": "comunicacion-social-periodismo",
+          "nombre": "Comunicación Social - Periodismo",
+          "semestres": 9,
+          "tipo": "pregrado"
+        },
+        {
+          "id": "licenciatura-ciencias-sociales",
+          "nombre": "Licenciatura en Ciencias Sociales",
+          "semestres": 10,
+          "tipo": "pregrado"
+        },
+        {
+          "id": "licenciatura-educacion-artistica",
+          "nombre": "Licenciatura en Educación Artística",
+          "semestres": 10,
+          "tipo": "pregrado"
+        },
+        {
+          "id": "licenciatura-filosofia",
+          "nombre": "Licenciatura en Filosofía",
+          "semestres": 10,
+          "tipo": "pregrado"
+        },
+        {
+          "id": "licenciatura-informatica",
+          "nombre": "Licenciatura en Informática",
+          "semestres": 10,
+          "tipo": "pregrado"
+        },
+        {
+          "id": "psicologia",
+          "nombre": "Psicología",
+          "semestres": 10,
+          "tipo": "pregrado"
+        },
+        {
+          "id": "teologia",
+          "nombre": "Teología",
+          "semestres": 8,
+          "tipo": "pregrado"
+        },
+        {
+          "id": "trabajo-social",
+          "nombre": "Trabajo Social",
+          "semestres": 8,
+          "tipo": "pregrado"
+        },
+        {
+          "id": "derecho",
+          "nombre": "Derecho",
+          "semestres": 10,
+          "tipo": "pregrado"
+        },
+        {
+          "id": "estudios-politicos",
+          "nombre": "Estudios Políticos",
+          "semestres": 8,
+          "tipo": "pregrado"
+        }
+      ]
+    },
+    {
+      "id": "ciencias-administrativas",
+      "nombre": "Facultad de Ciencias Administrativas",
+      "programas": [
+        {
+          "id": "administracion-empresas",
+          "nombre": "Administración de Empresas",
+          "semestres": 8,
+          "tipo": "pregrado"
+        },
+        {
+          "id": "contaduria-publica",
+          "nombre": "Contaduría Pública",
+          "semestres": 9,
+          "tipo": "pregrado"
+        },
+        {
+          "id": "mercadeo",
+          "nombre": "Mercadeo",
+          "semestres": 9,
+          "tipo": "pregrado"
+        },
+        {
+          "id": "banca-finanzas",
+          "nombre": "Banca y Finanzas",
+          "semestres": 8,
+          "tipo": "profesional"
+        },
+        {
+          "id": "tecnologia-gestion-mercadeo",
+          "nombre": "Tecnología en Gestión de Mercadeo",
+          "semestres": 6,
+          "tipo": "tecnologico"
+        },
+        {
+          "id": "gerencia-estrategica",
+          "nombre": "Gerencia Estratégica",
+          "semestres": 2,
+          "tipo": "posgrado"
+        },
+        {
+          "id": "gerencia-proyectos",
+          "nombre": "Gerencia de Proyectos",
+          "semestres": 2,
+          "tipo": "posgrado"
+        },
+        {
+          "id": "gerencia-talento-humano",
+          "nombre": "Gerencia del Talento Humano",
+          "semestres": 2,
+          "tipo": "posgrado"
+        },
+        {
+          "id": "gerencia-innovacion-organizacional",
+          "nombre": "Gerencia de la Innovación Organizacional",
+          "semestres": 2,
+          "tipo": "posgrado"
+        }
+      ]
+    },
+    {
+      "id": "ingenieria",
+      "nombre": "Facultad de Ingeniería",
+      "programas": [
+        {
+          "id": "ingenieria-industrial",
+          "nombre": "Ingeniería Industrial",
+          "semestres": 10,
+          "tipo": "pregrado"
+        },
+        {
+          "id": "ingenieria-sistemas",
+          "nombre": "Ingeniería de Sistemas",
+          "semestres": 10,
+          "tipo": "pregrado"
+        },
+        {
+          "id": "tecnologia-desarrollo-software",
+          "nombre": "Tecnología en Desarrollo de Software",
+          "semestres": 6,
+          "tipo": "tecnologico"
+        },
+        {
+          "id": "tecnologia-gestion-logistica",
+          "nombre": "Tecnología en Gestión Logística Empresarial",
+          "semestres": 6,
+          "tipo": "tecnologico"
+        }
+      ]
+    }
+  ]
+}

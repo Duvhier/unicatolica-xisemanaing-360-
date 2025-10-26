@@ -255,7 +255,7 @@ export default function CronogramaActividades() {
           hora: "9:00 am - 12:00 pm",
           titulo: "Visita Empresarial – ZONAMERICA",
           ponente: "",
-          lugar: "Zonamérica - Calle 5 # 66-55, Cali",
+          lugar: "Zonamérica - Calle 36, Auto. Cali - Jamundi #760030 128-321",
           tipo: "Visita",
           destacado: true,
           imagen: VisitaZonaAmerica
@@ -377,7 +377,7 @@ export default function CronogramaActividades() {
       "Sala 2 de Sistemas – Sede Pance": "3.345883489958763, -76.54095280254512",
       "Sala 3 de Sistemas – Sede Pance": "3.345883489958763, -76.54095280254512",
       "Estudio de Radio Lumen – Sede Meléndez": "3.3783206078612413, -76.54568573174849",
-      "Zonamérica - Calle 5 # 66-55, Cali": "3.334778789520242, -76.52064541313386",
+      "Zonamérica - Calle 36, Auto. Cali - Jamundi #760030 128-321": "3.3271130704408827, -76.52122694047287",
       "CDI Alimentos Cárnicos": "3.519970195771467, -76.5100205483301"
     };
 
