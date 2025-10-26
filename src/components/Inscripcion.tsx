@@ -1,5 +1,12 @@
 import { useState } from "react";
 import ConferenciaImg from "../assets/CONFERENCIA COACHING-8.png";
+import ActoInauguralImg from "../assets/ACTO INAUGURAL-8.png";
+import Technological from "../assets/TECNOLOGICAL TOUCH-8.png";
+import IndustriaAcImg from "../assets/INDUSTRIA EN ACCION-8.png";
+import VisitaEmpr12nov from "../assets/VISITA EMPRESARIAL -12-8.png";
+import VisitaZonaAmerica from "../assets/VISITA - EMPRESARIAL  -8 ZONAAMERICA.png";
+import Visita14nov from "../assets/VISITA EMPRESARIAL - 14-8.png";
+import Visita15nov from "../assets/VISITA EMPRESARIAL -8.png";
 import XimenaOtero from "../assets/ponentes/ximena-otero.jpg";
 import JulianPortocarrero from "../assets/ponentes/julian-portocarrero.jpg";
 import LorenaCeron from "../assets/ponentes/lorena-ceron.jpg";
@@ -26,6 +33,9 @@ interface Actividad {
   destacado: boolean;
   exclusivo?: string;
   aliado?: string;
+  botonRegistro?: boolean;
+  urlRegistro?: string;
+  imagen?: string;
 }
 
 interface DiaCronograma {
@@ -132,7 +142,8 @@ export default function CronogramaActividades() {
           ponente: "",
           lugar: "Auditorio Lumen – Sede Meléndez",
           tipo: "Ceremonia",
-          destacado: false
+          destacado: true,
+          imagen: ActoInauguralImg
         },
         {
           id: 3,
@@ -142,7 +153,7 @@ export default function CronogramaActividades() {
           lugar: "Auditorio Lumen – Sede Meléndez",
           tipo: "Conferencia",
           aliado: "Escuela Militar de Aviación Marco Fidel Suarez – EMAVI",
-          destacado: true
+          destacado: false
         },
         {
           id: 4,
@@ -172,9 +183,10 @@ export default function CronogramaActividades() {
           hora: "9:00 am - 12:00 pm",
           titulo: "Visita Empresarial",
           ponente: "",
-          lugar: "Por Confirmar",
+          lugar: "Centro de Innovación y Desarrollo Empresarial - CIDE",
           tipo: "Visita",
-          destacado: false
+          destacado: false,
+          imagen: VisitaEmpr12nov
         },
         {
           id: 7,
@@ -192,7 +204,7 @@ export default function CronogramaActividades() {
           ponente: "Profesores Brandon Rosero - Ronald Renfigo",
           lugar: "Salas 1, 2, 3 – Sede Pance",
           tipo: "Competencia",
-          destacado: false
+          destacado: false,
         },
         {
           id: 9,
@@ -201,7 +213,9 @@ export default function CronogramaActividades() {
           ponente: "Profesores José Hernando Mosquera, Kellin, Nelson Andrade",
           lugar: "Salas 1, 2, 3 – Sede Pance",
           tipo: "Competencia",
-          destacado: true
+          destacado: true,
+          botonRegistro: true,
+          urlRegistro: "/formulario"
         },
         {
           id: 10,
@@ -210,7 +224,8 @@ export default function CronogramaActividades() {
           ponente: "",
           lugar: "Laboratorio de Ingeniería e Innovación – Sede Pance",
           tipo: "Taller",
-          destacado: false
+          destacado: false,
+          imagen: IndustriaAcImg
         },
         {
           id: 11,
@@ -240,16 +255,17 @@ export default function CronogramaActividades() {
           hora: "9:00 am - 12:00 pm",
           titulo: "Visita Empresarial – ZONAMERICA",
           ponente: "",
-          lugar: "Zonamérica",
+          lugar: "Zonamérica - Calle 5 # 66-55, Cali",
           tipo: "Visita",
-          destacado: false
+          destacado: true,
+          imagen: VisitaZonaAmerica
         },
         {
           id: 14,
           hora: "10:00 am - 12:00 pm",
           titulo: "Olimpiada en Lógica Matemática",
           ponente: "",
-          lugar: "Por Confirmar",
+          lugar: "Sala 3 de Sistemas – Sede Pance",
           tipo: "Competencia",
           destacado: false
         },
@@ -260,7 +276,8 @@ export default function CronogramaActividades() {
           ponente: "",
           lugar: "Auditorio Lumen – Sede Meléndez",
           tipo: "Evento",
-          destacado: true
+          destacado: true,
+          imagen: Technological
         }
       ]
     },
@@ -274,7 +291,8 @@ export default function CronogramaActividades() {
           ponente: "",
           lugar: "Por Confirmar",
           tipo: "Visita",
-          destacado: false
+          destacado: false,
+          imagen: Visita14nov
         },
         {
           id: 17,
@@ -290,7 +308,7 @@ export default function CronogramaActividades() {
           hora: "11:00 am - 12:00 pm",
           titulo: "Entrevista: La formación de los programas de Ingeniería. Caso Universidad del Norte",
           ponente: "PhD Jorge Luis Bris",
-          lugar: "Transmisión en Vivo Radio Lumen",
+          lugar: "Estudio de Radio Lumen – Sede Meléndez",
           tipo: "Entrevista",
           destacado: false
         },
@@ -310,7 +328,7 @@ export default function CronogramaActividades() {
           ponente: "",
           lugar: "Auditorio LUMEN - Sede Meléndez",
           tipo: "Ceremonia",
-          destacado: true
+          destacado: true,
         }
       ]
     },
@@ -324,7 +342,8 @@ export default function CronogramaActividades() {
           ponente: "",
           lugar: "CDI Alimentos Cárnicos",
           tipo: "Visita",
-          destacado: false
+          destacado: false,
+          imagen: Visita15nov
         }
       ]
     }
@@ -345,12 +364,45 @@ export default function CronogramaActividades() {
     return iconos[tipo] || "📅";
   };
 
-  const handleRegistro = (actividadId: number): void => {
-    console.log('Inscribiendo en actividad:', actividadId); // Usar el parámetro
-    // O enviar el ID al formulario
-    window.location.href = `${FORM_URL}?actividad=${actividadId}`;
+  // Agrega esta función para manejar el clic en la ubicación
+  const abrirGoogleMaps = (lugar: string): void => {
+    // Mapeo de lugares a coordenadas o direcciones específicas
+    const ubicaciones: { [key: string]: string } = {
+      "Auditorio Lumen – Sede Meléndez": "3.3761867004376307, -76.54341424861032",
+      "Auditorio 1 – Sede Pance": "3.345883489958763, -76.54095280254512",
+      "Salas 1, 2 – Sede Pance": "3.345883489958763, -76.54095280254512",
+      "Salas 1, 2, 3 – Sede Pance": "3.345883489958763, -76.54095280254512",
+      "Laboratorio de Ingeniería e Innovación – Sede Pance": "3.345883489958763, -76.54095280254512",
+      "Salón A201 – Sede Pance": "3.345883489958763, -76.54095280254512",
+      "Sala 2 de Sistemas – Sede Pance": "3.345883489958763, -76.54095280254512",
+      "Sala 3 de Sistemas – Sede Pance": "3.345883489958763, -76.54095280254512",
+      "Estudio de Radio Lumen – Sede Meléndez": "3.3783206078612413, -76.54568573174849",
+      "Zonamérica - Calle 5 # 66-55, Cali": "3.334778789520242, -76.52064541313386",
+      "CDI Alimentos Cárnicos": "3.519970195771467, -76.5100205483301"
+    };
+
+    // Buscar la ubicación en el mapeo
+    const coordenadas = ubicaciones[lugar];
+
+    if (coordenadas) {
+      // Si tenemos coordenadas específicas, usar la URL de coordenadas
+      window.open(`https://www.google.com/maps?q=${coordenadas}`, '_blank');
+    } else {
+      // Si no tenemos coordenadas, hacer búsqueda por texto
+      const lugarCodificado = encodeURIComponent(lugar);
+      window.open(`https://www.google.com/maps/search/?api=1&query=${lugarCodificado}`, '_blank');
+    }
   };
 
+  const handleRegistro = (actividad: Actividad): void => {
+    if (actividad.urlRegistro) {
+      // Redirigir a la URL específica del Hackathon
+      window.location.href = actividad.urlRegistro;
+    } else {
+      // Comportamiento por defecto para otras actividades
+      window.location.href = `${FORM_URL}?actividad=${actividad.id}`;
+    }
+  };
   // Funciones para manejar el tooltip con tipado correcto
   const mostrarTooltipPonente = (ponenteNombre: string, event: React.MouseEvent): void => {
     const ponenteInfo = basePonentes[ponenteNombre];
@@ -381,54 +433,54 @@ export default function CronogramaActividades() {
     <div className="w-full my-12 relative">
       {/* Tooltip de Ponente */}
       {tooltipVisible && ponenteSeleccionado && (
-  <div
-    className="fixed z-50 bg-white rounded-2xl shadow-2xl border border-gray-100 p-6 max-w-sm animate-scale-in"
-    style={{
-      left: `${tooltipPosition.x + 20}px`,
-      top: `${tooltipPosition.y - 100}px`,
-    }}
-    onMouseLeave={ocultarTooltip}
-  >
-    {/* Header del ponente */}
-    <div className="flex items-start gap-4 mb-4">
-      {/* Avatar con gradiente de respaldo */}
-      <div className="relative flex-shrink-0">
-        {ponenteSeleccionado.foto ? (
-          <div className="relative">
-            <img
-              src={ponenteSeleccionado.foto}
-              alt={ponenteSeleccionado.nombre}
-              className="w-16 h-16 rounded-xl object-cover shadow-md border-2 border-white"
-            />
-            <div className="absolute -inset-1 bg-gradient-to-r from-uniblue to-blue-600 rounded-xl -z-10 opacity-20"></div>
-          </div>
-        ) : (
-          <div className="w-16 h-16 bg-gradient-to-br from-uniblue to-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-md">
-            {ponenteSeleccionado.nombre.split(' ').map(n => n[0]).join('').toUpperCase()}
-          </div>
-        )}
-      </div>
-      
-      {/* Información principal */}
-      <div className="flex-1 min-w-0">
-        <h3 className="font-bold text-gray-800 text-lg leading-tight mb-1">
-          {ponenteSeleccionado.nombre}
-        </h3>
-        <div className="inline-block bg-uniblue/10 text-uniblue px-3 py-1 rounded-full text-xs font-semibold mb-2">
-          {ponenteSeleccionado.titulo}
-        </div>
-        <p className="text-sm text-gray-500 leading-relaxed">
-          {ponenteSeleccionado.especialidad}
-        </p>
-      </div>
-    </div>
+        <div
+          className="fixed z-50 bg-white rounded-2xl shadow-2xl border border-gray-100 p-6 max-w-sm animate-scale-in"
+          style={{
+            left: `${tooltipPosition.x + 20}px`,
+            top: `${tooltipPosition.y - 100}px`,
+          }}
+          onMouseLeave={ocultarTooltip}
+        >
+          {/* Header del ponente */}
+          <div className="flex items-start gap-4 mb-4">
+            {/* Avatar con gradiente de respaldo */}
+            <div className="relative flex-shrink-0">
+              {ponenteSeleccionado.foto ? (
+                <div className="relative">
+                  <img
+                    src={ponenteSeleccionado.foto}
+                    alt={ponenteSeleccionado.nombre}
+                    className="w-16 h-16 rounded-xl object-cover shadow-md border-2 border-white"
+                  />
+                  <div className="absolute -inset-1 bg-gradient-to-r from-uniblue to-blue-600 rounded-xl -z-10 opacity-20"></div>
+                </div>
+              ) : (
+                <div className="w-16 h-16 bg-gradient-to-br from-uniblue to-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-md">
+                  {ponenteSeleccionado.nombre.split(' ').map(n => n[0]).join('').toUpperCase()}
+                </div>
+              )}
+            </div>
 
-    {/* Flecha del tooltip mejorada */}
-    <div className="absolute -left-2 top-12 transform -translate-y-1/2">
-      <div className="w-4 h-4 bg-white border-l border-b border-gray-100 rotate-45 shadow-sm"></div>
-    </div>
-  </div>
-)}
+            {/* Información principal */}
+            <div className="flex-1 min-w-0">
+              <h3 className="font-bold text-gray-800 text-lg leading-tight mb-1">
+                {ponenteSeleccionado.nombre}
+              </h3>
+              <div className="inline-block bg-uniblue/10 text-uniblue px-3 py-1 rounded-full text-xs font-semibold mb-2">
+                {ponenteSeleccionado.titulo}
+              </div>
+              <p className="text-sm text-gray-500 leading-relaxed">
+                {ponenteSeleccionado.especialidad}
+              </p>
+            </div>
+          </div>
+
+          {/* Flecha del tooltip mejorada */}
+          <div className="absolute -left-2 top-12 transform -translate-y-1/2">
+            <div className="w-4 h-4 bg-white border-l border-b border-gray-100 rotate-45 shadow-sm"></div>
+          </div>
+        </div>
+      )}
 
       {/* Header */}
       <div id="agenda" className="text-center mb-12">
@@ -496,7 +548,7 @@ export default function CronogramaActividades() {
                 </div>
               </div>
               <button
-                onClick={() => handleRegistro(1)}
+                onClick={() => handleRegistro(cronograma[0].actividades[0])}
                 className="bg-uniblue text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-700 transition-colors duration-200 border-b-4 border-blue-800 hover:border-blue-900 mb-4"
               >
                 Inscribirme
@@ -629,7 +681,7 @@ export default function CronogramaActividades() {
                               </div>
                             )}
 
-                            {/* Lugar */}
+                            {/* Lugar */}{/* Lugar con tooltip */}
                             <div className="flex items-start gap-3">
                               <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
                                 <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -639,7 +691,14 @@ export default function CronogramaActividades() {
                               </div>
                               <div className="flex-1">
                                 <p className="text-sm text-gray-500 mb-1">Ubicación</p>
-                                <span className="font-medium text-gray-800">{actividad.lugar}</span>
+                                <button
+                                  onClick={() => abrirGoogleMaps(actividad.lugar)}
+                                  className="font-medium text-gray-800 cursor-pointer hover:text-uniblue transition-colors duration-200 border-b border-dashed border-gray-400 hover:border-uniblue text-left"
+                                  title="Haz clic para ver en Google Maps"
+                                >
+                                  {actividad.lugar}
+                                  <span className="ml-1 text-xs text-uniblue">📍</span>
+                                </button>
                               </div>
                             </div>
 
@@ -680,16 +739,24 @@ export default function CronogramaActividades() {
                           </div>
 
                           {/* Botón de inscripción para conferencias destacadas */}
-                          {actividad.destacado && actividad.tipo === "Conferencia" && (
+                          {(actividad.destacado && actividad.tipo === "Conferencia") || actividad.botonRegistro ? (
                             <button
-                              onClick={() => handleRegistro(actividad.id)}
-                              className="w-full bg-gradient-to-r from-uniblue to-blue-600 text-white py-3 px-4 rounded-xl font-semibold hover:from-blue-600 hover:to-blue-700 transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
+                              onClick={() => handleRegistro(actividad)}
+                              className="w-full bg-uniblue text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium border-b-4 border-blue-800 hover:border-blue-900 text-base"
                             >
-                              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                              </svg>
-                              Inscribirme en esta conferencia
+                              {actividad.botonRegistro ? "🏆 Registrar en Hackathon" : "Inscribirme en esta conferencia"}
                             </button>
+                          ) : null}
+
+                          {/* Imagen de la actividad si existe */}
+                          {actividad.imagen && (
+                            <div className="mb-4">
+                              <img
+                                src={actividad.imagen}
+                                alt={actividad.titulo}
+                                className="w-full h-48 object-cover rounded-xl shadow-md"
+                              />
+                            </div>
                           )}
                         </div>
                       </div>

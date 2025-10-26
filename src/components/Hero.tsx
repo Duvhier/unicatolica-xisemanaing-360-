@@ -17,7 +17,7 @@ export default function Hero() {
       setCurrentIndex((prev) => (prev + 1) % images.length);
     }, 4000);
     return () => clearInterval(intervalId);
-  }, [isPaused]);
+  }, [isPaused, images.length]);
 
   const pauseAutoplay = () => {
     setIsPaused(true);
@@ -38,33 +38,46 @@ export default function Hero() {
   return (
     <section
       id="inicio"
-      className="relative w-full h-[56vh] md:h-[68vh] bg-transparent overflow-hidden flex items-center justify-center"
+      className="relative w-full h-[40vh] sm:h-[50vh] md:h-[68vh] lg:h-[70vh] bg-transparent overflow-hidden flex items-center justify-center"
     >
-      {/* Carrusel de fondo */}
-      <div className="absolute inset-0 flex items-center justify-center">
+      {/* Contenedor principal de la imagen */}
+      <div className="absolute inset-0 flex items-center justify-center px-2 sm:px-4">
         <AnimatePresence mode="wait">
-          <motion.img
+          <motion.div
             key={currentIndex}
-            src={images[currentIndex].src}
-            alt={images[currentIndex].alt}
-            className="w-full h-auto object-contain"
+            className="w-full h-full flex items-center justify-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.6, ease: "easeInOut" }}
-          />
+          >
+            <img
+              src={images[currentIndex].src}
+              alt={images[currentIndex].alt}
+              className="w-auto h-full max-w-full object-contain sm:object-cover"
+              loading="eager"
+            />
+          </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* Controles del carrusel */}
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-between px-3 sm:px-4">
+      {/* Controles del carrusel - Mejorados para móvil */}
+      <div className="pointer-events-none absolute inset-0 flex items-center justify-between px-2 sm:px-4">
         <button
           type="button"
           aria-label="Imagen anterior"
           onClick={goPrev}
-          className="pointer-events-auto inline-flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-black/40 text-white hover:bg-black/60 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          className="pointer-events-auto inline-flex items-center justify-center h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 rounded-full bg-black/30 hover:bg-black/50 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white shadow-lg"
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 sm:h-6 sm:w-6">
+          <svg 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6"
+          >
             <path d="M15 18l-6-6 6-6" />
           </svg>
         </button>
@@ -73,16 +86,24 @@ export default function Hero() {
           type="button"
           aria-label="Imagen siguiente"
           onClick={goNext}
-          className="pointer-events-auto inline-flex items-center justify-center h-10 w-10 sm:h-12 sm:w-12 rounded-full bg-black/40 text-white hover:bg-black/60 transition focus:outline-none focus-visible:ring-2 focus-visible:ring-white"
+          className="pointer-events-auto inline-flex items-center justify-center h-8 w-8 sm:h-10 sm:w-10 md:h-12 md:w-12 rounded-full bg-black/30 hover:bg-black/50 transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-white shadow-lg"
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5 sm:h-6 sm:w-6">
+          <svg 
+            viewBox="0 0 24 24" 
+            fill="none" 
+            stroke="currentColor" 
+            strokeWidth="2" 
+            strokeLinecap="round" 
+            strokeLinejoin="round" 
+            className="h-4 w-4 sm:h-5 sm:w-5 md:h-6 md:w-6"
+          >
             <path d="M9 18l6-6-6-6" />
           </svg>
         </button>
       </div>
 
-      {/* Indicadores (puntos) */}
-      <div className="absolute bottom-4 left-0 right-0 flex items-center justify-center gap-2">
+      {/* Indicadores (puntos) - Mejorados para móvil */}
+      <div className="absolute bottom-2 sm:bottom-4 left-0 right-0 flex items-center justify-center gap-1.5 sm:gap-2">
         {images.map((_, idx) => (
           <button
             key={idx}
@@ -93,14 +114,17 @@ export default function Hero() {
               pauseAutoplay();
             }}
             className={
-              "h-2.0 w-2.0 rounded-full transition border border-white/70 " +
-              (idx === currentIndex ? "bg-white" : "bg-white/30 hover:bg-white/60")
+              "h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full transition-all duration-300 border border-white/70 " +
+              (idx === currentIndex 
+                ? "bg-white scale-125" 
+                : "bg-white/30 hover:bg-white/60 scale-100")
             }
           />
         ))}
       </div>
 
-      {/* Capa oscura removida para respetar los colores originales de las imágenes */}
+      {/* Capa de gradiente sutil en la parte inferior para mejor contraste */}
+      <div className="absolute bottom-0 left-0 right-0 h-8 bg-gradient-to-t from-black/10 to-transparent pointer-events-none" />
     </section>
   );
 }
