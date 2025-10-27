@@ -2,276 +2,272 @@
 .publicidad-evento {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 3rem 1rem;
+    padding: 2rem 1rem;
+    font-family: 'Inter', 'Segoe UI', sans-serif;
   }
   
   /* Header */
   .publicidad-header {
+    text-align: center;
     margin-bottom: 3rem;
   }
   
-  /* Secciones */
-  .seccion-header {
-    margin-bottom: 2rem;
+  .publicidad-header h2 {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 1rem;
+    letter-spacing: -0.025em;
   }
   
-  /* Grid de Aliados */
-  .grid-aliados {
+  .publicidad-header p {
+    font-size: 1.125rem;
+    color: #718096;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+  
+  /* Filtros */
+  .filtros-container {
+    margin-bottom: 3rem;
+  }
+  
+  .filtros-grid {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+  
+  .filtro-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 50px;
+    border: 1px solid #e2e8f0;
+    background-color: white;
+    color: #4a5568;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .filtro-btn:hover {
+    border-color: #cbd5e0;
+    background-color: #f7fafc;
+  }
+  
+  .filtro-activo {
+    background-color: #1a202c;
+    color: white;
+    border-color: #1a202c;
+  }
+  
+  .filtro-contador {
+    background-color: #edf2f7;
+    color: #4a5568;
+    border-radius: 20px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  
+  .filtro-activo .filtro-contador {
+    background-color: rgba(255, 255, 255, 0.2);
+    color: white;
+  }
+  
+  /* Grid de Elementos */
+  .elementos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 2rem;
-    margin-bottom: 3rem;
   }
   
-  .aliado-card {
-    background: white;
-    border-radius: 16px;
-    overflow: hidden;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-    border: 1px solid #e5e7eb;
-    transition: all 0.3s ease;
-    position: relative;
-  }
-  
-  .aliado-card:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
-    border-color: #3b82f6;
-  }
-  
-  /* Grid de Patrocinadores */
-  .grid-patrocinadores {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.5rem;
-  }
-  
-  .patrocinador-card {
+  .elemento-card {
     background: white;
     border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
-    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.03);
+    border: 1px solid #f1f5f9;
     transition: all 0.3s ease;
     position: relative;
+    display: flex;
+    flex-direction: column;
   }
   
-  .patrocinador-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 12px 30px rgba(16, 185, 129, 0.15);
-    border-color: #10b981;
+  .elemento-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
   }
   
-  /* Badges */
-  .aliado-badge,
-  .patrocinador-badge {
+  /* Badge */
+  .elemento-badge {
     position: absolute;
     top: 1rem;
     right: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
     z-index: 10;
   }
   
-  .badge-text {
-    padding: 0.4rem 0.8rem;
-    border-radius: 20px;
-    font-size: 0.7rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
+  .elemento-card.aliado .elemento-badge {
+    background-color: #e6fffa;
+    color: #234e52;
   }
   
-  .aliado-badge .badge-text {
-    background: linear-gradient(135deg, #3b82f6, #1e40af);
-    color: white;
-    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+  .elemento-card.patrocinador .elemento-badge {
+    background-color: #fef5e7;
+    color: #744210;
   }
   
-  .patrocinador-badge .badge-text {
-    background: linear-gradient(135deg, #10b981, #059669);
-    color: white;
-    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
-  }
-  
-  /* Contenedores de imagen */
-  .aliado-imagen-container,
-  .patrocinador-imagen-container {
+  /* Contenedor de imagen con fondo */
+  .elemento-imagen-container {
     position: relative;
+    height: 200px;
     overflow: hidden;
-    background: #f8fafc;
     display: flex;
     align-items: center;
     justify-content: center;
     padding: 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
   }
   
-  .aliado-imagen-container {
-    height: 180px;
-    border-bottom: 2px solid #e5e7eb;
+  /* Fondo diferente para aliados vs patrocinadores */
+  .elemento-card.aliado .elemento-imagen-container {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
   }
   
-  .patrocinador-imagen-container {
-    height: 140px;
-    border-bottom: 1px solid #e5e7eb;
+  .elemento-card.patrocinador .elemento-imagen-container {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
   }
   
-  .aliado-imagen,
-  .patrocinador-imagen {
+  .elemento-imagen {
     max-width: 100%;
-    max-height: 100%;
+    max-height: 120px;
     object-fit: contain;
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
+    z-index: 2;
+    position: relative;
   }
   
-  .aliado-card:hover .aliado-imagen,
-  .patrocinador-card:hover .patrocinador-imagen {
-    transform: scale(1.05);
+  .elemento-card:hover .elemento-imagen {
+    transform: scale(1.1);
+  }
+  
+  /* Patrón de fondo sutil */
+  .elemento-imagen-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+      radial-gradient(circle at 25% 25%, rgba(255,255,255,0.1) 0%, transparent 50%),
+      radial-gradient(circle at 75% 75%, rgba(255,255,255,0.1) 0%, transparent 50%);
+    z-index: 1;
+  }
+  
+  .elemento-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(26, 32, 44, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 3;
+  }
+  
+  .elemento-imagen-container:hover .elemento-overlay {
+    opacity: 1;
+  }
+  
+  .overlay-content svg {
+    width: 2rem;
+    height: 2rem;
   }
   
   /* Información */
-  .aliado-info,
-  .patrocinador-info {
+  .elemento-info {
     padding: 1.5rem;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
   }
   
-  .aliado-nombre,
-  .patrocinador-nombre {
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #1f2937;
+  .elemento-nombre {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #1a202c;
     margin-bottom: 0.75rem;
     line-height: 1.4;
   }
   
-  .aliado-descripcion,
-  .patrocinador-descripcion {
-    color: #6b7280;
-    font-size: 0.9rem;
-    line-height: 1.5;
-    margin-bottom: 1.25rem;
-  }
-  
-  /* Botones */
-  .aliado-btn,
-  .patrocinador-btn {
-    display: flex;
-    align-items: center;
-    padding: 0.6rem 1.2rem;
-    border: none;
-    border-radius: 8px;
+  .elemento-descripcion {
+    color: #718096;
     font-size: 0.875rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    cursor: pointer;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+    flex-grow: 1;
+  }
+  
+  .elemento-acciones {
+    margin-top: auto;
+  }
+  
+  .website-btn {
     width: 100%;
-    justify-content: center;
-  }
-  
-  .aliado-btn {
-    background: #3b82f6;
+    padding: 0.75rem 1rem;
+    background-color: #1a202c;
     color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
   }
   
-  .aliado-btn:hover {
-    background: #2563eb;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-  }
-  
-  .patrocinador-btn {
-    background: #10b981;
-    color: white;
-  }
-  
-  .patrocinador-btn:hover {
-    background: #059669;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
-  }
-  
-  /* Sección de agradecimiento */
-  .agradecimiento-section {
-    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-    border-radius: 16px;
-    padding: 3rem 2rem;
-    margin-top: 4rem;
-    border: 1px solid #e5e7eb;
-    text-align: center;
-  }
-  
-  .agradecimiento-content {
-    max-width: 600px;
-    margin: 0 auto;
+  .website-btn:hover {
+    background-color: #2d3748;
   }
   
   /* Responsive */
   @media (max-width: 768px) {
-    .publicidad-evento {
-      padding: 2rem 1rem;
+    .publicidad-header h2 {
+      font-size: 2rem;
     }
     
-    .grid-aliados {
-      grid-template-columns: 1fr;
+    .elementos-grid {
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 1.5rem;
     }
     
-    .grid-patrocinadores {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
+    .filtros-grid {
+      gap: 0.5rem;
     }
     
-    .aliado-imagen-container {
-      height: 160px;
-      padding: 1.5rem;
-    }
-    
-    .patrocinador-imagen-container {
-      height: 120px;
-      padding: 1.5rem;
-    }
-    
-    .aliado-info,
-    .patrocinador-info {
-      padding: 1.25rem;
-    }
-    
-    .agradecimiento-section {
-      padding: 2rem 1rem;
-      margin-top: 3rem;
+    .filtro-btn {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
     }
   }
   
   @media (max-width: 480px) {
+    .elementos-grid {
+      grid-template-columns: 1fr;
+    }
+    
     .publicidad-evento {
       padding: 1rem 0.5rem;
-    }
-    
-    .aliado-card,
-    .patrocinador-card {
-      border-radius: 12px;
-    }
-    
-    .aliado-imagen-container {
-      height: 140px;
-      padding: 1rem;
-    }
-    
-    .patrocinador-imagen-container {
-      height: 100px;
-      padding: 1rem;
-    }
-    
-    .aliado-info,
-    .patrocinador-info {
-      padding: 1rem;
-    }
-    
-    .aliado-nombre,
-    .patrocinador-nombre {
-      font-size: 1rem;
-    }
-    
-    .aliado-descripcion,
-    .patrocinador-descripcion {
-      font-size: 0.85rem;
     }
   }
