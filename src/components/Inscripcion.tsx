@@ -939,7 +939,7 @@ export default function CronogramaActividades() {
                                 className={`w-full py-3 px-6 rounded-lg transition-colors duration-200 font-medium border-b-4 text-base ${!obtenerInfoCupos(actividad.id).disponible
                                     ? "bg-gray-400 text-gray-200 border-gray-500 cursor-not-allowed"
                                     : actividad.id === 13 // Botón especial para Zona América
-                                      ? "bg-green-600 text-white hover:bg-green-700 border-green-800 hover:border-green-900"
+                                      ? "bg-blue-600 text-white hover:bg-blue-700 border-blue-800 hover:border-blue-900"
                                       : "bg-uniblue text-white hover:bg-blue-700 border-blue-800 hover:border-blue-900"
                                   }`}
                               >
