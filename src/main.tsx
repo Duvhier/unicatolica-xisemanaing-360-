@@ -7,6 +7,7 @@ import './index.css';
 import Formulario from './pages/Formulario.tsx'
 import VistaOrganizador from './components/VistaOrganizador.tsx'
 import FormularioInscripcionLiderazgo from './components/FormularioInscripcionLiderazgo.tsx'
+import FormularioTechnological from './components/FormularioTechnological.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -16,6 +17,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/formulario" element={<Formulario />} />
         <Route path="/organizador" element={<VistaOrganizador />} />
         <Route path="/liderazgo" element={<FormularioInscripcionLiderazgo />} />
+        <Route path="/formulario-technological" element={<FormularioTechnological />} />
 
       </Routes>
     </BrowserRouter>

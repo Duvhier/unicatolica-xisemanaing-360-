@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import ConferenciaImg from "../assets/CONFERENCIA COACHING-8.png";
 import ActoInauguralImg from "../assets/ACTO INAUGURAL-8.png";
 import Technological from "../assets/TECNOLOGICAL TOUCH-8.png";
@@ -21,6 +21,14 @@ interface Ponente {
   titulo: string;
   foto: string;
   especialidad: string;
+}
+
+interface CupoInfo {
+  disponible: boolean;
+  cuposDisponibles: number;
+  cupoMaximo: number;
+  inscritos: number;
+  actividad: string;
 }
 
 interface Actividad {
@@ -50,11 +58,114 @@ interface TooltipPosition {
 
 export default function CronogramaActividades() {
   const FORM_URL = "/liderazgo";
+  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000';
+  
   // Estados con tipado correcto
   const [diasAbiertos, setDiasAbiertos] = useState<{ [key: number]: boolean }>({ 0: true });
   const [tooltipVisible, setTooltipVisible] = useState<boolean>(false);
   const [tooltipPosition, setTooltipPosition] = useState<TooltipPosition>({ x: 0, y: 0 });
   const [ponenteSeleccionado, setPonenteSeleccionado] = useState<Ponente | null>(null);
+  const [cuposActividades, setCuposActividades] = useState<{ [key: number]: CupoInfo }>({});
+  const [cargandoCupos, setCargandoCupos] = useState<boolean>(true);
+
+  // Función para cargar los cupos de las actividades
+  const cargarCuposActividades = async () => {
+    try {
+      setCargandoCupos(true);
+      
+      // IDs de actividades que tienen registro
+      const actividadesConRegistro = [1, 9, 15]; // Liderazgo, Hackathon, Technological Touch
+      
+      const promesasCupos = actividadesConRegistro.map(async (id) => {
+        try {
+          const response = await fetch(`${API_URL}/api/actividades/estadisticas/${id}`);
+          if (response.ok) {
+            const data = await response.json();
+            return { id, data };
+          }
+          return { id, data: null };
+        } catch (error) {
+          console.error(`Error cargando cupos para actividad ${id}:`, error);
+          return { id, data: null };
+        }
+      });
+
+      const resultados = await Promise.all(promesasCupos);
+      
+      const nuevosCupos: { [key: number]: CupoInfo } = {};
+      resultados.forEach(({ id, data }) => {
+        if (data) {
+          nuevosCupos[id] = data;
+        }
+      });
+      
+      setCuposActividades(nuevosCupos);
+    } catch (error) {
+      console.error('Error cargando cupos:', error);
+    } finally {
+      setCargandoCupos(false);
+    }
+  };
+
+  // Cargar cupos al montar el componente
+  useEffect(() => {
+    cargarCuposActividades();
+  }, []);
+
+  // Función para obtener información de cupos de una actividad
+  const obtenerInfoCupos = (actividadId: number): CupoInfo | null => {
+    return cuposActividades[actividadId] || null;
+  };
+
+  // Función para renderizar el badge de cupos
+  const renderBadgeCupos = (actividadId: number) => {
+    const infoCupos = obtenerInfoCupos(actividadId);
+    
+    if (!infoCupos || cargandoCupos) {
+      return (
+        <span className="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full font-semibold border border-gray-200 flex items-center gap-1">
+          <svg className="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          Cargando...
+        </span>
+      );
+    }
+
+    const { disponible, cuposDisponibles, cupoMaximo, inscritos } = infoCupos;
+    
+    if (cuposDisponibles === 0) {
+      return (
+        <span className="bg-red-100 text-red-800 text-xs px-3 py-1 rounded-full font-semibold border border-red-200 flex items-center gap-1">
+          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
+          </svg>
+          Cupo Agotado
+        </span>
+      );
+    }
+
+    if (cuposDisponibles <= 10) {
+      return (
+        <span className="bg-orange-100 text-orange-800 text-xs px-3 py-1 rounded-full font-semibold border border-orange-200 flex items-center gap-1">
+          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
+          </svg>
+          {cuposDisponibles}/{cupoMaximo} cupos
+        </span>
+      );
+    }
+
+    return (
+      <span className="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-semibold border border-green-200 flex items-center gap-1">
+        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+        </svg>
+        {cuposDisponibles}/{cupoMaximo} cupos
+      </span>
+    );
+  };
 
   // Función toggleDia con tipado correcto
   const toggleDia = (index: number) => {
@@ -277,7 +388,9 @@ export default function CronogramaActividades() {
           lugar: "Auditorio Lumen – Sede Meléndez",
           tipo: "Evento",
           destacado: true,
-          imagen: Technological
+          imagen: Technological,
+          botonRegistro: true,
+          urlRegistro: "/formulario-technological"
         }
       ]
     },
@@ -395,14 +508,22 @@ export default function CronogramaActividades() {
   };
 
   const handleRegistro = (actividad: Actividad): void => {
+    // Verificar cupos antes de redirigir
+    const infoCupos = obtenerInfoCupos(actividad.id);
+    if (infoCupos && !infoCupos.disponible) {
+      alert('Lo sentimos, no hay cupos disponibles para esta actividad.');
+      return;
+    }
+
     if (actividad.urlRegistro) {
-      // Redirigir a la URL específica del Hackathon
+      // Redirigir a la URL específica del evento
       window.location.href = actividad.urlRegistro;
     } else {
       // Comportamiento por defecto para otras actividades
       window.location.href = `${FORM_URL}?actividad=${actividad.id}`;
     }
   };
+
   // Funciones para manejar el tooltip con tipado correcto
   const mostrarTooltipPonente = (ponenteNombre: string, event: React.MouseEvent): void => {
     const ponenteInfo = basePonentes[ponenteNombre];
@@ -547,11 +668,22 @@ export default function CronogramaActividades() {
                   </span>
                 </div>
               </div>
+
+              {/* Cupos para la actividad destacada */}
+              <div className="mb-4">
+                {renderBadgeCupos(1)}
+              </div>
+
               <button
                 onClick={() => handleRegistro(cronograma[0].actividades[0])}
-                className="bg-uniblue text-white px-8 py-3 rounded-md text-lg font-medium hover:bg-blue-700 transition-colors duration-200 border-b-4 border-blue-800 hover:border-blue-900 mb-4"
+                disabled={obtenerInfoCupos(1)?.disponible === false}
+                className={`px-8 py-3 rounded-md text-lg font-medium transition-colors duration-200 border-b-4 mb-4 ${
+                  obtenerInfoCupos(1)?.disponible === false
+                    ? "bg-gray-400 text-gray-200 border-gray-500 cursor-not-allowed"
+                    : "bg-uniblue text-white hover:bg-blue-700 border-blue-800 hover:border-blue-900"
+                }`}
               >
-                Inscribirme
+                {obtenerInfoCupos(1)?.disponible === false ? "Cupo Agotado" : "Inscribirme"}
               </button>
 
               <p className="text-sm text-gray-600 italic">
@@ -681,7 +813,7 @@ export default function CronogramaActividades() {
                               </div>
                             )}
 
-                            {/* Lugar */}{/* Lugar con tooltip */}
+                            {/* Lugar */}
                             <div className="flex items-start gap-3">
                               <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
                                 <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -707,7 +839,7 @@ export default function CronogramaActividades() {
                               <div className="flex items-start gap-3">
                                 <div className="w-8 h-8 bg-unigold/20 rounded-lg flex items-center justify-center flex-shrink-0">
                                   <svg className="w-4 h-4 text-unigold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                                   </svg>
                                 </div>
                                 <div className="flex-1">
@@ -736,21 +868,15 @@ export default function CronogramaActividades() {
                                 {actividad.exclusivo}
                               </span>
                             )}
+                            {/* Badge de cupos para actividades con registro */}
+                            {(actividad.botonRegistro || (actividad.destacado && actividad.tipo === "Conferencia")) && (
+                              renderBadgeCupos(actividad.id)
+                            )}
                           </div>
 
-                          {/* Botón de inscripción para conferencias destacadas */}
-                          {(actividad.destacado && actividad.tipo === "Conferencia") || actividad.botonRegistro ? (
-                            <button
-                              onClick={() => handleRegistro(actividad)}
-                              className="w-full bg-uniblue text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-medium border-b-4 border-blue-800 hover:border-blue-900 text-base"
-                            >
-                              {actividad.botonRegistro ? "🏆 Registrar en Hackathon" : "Inscribirme en esta conferencia"}
-                            </button>
-                          ) : null}
-
-                          {/* Imagen de la actividad si existe */}
+                          {/* Imagen de la actividad si existe - MOVIDA ARRIBA DEL BOTÓN */}
                           {actividad.imagen && (
-                            <div className="mb-4">
+                            <div className="mb-6"> {/* Aumenté el margen inferior a mb-6 para más espacio */}
                               <img
                                 src={actividad.imagen}
                                 alt={actividad.titulo}
@@ -758,6 +884,27 @@ export default function CronogramaActividades() {
                               />
                             </div>
                           )}
+
+                          {/* Botón de inscripción para conferencias destacadas - MOVIDO DESPUÉS DE LA IMAGEN */}
+                          {(actividad.destacado && actividad.tipo === "Conferencia") || actividad.botonRegistro ? (
+                            <div className="mt-4"> {/* Agregué un div contenedor con margen superior */}
+                              <button
+                                onClick={() => handleRegistro(actividad)}
+                                disabled={obtenerInfoCupos(actividad.id)?.disponible === false}
+                                className={`w-full py-3 px-6 rounded-lg transition-colors duration-200 font-medium border-b-4 text-base ${
+                                  obtenerInfoCupos(actividad.id)?.disponible === false
+                                    ? "bg-gray-400 text-gray-200 border-gray-500 cursor-not-allowed"
+                                    : "bg-uniblue text-white hover:bg-blue-700 border-blue-800 hover:border-blue-900"
+                                }`}
+                              >
+                                {actividad.botonRegistro ?
+                                  (actividad.urlRegistro?.includes('technological') ?
+                                    (obtenerInfoCupos(actividad.id)?.disponible === false ? "🔬 Cupo Agotado" : "🔬 Registrar en Technological Touch") :
+                                    (obtenerInfoCupos(actividad.id)?.disponible === false ? "🏆 Cupo Agotado" : "🏆 Registrar en Hackathon")) :
+                                  (obtenerInfoCupos(actividad.id)?.disponible === false ? "Cupo Agotado" : "Inscribirme en esta conferencia")}
+                              </button>
+                            </div>
+                          ) : null}
                         </div>
                       </div>
                     ))}
