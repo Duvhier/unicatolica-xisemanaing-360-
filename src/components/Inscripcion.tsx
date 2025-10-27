@@ -75,7 +75,7 @@ export default function CronogramaActividades() {
       setCargandoCupos(true);
 
       // IDs de actividades que tienen registro
-      const actividadesConRegistro = [1, 9, 15]; // Liderazgo, Hackathon, Technological Touch
+      const actividadesConRegistro = [1, 9, 13, 15]; // Liderazgo, Hackathon, ZonaAmerica, Technological Touch
 
       const promesasCupos = actividadesConRegistro.map(async (id) => {
         try {
@@ -408,13 +408,15 @@ export default function CronogramaActividades() {
       actividades: [
         {
           id: 13,
-          hora: "9:00 am - 12:00 pm",
+          hora: "10:00 am - 11:30 pm",
           titulo: "Visita Empresarial – ZONAMERICA",
           ponente: "",
           lugar: "Zonamérica - Calle 36, Auto. Cali - Jamundi #760030 128-321",
           tipo: "Visita",
           destacado: true,
-          imagen: VisitaZonaAmerica
+          imagen: VisitaZonaAmerica,
+          botonRegistro: true,
+          urlRegistro: "/formulario-zona-america"
         },
         {
           id: 14,
@@ -930,20 +932,32 @@ export default function CronogramaActividades() {
 
                           {/* Botón de inscripción para conferencias destacadas - MOVIDO DESPUÉS DE LA IMAGEN */}
                           {(actividad.destacado && actividad.tipo === "Conferencia") || actividad.botonRegistro ? (
-                            <div className="mt-4"> {/* Agregué un div contenedor con margen superior */}
+                            <div className="mt-4">
                               <button
                                 onClick={() => handleRegistro(actividad)}
-                                disabled={!obtenerInfoCupos(actividad.id).disponible} // ✅ CORREGIDO: sin ? y con !
-                                className={`w-full py-3 px-6 rounded-lg transition-colors duration-200 font-medium border-b-4 text-base ${!obtenerInfoCupos(actividad.id).disponible // ✅ CORREGIDO: sin ? y con !
+                                disabled={!obtenerInfoCupos(actividad.id).disponible}
+                                className={`w-full py-3 px-6 rounded-lg transition-colors duration-200 font-medium border-b-4 text-base ${!obtenerInfoCupos(actividad.id).disponible
                                     ? "bg-gray-400 text-gray-200 border-gray-500 cursor-not-allowed"
-                                    : "bg-uniblue text-white hover:bg-blue-700 border-blue-800 hover:border-blue-900"
+                                    : actividad.id === 13 // Botón especial para Zona América
+                                      ? "bg-green-600 text-white hover:bg-green-700 border-green-800 hover:border-green-900"
+                                      : "bg-uniblue text-white hover:bg-blue-700 border-blue-800 hover:border-blue-900"
                                   }`}
                               >
-                                {actividad.botonRegistro ?
-                                  (actividad.urlRegistro?.includes('technological') ?
-                                    (!obtenerInfoCupos(actividad.id).disponible ? "🔬 Cupo Agotado" : "🔬 Registrar en Technological Touch") : // ✅ CORREGIDO
-                                    (!obtenerInfoCupos(actividad.id).disponible ? "🏆 Cupo Agotado" : "🏆 Registrar en Hackathon")) : // ✅ CORREGIDO
-                                  (!obtenerInfoCupos(actividad.id).disponible ? "Cupo Agotado" : "Inscribirme en esta conferencia")} {/* ✅ CORREGIDO */}
+                                {actividad.id === 13
+                                  ? !obtenerInfoCupos(actividad.id).disponible
+                                    ? "🏢 Cupo Agotado - Zona América"
+                                    : "🏢 Registrar en Visita Zona América"
+                                  : actividad.botonRegistro
+                                    ? actividad.urlRegistro?.includes('technological')
+                                      ? !obtenerInfoCupos(actividad.id).disponible
+                                        ? "🔬 Cupo Agotado"
+                                        : "🔬 Registrar en Technological Touch"
+                                      : !obtenerInfoCupos(actividad.id).disponible
+                                        ? "🏆 Cupo Agotado"
+                                        : "🏆 Registrar en Hackathon"
+                                    : !obtenerInfoCupos(actividad.id).disponible
+                                      ? "Cupo Agotado"
+                                      : "Inscribirme en esta conferencia"}
                               </button>
                             </div>
                           ) : null}

@@ -8,6 +8,7 @@ import Formulario from './pages/Formulario.tsx'
 import VistaOrganizador from './components/VistaOrganizador.tsx'
 import FormularioInscripcionLiderazgo from './components/FormularioInscripcionLiderazgo.tsx'
 import FormularioTechnological from './components/FormularioTechnological.tsx'
+import FormularioZonaAmerica from './components/FormularioZonaAmerica.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -18,6 +19,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/organizador" element={<VistaOrganizador />} />
         <Route path="/liderazgo" element={<FormularioInscripcionLiderazgo />} />
         <Route path="/formulario-technological" element={<FormularioTechnological />} />
+        <Route path="/formulario-zona-america" element={<FormularioZonaAmerica />} />
 
       </Routes>
     </BrowserRouter>

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './FormularioInscripcion.css';
-import TechnologicalImg from '@/assets/TECNOLOGICAL TOUCH-8.png'; // Asegúrate de tener esta imagen
+import TechnologicalImg from '@/assets/TECNOLOGICAL TOUCH-8.png'; 
 import facultadesData from '@/assets/facultadesyprogramasacademicos.json';
 
 // Interfaces para los tipos de datos
@@ -198,7 +198,7 @@ const FormularioTechnological: React.FC = () => {
 
     try {
       setIsCheckingDuplicates(true);
-      const response = await fetch(`${API_URL}/inscripciones/verificar-disponibilidad`, {
+      const response = await fetch(`${API_URL}/technological/verificar-disponibilidad`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -334,7 +334,7 @@ const FormularioTechnological: React.FC = () => {
         rol: formData.rol,
         tipoEstudiante: formData.tipoEstudiante,
         id: formData.idEstudiante.trim(),
-        actividades: ['technological-touch'] // ✅ ACTUALIZADO: technological-touch
+        actividades: ['technological-touch'] 
       };
 
       // Campos condicionales según el rol
@@ -376,7 +376,7 @@ const FormularioTechnological: React.FC = () => {
 
       console.log('🚀 Enviando payload:', payload);
 
-      const res = await fetch(`${API_URL}/inscripciones/registro`, {
+      const res = await fetch(`${API_URL}/technological/registro`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
