@@ -1,0 +1,277 @@
+/* PublicidadEvento.css */
+.publicidad-evento {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 3rem 1rem;
+  }
+  
+  /* Header */
+  .publicidad-header {
+    margin-bottom: 3rem;
+  }
+  
+  /* Secciones */
+  .seccion-header {
+    margin-bottom: 2rem;
+  }
+  
+  /* Grid de Aliados */
+  .grid-aliados {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+  }
+  
+  .aliado-card {
+    background: white;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  .aliado-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.15);
+    border-color: #3b82f6;
+  }
+  
+  /* Grid de Patrocinadores */
+  .grid-patrocinadores {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .patrocinador-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+    border: 1px solid #e5e7eb;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+  
+  .patrocinador-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(16, 185, 129, 0.15);
+    border-color: #10b981;
+  }
+  
+  /* Badges */
+  .aliado-badge,
+  .patrocinador-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+  }
+  
+  .badge-text {
+    padding: 0.4rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  
+  .aliado-badge .badge-text {
+    background: linear-gradient(135deg, #3b82f6, #1e40af);
+    color: white;
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+  }
+  
+  .patrocinador-badge .badge-text {
+    background: linear-gradient(135deg, #10b981, #059669);
+    color: white;
+    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.3);
+  }
+  
+  /* Contenedores de imagen */
+  .aliado-imagen-container,
+  .patrocinador-imagen-container {
+    position: relative;
+    overflow: hidden;
+    background: #f8fafc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+  }
+  
+  .aliado-imagen-container {
+    height: 180px;
+    border-bottom: 2px solid #e5e7eb;
+  }
+  
+  .patrocinador-imagen-container {
+    height: 140px;
+    border-bottom: 1px solid #e5e7eb;
+  }
+  
+  .aliado-imagen,
+  .patrocinador-imagen {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+  }
+  
+  .aliado-card:hover .aliado-imagen,
+  .patrocinador-card:hover .patrocinador-imagen {
+    transform: scale(1.05);
+  }
+  
+  /* Información */
+  .aliado-info,
+  .patrocinador-info {
+    padding: 1.5rem;
+  }
+  
+  .aliado-nombre,
+  .patrocinador-nombre {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1f2937;
+    margin-bottom: 0.75rem;
+    line-height: 1.4;
+  }
+  
+  .aliado-descripcion,
+  .patrocinador-descripcion {
+    color: #6b7280;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 1.25rem;
+  }
+  
+  /* Botones */
+  .aliado-btn,
+  .patrocinador-btn {
+    display: flex;
+    align-items: center;
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+    cursor: pointer;
+    width: 100%;
+    justify-content: center;
+  }
+  
+  .aliado-btn {
+    background: #3b82f6;
+    color: white;
+  }
+  
+  .aliado-btn:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+  }
+  
+  .patrocinador-btn {
+    background: #10b981;
+    color: white;
+  }
+  
+  .patrocinador-btn:hover {
+    background: #059669;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+  }
+  
+  /* Sección de agradecimiento */
+  .agradecimiento-section {
+    background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+    border-radius: 16px;
+    padding: 3rem 2rem;
+    margin-top: 4rem;
+    border: 1px solid #e5e7eb;
+    text-align: center;
+  }
+  
+  .agradecimiento-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .publicidad-evento {
+      padding: 2rem 1rem;
+    }
+    
+    .grid-aliados {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    
+    .grid-patrocinadores {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    
+    .aliado-imagen-container {
+      height: 160px;
+      padding: 1.5rem;
+    }
+    
+    .patrocinador-imagen-container {
+      height: 120px;
+      padding: 1.5rem;
+    }
+    
+    .aliado-info,
+    .patrocinador-info {
+      padding: 1.25rem;
+    }
+    
+    .agradecimiento-section {
+      padding: 2rem 1rem;
+      margin-top: 3rem;
+    }
+  }
+  
+  @media (max-width: 480px) {
+    .publicidad-evento {
+      padding: 1rem 0.5rem;
+    }
+    
+    .aliado-card,
+    .patrocinador-card {
+      border-radius: 12px;
+    }
+    
+    .aliado-imagen-container {
+      height: 140px;
+      padding: 1rem;
+    }
+    
+    .patrocinador-imagen-container {
+      height: 100px;
+      padding: 1rem;
+    }
+    
+    .aliado-info,
+    .patrocinador-info {
+      padding: 1rem;
+    }
+    
+    .aliado-nombre,
+    .patrocinador-nombre {
+      font-size: 1rem;
+    }
+    
+    .aliado-descripcion,
+    .patrocinador-descripcion {
+      font-size: 0.85rem;
+    }
+  }

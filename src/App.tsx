@@ -4,6 +4,7 @@ import Info from "./components/Info";
 import Agenda from "./components/Agenda";
 import Inscripcion from "./components/Inscripcion";
 import Footer from "./components/Footer";
+import Publicidad from "./components/PublicidadEvento";
 
 
 export default function App() {
@@ -12,6 +13,7 @@ export default function App() {
       <Header />
       <Hero />
       <Inscripcion />
+      <Publicidad />
       <Info />
       <Agenda />
       <Footer />
