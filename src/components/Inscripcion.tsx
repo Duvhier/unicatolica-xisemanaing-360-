@@ -343,7 +343,7 @@ export default function CronogramaActividades() {
       foto: BrandoRonald,
       especialidad: "Hackathons y Competencias de Programación",
     },
-    "Profesores Hernando Mosquera, Kellin, Nelson Andrade": {
+    "Profesores José Hernando Mosquera, Kellin, Nelson Andrade": {
       nombre: "José Hernando Mosquera, Kellin, Nelson Andrade",
       titulo: "Comité de Hackathon Universidades",
       foto: ComiteHackathon,
@@ -438,7 +438,7 @@ export default function CronogramaActividades() {
           id: 8,
           hora: "2:00 pm - 5:00 pm",
           titulo: "Hackathon Unicatólica",
-          ponente: "Profesores Brandon Rosero - Ronald Renfigo",
+          ponente: "Profesores Brandon Rosero - Ronald Rengifo",
           lugar: "Salas 1, 2, 3 – Sede Pance",
           tipo: "Competencia",
           destacado: false,
