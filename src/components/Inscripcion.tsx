@@ -29,6 +29,7 @@ interface CupoInfo {
   cupoMaximo: number;
   inscritos: number;
   actividad: string;
+  mensaje?: string;
 }
 
 interface Actividad {
@@ -69,23 +70,59 @@ export default function CronogramaActividades() {
   const [cargandoCupos, setCargandoCupos] = useState<boolean>(true);
 
   // Función para cargar los cupos de las actividades
-  // Función para cargar los cupos de las actividades
   const cargarCuposActividades = async () => {
     try {
       setCargandoCupos(true);
 
       // IDs de actividades que tienen registro
-      const actividadesConRegistro = [1, 9, 13, 15]; // Liderazgo, Hackathon, ZonaAmerica, Technological Touch
+      const actividadesConRegistro = [1, 2, 9, 13, 15]; // Liderazgo, Inaugural, Hackathon, ZonaAmerica, Technological Touch
 
       const promesasCupos = actividadesConRegistro.map(async (id) => {
         try {
-          const response = await fetch(`${API_URL}/api/actividades/estadisticas/${id}`);
+          // ✅ CAMBIO: Usar el nuevo endpoint de estado-registros
+          let endpoint = '';
+          switch (id) {
+            case 1: // Liderazgo
+              endpoint = `${API_URL}/liderazgo/estado-registros`;
+              break;
+            case 2: // Inaugural
+              endpoint = `${API_URL}/asistenciainaugural/estado-registros`;
+              break;
+            case 9: // Hackathon
+              endpoint = `${API_URL}/hackathon/estado-registros`;
+              break;
+            case 13: // Zona América
+              endpoint = `${API_URL}/visitazonaamerica/estado-registros`;
+              break;
+            case 15: // Technological Touch
+              endpoint = `${API_URL}/technological/estado-registros`;
+              break;
+            default:
+              endpoint = `${API_URL}/api/actividades/estadisticas/${id}`;
+          }
+
+          const response = await fetch(endpoint);
           if (response.ok) {
             const data = await response.json();
-            return { id, data };
+
+            // ✅ ADAPTAR la respuesta según el endpoint
+            let cupoInfo;
+            if (endpoint.includes('estado-registros')) {
+              cupoInfo = {
+                disponible: data.data.disponible,
+                cuposDisponibles: data.data.cupoMaximo - data.data.inscritos,
+                cupoMaximo: data.data.cupoMaximo,
+                inscritos: data.data.inscritos,
+                actividad: `Actividad ${id}`,
+                mensaje: data.data.mensaje
+              };
+            } else {
+              cupoInfo = data;
+            }
+
+            return { id, data: cupoInfo };
           } else {
             console.warn(`Error en respuesta para actividad ${id}:`, response.status);
-            // ✅ CORREGIDO: Retornar datos por defecto en caso de error
             return {
               id,
               data: {
@@ -93,13 +130,13 @@ export default function CronogramaActividades() {
                 cuposDisponibles: 50,
                 cupoMaximo: 50,
                 inscritos: 0,
-                actividad: `Actividad ${id}`
+                actividad: `Actividad ${id}`,
+                mensaje: "Usuarios Registrados: 0/50"
               }
             };
           }
         } catch (error) {
-          console.error(`Error cargando cupos para actividad ${id}:`, error);
-          // ✅ CORREGIDO: Retornar datos por defecto en caso de error
+          console.error(`Error cargando registros para actividad ${id}:`, error);
           return {
             id,
             data: {
@@ -107,7 +144,8 @@ export default function CronogramaActividades() {
               cuposDisponibles: 50,
               cupoMaximo: 50,
               inscritos: 0,
-              actividad: `Actividad ${id}`
+              actividad: `Actividad ${id}`,
+              mensaje: "Usuarios Registrados: 0/50"
             }
           };
         }
@@ -124,12 +162,48 @@ export default function CronogramaActividades() {
 
       setCuposActividades(nuevosCupos);
     } catch (error) {
-      console.error('Error cargando cupos:', error);
-      // ✅ CORREGIDO: Establecer datos por defecto en caso de error general
+      console.error('Error cargando registros:', error);
       setCuposActividades({
-        1: { disponible: true, cuposDisponibles: 100, cupoMaximo: 100, inscritos: 0, actividad: "Liderazgo" },
-        9: { disponible: true, cuposDisponibles: 150, cupoMaximo: 150, inscritos: 0, actividad: "Hackathon" },
-        15: { disponible: true, cuposDisponibles: 200, cupoMaximo: 200, inscritos: 0, actividad: "Technological Touch" }
+        1: {
+          disponible: true,
+          cuposDisponibles: 100,
+          cupoMaximo: 100,
+          inscritos: 0,
+          actividad: "Liderazgo",
+          mensaje: "Usuarios Registrados: 0/100"
+        },
+        2: {
+          disponible: true,
+          cuposDisponibles: 500,
+          cupoMaximo: 500,
+          inscritos: 0,
+          actividad: "Inaugural",
+          mensaje: "Usuarios Registrados: 0/500"
+        },
+        9: {
+          disponible: true,
+          cuposDisponibles: 150,
+          cupoMaximo: 150,
+          inscritos: 0,
+          actividad: "Hackathon",
+          mensaje: "Usuarios Registrados: 0/150"
+        },
+        13: {
+          disponible: true,
+          cuposDisponibles: 40,
+          cupoMaximo: 40,
+          inscritos: 0,
+          actividad: "Zona América",
+          mensaje: "Usuarios Registrados: 0/40"
+        },
+        15: {
+          disponible: true,
+          cuposDisponibles: 200,
+          cupoMaximo: 200,
+          inscritos: 0,
+          actividad: "Technological Touch",
+          mensaje: "Usuarios Registrados: 0/200"
+        }
       });
     } finally {
       setCargandoCupos(false);
@@ -141,6 +215,7 @@ export default function CronogramaActividades() {
   }, []);
 
   // Función para obtener información de cupos de una actividad - CORREGIDA
+  // Función para obtener información de cupos de una actividad - MODIFICADA
   const obtenerInfoCupos = (actividadId: number): CupoInfo => {
     const info = cuposActividades[actividadId];
 
@@ -148,16 +223,16 @@ export default function CronogramaActividades() {
     if (!info) {
       return {
         disponible: true,
-        cuposDisponibles: 50,
-        cupoMaximo: 50,
+        cuposDisponibles: 40,
+        cupoMaximo: 40,
         inscritos: 0,
-        actividad: `Actividad ${actividadId}`
+        actividad: `Actividad ${actividadId}`,
+        mensaje: "Usuarios Registrados: 0/40"
       };
     }
 
     return info;
-  };
-  // Función para renderizar el badge de cupos - CORREGIDA
+  }; // Función para renderizar el badge de usuarios registrados - MODIFICADA
   const renderBadgeCupos = (actividadId: number) => {
     // ✅ Ahora obtenerInfoCupos siempre retorna un objeto, no null
     const infoCupos = obtenerInfoCupos(actividadId);
@@ -175,30 +250,34 @@ export default function CronogramaActividades() {
     }
 
     // ✅ infoCupos nunca es null ahora
-    const { cuposDisponibles, cupoMaximo, } = infoCupos;
+    const { inscritos, cupoMaximo, disponible } = infoCupos;
 
     // ✅ Verificar que los valores sean números válidos
-    const cuposDisponiblesNum = Number(cuposDisponibles) || 0;
+    const inscritosNum = Number(inscritos) || 0;
     const cupoMaximoNum = Number(cupoMaximo) || 0;
 
-    if (cuposDisponiblesNum === 0) {
+    // ✅ NUEVO: Mostrar usuarios registrados en lugar de cupos disponibles
+    if (!disponible) {
       return (
         <span className="bg-red-100 text-red-800 text-xs px-3 py-1 rounded-full font-semibold border border-red-200 flex items-center gap-1">
           <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
           </svg>
-          Cupo Agotado
+          {inscritosNum}/{cupoMaximoNum} Registrados
         </span>
       );
     }
 
-    if (cuposDisponiblesNum <= 10) {
+    // ✅ NUEVO: Mostrar siempre el número de usuarios registrados
+    const porcentaje = (inscritosNum / cupoMaximoNum) * 100;
+
+    if (porcentaje >= 90) {
       return (
         <span className="bg-orange-100 text-orange-800 text-xs px-3 py-1 rounded-full font-semibold border border-orange-200 flex items-center gap-1">
           <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
           </svg>
-          {cuposDisponiblesNum}/{cupoMaximoNum} cupos
+          {inscritosNum}/{cupoMaximoNum} Registrados
         </span>
       );
     }
@@ -208,7 +287,7 @@ export default function CronogramaActividades() {
         <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
         </svg>
-        {cuposDisponiblesNum}/{cupoMaximoNum} cupos
+        {inscritosNum}/{cupoMaximoNum} Registrados
       </span>
     );
   };
@@ -299,7 +378,9 @@ export default function CronogramaActividades() {
           lugar: "Auditorio Lumen – Sede Meléndez",
           tipo: "Ceremonia",
           destacado: true,
-          imagen: ActoInauguralImg
+          imagen: ActoInauguralImg,
+          botonRegistro: true,
+          urlRegistro: "/formulario-inaugural"
         },
         {
           id: 3,
@@ -722,13 +803,13 @@ export default function CronogramaActividades() {
 
               <button
                 onClick={() => handleRegistro(cronograma[0].actividades[0])}
-                disabled={!obtenerInfoCupos(1).disponible} // ✅ CORREGIDO: sin ? y con !
-                className={`px-8 py-3 rounded-md text-lg font-medium transition-colors duration-200 border-b-4 mb-4 ${!obtenerInfoCupos(1).disponible // ✅ CORREGIDO: sin ? y con !
+                disabled={!obtenerInfoCupos(1).disponible}
+                className={`px-8 py-3 rounded-md text-lg font-medium transition-colors duration-200 border-b-4 mb-4 ${!obtenerInfoCupos(1).disponible
                   ? "bg-gray-400 text-gray-200 border-gray-500 cursor-not-allowed"
                   : "bg-uniblue text-white hover:bg-blue-700 border-blue-800 hover:border-blue-900"
                   }`}
               >
-                {!obtenerInfoCupos(1).disponible ? "Cupo Agotado" : "Inscribirme"} {/* ✅ CORREGIDO */}
+                {!obtenerInfoCupos(1).disponible ? "Cupo Agotado" : "Inscribirme"}
               </button>
 
               <p className="text-sm text-gray-600 italic">
@@ -746,7 +827,6 @@ export default function CronogramaActividades() {
 
           return (
             <div key={index} className="mb-6 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
-              {/* HEADER DEL ACORDEÓN - OPCIÓN 5 */}
               <button
                 onClick={() => toggleDia(index)}
                 className={`w-full flex items-center justify-between p-5 transition-all duration-300 border-l-4 ${diasAbiertos[index]
@@ -768,10 +848,6 @@ export default function CronogramaActividades() {
                       }`}>
                       {dia.dia}
                     </h3>
-                    <p className={`text-sm ${diasAbiertos[index] ? 'text-blue-600' : 'text-gray-600'
-                      }`}>
-                      Semana de la Ingeniería 2025
-                    </p>
                   </div>
                 </div>
 
@@ -937,8 +1013,10 @@ export default function CronogramaActividades() {
                                 onClick={() => handleRegistro(actividad)}
                                 disabled={!obtenerInfoCupos(actividad.id).disponible}
                                 className={`w-full py-3 px-6 rounded-lg transition-colors duration-200 font-medium border-b-4 text-base ${!obtenerInfoCupos(actividad.id).disponible
-                                    ? "bg-gray-400 text-gray-200 border-gray-500 cursor-not-allowed"
-                                    : actividad.id === 13 // Botón especial para Zona América
+                                  ? "bg-gray-400 text-gray-200 border-gray-500 cursor-not-allowed"
+                                  : actividad.id === 13 // Botón especial para Zona América
+                                    ? "bg-blue-600 text-white hover:bg-blue-700 border-blue-800 hover:border-blue-900"
+                                    : actividad.id === 2 // ✅ NUEVO: Botón especial para Acto Inaugural
                                       ? "bg-blue-600 text-white hover:bg-blue-700 border-blue-800 hover:border-blue-900"
                                       : "bg-uniblue text-white hover:bg-blue-700 border-blue-800 hover:border-blue-900"
                                   }`}
@@ -947,17 +1025,21 @@ export default function CronogramaActividades() {
                                   ? !obtenerInfoCupos(actividad.id).disponible
                                     ? "🏢 Cupo Agotado - Zona América"
                                     : "🏢 Registrar en Visita Zona América"
-                                  : actividad.botonRegistro
-                                    ? actividad.urlRegistro?.includes('technological')
-                                      ? !obtenerInfoCupos(actividad.id).disponible
-                                        ? "🔬 Cupo Agotado"
-                                        : "🔬 Registrar en Technological Touch"
+                                  : actividad.id === 2 // ✅ NUEVO: Texto especial para Acto Inaugural
+                                    ? !obtenerInfoCupos(actividad.id).disponible
+                                      ? "🎉 Cupo Agotado - Acto Inaugural"
+                                      : "🎉 Inscribirme en Acto Inaugural"
+                                    : actividad.botonRegistro
+                                      ? actividad.urlRegistro?.includes('technological')
+                                        ? !obtenerInfoCupos(actividad.id).disponible
+                                          ? "🔬 Cupo Agotado"
+                                          : "🔬 Registrar en Technological Touch"
+                                        : !obtenerInfoCupos(actividad.id).disponible
+                                          ? "🏆 Cupo Agotado"
+                                          : "🏆 Registrar en Hackathon"
                                       : !obtenerInfoCupos(actividad.id).disponible
-                                        ? "🏆 Cupo Agotado"
-                                        : "🏆 Registrar en Hackathon"
-                                    : !obtenerInfoCupos(actividad.id).disponible
-                                      ? "Cupo Agotado"
-                                      : "Inscribirme en esta conferencia"}
+                                        ? "Cupo Agotado"
+                                        : "Inscribirme"}
                               </button>
                             </div>
                           ) : null}
