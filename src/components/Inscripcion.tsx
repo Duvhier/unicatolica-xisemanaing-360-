@@ -89,7 +89,7 @@ export default function CronogramaActividades() {
               endpoint = `${API_URL}/asistenciainaugural/estado-registros`;
               break;
             case 9: // Hackathon
-              endpoint = `${API_URL}/hackathon/estado-registros`;
+              endpoint = `${API_URL}/inscripciones/estado-registros`;
               break;
             case 13: // Zona América
               endpoint = `${API_URL}/visitazonaamerica/estado-registros`;
@@ -185,7 +185,7 @@ export default function CronogramaActividades() {
           cuposDisponibles: 150,
           cupoMaximo: 150,
           inscritos: 0,
-          actividad: "Hackathon",
+          actividad: "Hackathon Universidades",
           mensaje: "Usuarios Registrados: 0/150"
         },
         13: {
@@ -214,8 +214,7 @@ export default function CronogramaActividades() {
     cargarCuposActividades();
   }, []);
 
-  // Función para obtener información de cupos de una actividad - CORREGIDA
-  // Función para obtener información de cupos de una actividad - MODIFICADA
+  // Función para obtener información de cupos de una actividad 
   const obtenerInfoCupos = (actividadId: number): CupoInfo => {
     const info = cuposActividades[actividadId];
 

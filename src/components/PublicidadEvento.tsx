@@ -14,18 +14,18 @@ import FondoTecnologia from "@/assets/publicidad/fondo-defensa.jpg";
 import FondoRetail from "@/assets/publicidad/fondo-retail.jpg";
 import FondoAlimentos from "@/assets/publicidad/fondo-alimentos.jpg";
 
-import EmaviNombre from "@/assets/publicidad/emavitext.png"; 
-import FuerzaAereaNombre from "@/assets/publicidad/fuerzaaereatext.png"; 
-import ZonaAmericaNombre from "@/assets/publicidad/Zonamericatext.png"; 
-import PriceSmartNombre from "@/assets/publicidad/pricesmarttext.png"; 
-import NutresaNombre from "@/assets/publicidad/gruponutresatext.png"; 
+import EmaviNombre from "@/assets/publicidad/emavitext.png";
+import FuerzaAereaNombre from "@/assets/publicidad/fuerzaaereatext.png";
+import ZonaAmericaNombre from "@/assets/publicidad/Zonamericatext.png";
+import PriceSmartNombre from "@/assets/publicidad/pricesmarttext.png";
+import NutresaNombre from "@/assets/publicidad/gruponutresatext.png";
 
 interface AliadoPatrocinador {
   id: number;
   nombre: string;
   tipo: "aliado" | "patrocinador";
-  imagen: string; 
-  imagenNombre: string; 
+  imagen: string;
+  imagenNombre: string;
   fondo?: string;
   descripcion: string;
   website?: string;
@@ -145,14 +145,14 @@ const PublicidadEvento: React.FC = () => {
                   }} />
                 ))}
               </div>
-              
+
               {/* Logo principal */}
               <img
                 src={elemento.imagen}
                 alt={`Logo ${elemento.nombre}`}
                 className="elemento-imagen"
               />
-              
+
               {/* Overlay mejorado */}
               <div className="elemento-overlay">
                 <div className="overlay-content">
@@ -178,24 +178,24 @@ const PublicidadEvento: React.FC = () => {
                   />
                 </div>
               </div>
-              
+
               <p className="elemento-descripcion">{elemento.descripcion}</p>
 
               <div className="elemento-acciones">
-  {elemento.website && (
-    <button
-      onClick={() => abrirWebsite(elemento.website!)}
-      className="website-btn-elegant"
-    >
-      <span>Conocer Más</span>
-      <div className="arrow-container">
-        <svg className="arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
-        </svg>
-      </div>
-    </button>
-  )}
-</div>
+                {elemento.website && (
+                  <button
+                    onClick={() => abrirWebsite(elemento.website!)}
+                    className="website-btn-elegant"
+                  >
+                    <span>Conocer Más</span>
+                    <div className="arrow-container">
+                      <svg className="arrow-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                      </svg>
+                    </div>
+                  </button>
+                )}
+              </div>
             </div>
           </div>
         ))}
