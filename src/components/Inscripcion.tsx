@@ -853,7 +853,7 @@ export default function CronogramaActividades() {
               className="flex transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
             >
-              {eventosDestacados.map((evento, index) => (
+              {eventosDestacados.map((evento) => (
                 <div key={evento.id} className="w-full flex-shrink-0">
                   <div className="flex flex-col lg:flex-row items-center gap-6 p-6">
                     {/* Imagen del evento */}
