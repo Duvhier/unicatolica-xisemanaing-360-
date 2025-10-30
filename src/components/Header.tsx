@@ -22,11 +22,12 @@ export default function Header() {
             </div>
           </div>
 
-          <nav className="hidden md:flex space-x-6 text-gray-700">
+          <nav className="hidden md:flex space-x-6 text-gray-700 items-center">
             {[
               { name: "INICIO", href: "#inicio" },
               { name: "AGENDATE", href: "#agenda" },
               { name: "INFORMACIÓN", href: "#info" },
+              { name: "ALIADOS", href: "#aliados" },
               { name: "CONTACTO", href: "#contacto" }
             ].map((item) => (
               <a

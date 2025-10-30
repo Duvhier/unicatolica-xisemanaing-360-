@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import ConferenciaImg from "../assets/CONFERENCIA COACHING-8.png";
 import ActoInauguralImg from "../assets/ACTO INAUGURAL-8.png";
 import Technological from "../assets/TECNOLOGICAL TOUCH-8.png";
@@ -7,6 +7,8 @@ import VisitaEmpr12nov from "../assets/VISITA EMPRESARIAL -12-8.png";
 import VisitaZonaAmerica from "../assets/VISITA - EMPRESARIAL  -8 ZONAAMERICA.png";
 import Visita14nov from "../assets/VISITA EMPRESARIAL - 14-8.png";
 import Visita15nov from "../assets/VISITA EMPRESARIAL -8.png";
+import HackathonImg from "../assets/HACKATON copia-8.png";
+import ActoClausuraImg from "../assets/ACTO CLAUSURA-8.png";
 import XimenaOtero from "../assets/ponentes/ximena-otero.jpg";
 import JulianPortocarrero from "../assets/ponentes/julian-portocarrero.jpg";
 import LorenaCeron from "../assets/ponentes/lorena-ceron.jpg";
@@ -68,6 +70,11 @@ export default function CronogramaActividades() {
   const [ponenteSeleccionado, setPonenteSeleccionado] = useState<Ponente | null>(null);
   const [cuposActividades, setCuposActividades] = useState<{ [key: number]: CupoInfo }>({});
   const [cargandoCupos, setCargandoCupos] = useState<boolean>(true);
+
+  // Estados para el carrusel
+  const [currentSlide, setCurrentSlide] = useState<number>(0);
+  const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(true);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   // Función para cargar los cupos de las actividades
   const cargarCuposActividades = async () => {
@@ -209,6 +216,7 @@ export default function CronogramaActividades() {
       setCargandoCupos(false);
     }
   };
+
   // Cargar cupos al montar el componente
   useEffect(() => {
     cargarCuposActividades();
@@ -231,19 +239,18 @@ export default function CronogramaActividades() {
     }
 
     return info;
-  }; // Función para renderizar el badge de usuarios registrados - MODIFICADA
+  };
+
+  // Función para renderizar el badge de usuarios registrados - MODIFICADA
   const renderBadgeCupos = (actividadId: number) => {
     // ✅ Ahora obtenerInfoCupos siempre retorna un objeto, no null
     const infoCupos = obtenerInfoCupos(actividadId);
 
     if (cargandoCupos) {
       return (
-        <span className="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full font-semibold border border-gray-200 flex items-center gap-1">
-          <svg className="w-3 h-3 animate-spin" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-          </svg>
-          Cargando...
+        <span className="bg-gray-100 text-gray-600 text-xs px-2 py-1 rounded-md font-medium border border-gray-200 flex items-center gap-1">
+          <div className="w-2 h-2 border-2 border-gray-400 border-t-blue-500 rounded-full animate-spin"></div>
+          <span>Cargando</span>
         </span>
       );
     }
@@ -282,14 +289,21 @@ export default function CronogramaActividades() {
     }
 
     return (
-      <span className="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-semibold border border-green-200 flex items-center gap-1">
-        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-        </svg>
-        {inscritosNum}/{cupoMaximoNum} Registrados
+      <span className="bg-green-100 text-green-800 text-xs px-3 py-1.5 rounded-full font-semibold border border-green-300 flex items-center gap-2 transition-all duration-300 hover:shadow-md">
+        <div className="relative">
+          <div className="w-3 h-3 bg-green-500 rounded-full animate-ping absolute opacity-75"></div>
+          <svg className="w-3 h-3 relative" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <span className="font-bold">{inscritosNum}</span>
+        <span className="text-green-600">/</span>
+        <span>{cupoMaximoNum}</span>
+        <span className="text-green-700">Registrados</span>
       </span>
     );
   };
+
   // Función toggleDia con tipado correcto
   const toggleDia = (index: number) => {
     setDiasAbiertos((prev) => ({
@@ -450,6 +464,7 @@ export default function CronogramaActividades() {
           lugar: "Salas 1, 2, 3 – Sede Pance",
           tipo: "Competencia",
           destacado: true,
+          imagen: HackathonImg,
           botonRegistro: true,
           urlRegistro: "/formulario"
         },
@@ -479,7 +494,7 @@ export default function CronogramaActividades() {
           ponente: "Mag. Lorena Cerón",
           lugar: "Salón A201 – Sede Pance",
           tipo: "Conferencia",
-          destacado: true
+          destacado: false
         }
       ]
     },
@@ -568,6 +583,7 @@ export default function CronogramaActividades() {
           ponente: "",
           lugar: "Auditorio LUMEN - Sede Meléndez",
           tipo: "Ceremonia",
+          imagen: ActoClausuraImg,
           destacado: true,
         }
       ]
@@ -588,6 +604,35 @@ export default function CronogramaActividades() {
       ]
     }
   ];
+
+  // Obtener todos los eventos destacados
+  const eventosDestacados = cronograma.flatMap(dia =>
+    dia.actividades.filter(actividad => actividad.destacado)
+  );
+
+  // Funciones para el carrusel
+  const nextSlide = () => {
+    setCurrentSlide((prev) => (prev + 1) % eventosDestacados.length);
+  };
+
+  const prevSlide = () => {
+    setCurrentSlide((prev) => (prev - 1 + eventosDestacados.length) % eventosDestacados.length);
+  };
+
+  const goToSlide = (index: number) => {
+    setCurrentSlide(index);
+  };
+
+  // Auto-play del carrusel
+  useEffect(() => {
+    if (!isAutoPlaying) return;
+
+    const interval = setInterval(() => {
+      nextSlide();
+    }, 5000); // Cambia cada 5 segundos
+
+    return () => clearInterval(interval);
+  }, [isAutoPlaying, currentSlide]);
 
   const getIconoTipo = (tipo: string): string => {
     const iconos: { [key: string]: string } = {
@@ -650,6 +695,7 @@ export default function CronogramaActividades() {
       window.location.href = `${FORM_URL}?actividad=${actividad.id}`;
     }
   };
+
   // Funciones para manejar el tooltip con tipado correcto
   const mostrarTooltipPonente = (ponenteNombre: string, event: React.MouseEvent): void => {
     const ponenteInfo = basePonentes[ponenteNombre];
@@ -678,52 +724,51 @@ export default function CronogramaActividades() {
 
   return (
     <div className="w-full my-12 relative">
-      {/* Tooltip de Ponente */}
       {tooltipVisible && ponenteSeleccionado && (
         <div
-          className="fixed z-50 bg-white rounded-2xl shadow-2xl border border-gray-100 p-6 max-w-sm animate-scale-in"
+          className="fixed z-50 bg-white rounded-2xl shadow-2xl p-6 max-w-sm animate-scale-in border border-gray-100"
           style={{
             left: `${tooltipPosition.x + 20}px`,
             top: `${tooltipPosition.y - 100}px`,
           }}
           onMouseLeave={ocultarTooltip}
         >
-          {/* Header del ponente */}
+          {/* Borde gradiente decorativo */}
+          <div className="absolute -inset-0.5 bg-gradient-to-r from-uniblue to-blue-600 rounded-2xl -z-10 opacity-10"></div>
+
           <div className="flex items-start gap-4 mb-4">
-            {/* Avatar con gradiente de respaldo */}
             <div className="relative flex-shrink-0">
               {ponenteSeleccionado.foto ? (
-                <div className="relative">
+                <div className="relative group">
                   <img
                     src={ponenteSeleccionado.foto}
                     alt={ponenteSeleccionado.nombre}
-                    className="w-16 h-16 rounded-xl object-cover shadow-md border-2 border-white"
+                    className="w-16 h-16 rounded-xl object-cover shadow-md border-2 border-white transition-transform duration-300 group-hover:scale-105"
                   />
-                  <div className="absolute -inset-1 bg-gradient-to-r from-uniblue to-blue-600 rounded-xl -z-10 opacity-20"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-transparent to-uniblue/20 rounded-xl"></div>
                 </div>
               ) : (
-                <div className="w-16 h-16 bg-gradient-to-br from-uniblue to-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-md">
+                <div className="w-16 h-16 bg-gradient-to-br from-uniblue to-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-md hover:shadow-lg transition-shadow duration-300">
                   {ponenteSeleccionado.nombre.split(' ').map(n => n[0]).join('').toUpperCase()}
                 </div>
               )}
             </div>
 
-            {/* Información principal */}
             <div className="flex-1 min-w-0">
               <h3 className="font-bold text-gray-800 text-lg leading-tight mb-1">
                 {ponenteSeleccionado.nombre}
               </h3>
-              <div className="inline-block bg-uniblue/10 text-uniblue px-3 py-1 rounded-full text-xs font-semibold mb-2">
+              <div className="inline-flex items-center bg-uniblue/10 text-uniblue px-3 py-1 rounded-full text-xs font-semibold mb-2 border border-uniblue/20">
+                <span className="w-1.5 h-1.5 bg-uniblue rounded-full mr-2 animate-pulse"></span>
                 {ponenteSeleccionado.titulo}
               </div>
-              <p className="text-sm text-gray-500 leading-relaxed">
+              <p className="text-sm text-gray-600 leading-relaxed">
                 {ponenteSeleccionado.especialidad}
               </p>
             </div>
           </div>
 
-          {/* Flecha del tooltip mejorada */}
-          <div className="absolute -left-2 top-12 transform -translate-y-1/2">
+          <div className="absolute -left-2 top-12">
             <div className="w-4 h-4 bg-white border-l border-b border-gray-100 rotate-45 shadow-sm"></div>
           </div>
         </div>
@@ -738,87 +783,194 @@ export default function CronogramaActividades() {
         </div>
       </div>
 
-      {/* Sección Destacada */}
+      {/* CARRUSEL DE EVENTOS DESTACADOS */}
       <div className="max-w-6xl mx-auto mb-16 px-4">
-        <div className="bg-gradient-to-r from-blue-50 to-indigo-100 rounded-3xl p-8 shadow-2xl border-2 border-uniblue/20">
-          <div className="flex flex-col lg:flex-row items-center gap-8">
-            <div className="flex-1">
-              <img
-                src={ConferenciaImg}
-                alt="Conferencia Desarrollo Personal y Liderazgo"
-                className="rounded-2xl shadow-lg w-full max-w-md mx-auto"
-              />
+        <div className="bg-gradient-to-r from-blue-50 to-indigo-100 rounded-3xl p-6 shadow-2xl border-2 border-uniblue/20">
+          {/* Header del carrusel */}
+          <div className="flex flex-col sm:flex-row justify-between items-center mb-6">
+            <div className="flex items-center gap-3 mb-4 sm:mb-0">
+              <div className="w-3 h-8 bg-uniblue rounded-full"></div>
+              <h3 className="text-2xl font-bold text-gray-800">Eventos Destacados</h3>
             </div>
 
-            <div className="flex-1 text-center lg:text-left">
-              <div className="bg-uniblue text-white px-4 py-2 rounded-full text-sm font-bold inline-block mb-4">
-                EVENTO DESTACADO
+            {/* Controles del carrusel */}
+            <div className="flex items-center gap-4">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-gray-600 font-medium">Auto:</span>
+                <button
+                  onClick={() => setIsAutoPlaying(!isAutoPlaying)}
+                  className={`relative p-3 rounded-full transition-all duration-300 ${isAutoPlaying
+                      ? 'bg-green-500 text-white shadow-lg'
+                      : 'bg-red-500 text-white shadow-lg'
+                    }`}
+                  title={isAutoPlaying ? 'Carrusel activo - Click para pausar' : 'Carrusel pausado - Click para activar'}
+                >
+                  {isAutoPlaying ? (
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z" />
+                    </svg>
+                  ) : (
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                      <path d="M8 5v14l11-7z" />
+                    </svg>
+                  )}
+                  <div className={`absolute -top-1 -right-1 w-3 h-3 rounded-full border-2 border-white ${isAutoPlaying ? 'bg-green-400 animate-pulse' : 'bg-gray-400'
+                    }`}></div>
+                </button>
               </div>
 
-              <div className="flex items-center gap-3 mb-6">
-                <div className="w-2 h-8 bg-unigold rounded-full"></div>
-                <h3 className="text-2xl font-bold text-gray-800">
-                  Desarrollo Personal y Liderazgo
-                </h3>
+              <div className="flex gap-2">
+                <button
+                  onClick={prevSlide}
+                  className="p-3 bg-uniblue text-white rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 active:scale-95"
+                  title="Evento anterior"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                  </svg>
+                </button>
+                <button
+                  onClick={nextSlide}
+                  className="p-3 bg-uniblue text-white rounded-full shadow-lg hover:bg-blue-700 transition-all duration-300 transform hover:scale-105 active:scale-95"
+                  title="Siguiente evento"
+                >
+                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </button>
               </div>
-
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 text-gray-700">
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-uniblue rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-xs text-white">📅</span>
-                  </div>
-                  <span className="text-sm font-medium">Lun 10 Nov, 2025</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-uniblue rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-xs text-white">🕒</span>
-                  </div>
-                  <span className="text-sm font-medium">3:00 PM - 5:00 PM</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-uniblue rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-xs text-white">📍</span>
-                  </div>
-                  <span className="text-sm font-medium">Auditorio 1 - Pance</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-6 h-6 bg-uniblue rounded-full flex items-center justify-center flex-shrink-0">
-                    <span className="text-xs text-white">🎤</span>
-                  </div>
-                  <span
-                    className="text-sm font-semibold text-uniblue cursor-help hover:text-blue-700 transition-colors duration-200"
-                    onMouseEnter={(e) => mostrarTooltipPonente("Ximena Otero Pilonieta - Coach", e)}
-                    onMouseLeave={ocultarTooltip}
-                  >
-                    Ximena Otero Pilonieta
-                  </span>
-                </div>
-              </div>
-
-              {/* Cupos para la actividad destacada */}
-              <div className="mb-4">
-                {renderBadgeCupos(1)}
-              </div>
-
-              <button
-                onClick={() => handleRegistro(cronograma[0].actividades[0])}
-                disabled={!obtenerInfoCupos(1).disponible}
-                className={`px-8 py-3 rounded-md text-lg font-medium transition-colors duration-200 border-b-4 mb-4 ${!obtenerInfoCupos(1).disponible
-                  ? "bg-gray-400 text-gray-200 border-gray-500 cursor-not-allowed"
-                  : "bg-uniblue text-white hover:bg-blue-700 border-blue-800 hover:border-blue-900"
-                  }`}
-              >
-                {!obtenerInfoCupos(1).disponible ? "Cupo Agotado" : "Inscribirme"}
-              </button>
-
-              <p className="text-sm text-gray-600 italic">
-                Exclusiva para Docentes y Administrativos de UNICATÓLICA
-              </p>
             </div>
+          </div>
+
+          {/* Carrusel */}
+          <div
+            ref={carouselRef}
+            className="relative overflow-hidden rounded-2xl bg-white shadow-lg"
+            onMouseEnter={() => setIsAutoPlaying(false)}
+            onMouseLeave={() => setIsAutoPlaying(true)}
+          >
+            <div
+              className="flex transition-transform duration-500 ease-in-out"
+              style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+            >
+              {eventosDestacados.map((evento, index) => (
+                <div key={evento.id} className="w-full flex-shrink-0">
+                  <div className="flex flex-col lg:flex-row items-center gap-6 p-6">
+                    {/* Imagen del evento */}
+                    <div className="flex-1">
+                      <img
+                        src={evento.imagen || ConferenciaImg}
+                        alt={evento.titulo}
+                        className="w-full h-64 lg:h-80 object-cover rounded-2xl shadow-lg"
+                      />
+                    </div>
+
+                    {/* Información del evento */}
+                    <div className="flex-1 text-center lg:text-left">
+                      <div className="flex flex-wrap gap-2 mb-4 justify-center lg:justify-start">
+                        <div className="bg-uniblue text-white px-4 py-1 rounded-full text-sm font-bold">
+                          EVENTO DESTACADO
+                        </div>
+                        <div className="bg-unigold text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+                          <span>{getIconoTipo(evento.tipo)}</span>
+                          {evento.tipo}
+                        </div>
+                      </div>
+
+                      <h3 className="text-2xl font-bold text-gray-800 mb-4 leading-tight">
+                        {evento.titulo}
+                      </h3>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 text-gray-700">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 bg-uniblue rounded-full flex items-center justify-center flex-shrink-0">
+                            <span className="text-xs text-white">📅</span>
+                          </div>
+                          <span className="text-sm font-medium">
+                            {cronograma.find(dia =>
+                              dia.actividades.some(a => a.id === evento.id)
+                            )?.dia.replace('LUNES ', 'Lun ').replace('MARTES ', 'Mar ').replace('MIÉRCOLES ', 'Mié ').replace('JUEVES ', 'Jue ').replace('VIERNES ', 'Vie ').replace('SÁBADO ', 'Sáb ')}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 bg-uniblue rounded-full flex items-center justify-center flex-shrink-0">
+                            <span className="text-xs text-white">🕒</span>
+                          </div>
+                          <span className="text-sm font-medium">{evento.hora}</span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 bg-uniblue rounded-full flex items-center justify-center flex-shrink-0">
+                            <span className="text-xs text-white">📍</span>
+                          </div>
+                          <span className="text-sm font-medium">{evento.lugar}</span>
+                        </div>
+                        {evento.ponente && (
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 bg-uniblue rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-xs text-white">🎤</span>
+                            </div>
+                            <span
+                              className="text-sm font-semibold text-uniblue cursor-help hover:text-blue-700 transition-colors duration-200"
+                              onMouseEnter={(e) => mostrarTooltipPonente(evento.ponente, e)}
+                              onMouseLeave={ocultarTooltip}
+                            >
+                              {evento.ponente.split(' - ')[0]}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Cupos para la actividad */}
+                      <div className="mb-4">
+                        {renderBadgeCupos(evento.id)}
+                      </div>
+
+                      <button
+                        onClick={() => handleRegistro(evento)}
+                        disabled={!obtenerInfoCupos(evento.id).disponible}
+                        className={`px-8 py-3 rounded-md text-lg font-medium transition-colors duration-200 border-b-4 mb-3 ${!obtenerInfoCupos(evento.id).disponible
+                            ? "bg-gray-400 text-gray-200 border-gray-500 cursor-not-allowed"
+                            : "bg-uniblue text-white hover:bg-blue-700 border-blue-800 hover:border-blue-900"
+                          }`}
+                      >
+                        {!obtenerInfoCupos(evento.id).disponible ? "Cupo Agotado" : "Inscribirme"}
+                      </button>
+
+                      {evento.exclusivo && (
+                        <p className="text-sm text-gray-600 italic">
+                          {evento.exclusivo}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Indicadores de slide */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+              {eventosDestacados.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => goToSlide(index)}
+                  className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentSlide
+                      ? 'bg-uniblue w-8'
+                      : 'bg-gray-300 hover:bg-gray-400'
+                    }`}
+                  aria-label={`Ir al evento ${index + 1}`}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Contador de slides */}
+          <div className="text-center mt-4 text-sm text-gray-600">
+            {currentSlide + 1} de {eventosDestacados.length} eventos destacados
           </div>
         </div>
       </div>
 
+      {/* Resto del código del cronograma (se mantiene igual) */}
       {/* Cronograma por días con acordeón */}
       <div className="max-w-7xl mx-auto px-4">
         {cronograma.map((dia, index) => {
