@@ -16,6 +16,11 @@ import CarlosMolina from "../assets/ponentes/carlos-molina.jpg";
 import JorgeBris from "../assets/ponentes/jorge-bris.jpg";
 import BrandoRonald from "../assets/ponentes/HACKATON copia-8.png";
 import ComiteHackathon from "../assets/ponentes/comite-hackaton.png";
+import Monseñor from "../assets/ponentes/mons-luis-fernando-rodriguez-velasquez.jpg";
+import Vicerrector from "../assets/ponentes/jorge-silva.jpg";
+import VicSiigo from "../assets/ponentes/jaime-adalberto-lópez.jpg";
+import DecanaClara from "../assets/ponentes/clara-eugenia-satizabal.png";
+import ProfesorComputacion from "../assets/ponentes/josé-ordóñez-córdoba.jpg";
 
 // Definir tipos TypeScript
 interface Ponente {
@@ -47,6 +52,8 @@ interface Actividad {
   botonRegistro?: boolean;
   urlRegistro?: string;
   imagen?: string;
+  organizador?: string;
+  participantes?: string[]; // NUEVO CAMPO PARA CONVERSATORIOS
 }
 
 interface DiaCronograma {
@@ -173,11 +180,11 @@ export default function CronogramaActividades() {
       setCuposActividades({
         1: {
           disponible: true,
-          cuposDisponibles: 100,
+          cuposDisponibles: 80,
           cupoMaximo: 100,
           inscritos: 0,
           actividad: "Liderazgo",
-          mensaje: "Usuarios Registrados: 0/100"
+          mensaje: "Usuarios Registrados: 0/80"
         },
         2: {
           disponible: true,
@@ -361,6 +368,37 @@ export default function CronogramaActividades() {
       titulo: "Comité de Hackathon Universidades",
       foto: ComiteHackathon,
       especialidad: "Coordinación de Eventos Tecnológicos Interuniversitarios",
+    },
+    // NUEVOS PONENTES PARA EL CONVERSATORIO
+    "Monseñor Luis Fernando Rodríguez Velázquez": {
+      nombre: "Monseñor Luis Fernando Rodríguez Velázquez",
+      titulo: "Rector Universidad Católica Lumen Gentium",
+      foto: Monseñor,
+      especialidad: "Liderazgo Educativo y Gestión Universitaria",
+    },
+    "Jorge Antonio Silva Leal": {
+      nombre: "Jorge Antonio Silva Leal",
+      titulo: "Vicerrector Académico",
+      foto: Vicerrector,
+      especialidad: "Gestión Académica y Planeación Educativa",
+    },
+    "Jaime Adalberto López Vivas": {
+      nombre: "Jaime Adalberto López Vivas",
+      titulo: "Senior Vicepresidente de Siigo",
+      foto: VicSiigo,
+      especialidad: "Liderazgo Empresarial y Tecnología",
+    },
+    "Clara Eugenia Satizabal Serna": {
+      nombre: "Clara Eugenia Satizabal Serna",
+      titulo: "Decana Facultad de Ingeniería (Moderadora)",
+      foto: DecanaClara,
+      especialidad: "Ingeniería y Gestión Académica",
+    },
+    "Ing. José Armando Ordóñez Córdoba": {
+      nombre: "Ing. José Armando Ordóñez Córdoba",
+      titulo: "Profesor del Dpto. Computación y Sistemas Inteligentes - Universidad ICESI",
+      foto: ProfesorComputacion,
+      especialidad: "Inteligencia Artificial y Sistemas Computacionales",
     }
   };
 
@@ -412,7 +450,16 @@ export default function CronogramaActividades() {
           ponente: "",
           lugar: "Auditorio Lumen – Sede Meléndez",
           tipo: "Conversatorio",
-          destacado: false
+          destacado: true,
+          // NUEVO: Agregados los participantes del conversatorio
+          participantes: [
+            "Clara Eugenia Satizabal Serna - Decana Facultad de Ingeniería (Moderadora)",
+            "Ing. José Armando Ordóñez Córdoba - Profesor Universidad ICESI",
+            "Ing. Julián Portocarrero H. - Especialista en IA",
+            "Jorge Antonio Silva Leal - Vicerrector Académico",
+            "Jaime Adalberto López Vivas - Senior Vicepresidente de Siigo",
+            "Monseñor Luis Fernando Rodríguez Velázquez - Rector Universidad Católica Lumen Gentium",
+          ]
         }
       ]
     },
@@ -423,17 +470,18 @@ export default function CronogramaActividades() {
           id: 5,
           hora: "8:00 am - 12:00 pm",
           titulo: "Hackathon Colegios",
-          ponente: "Profesores Brandon Rosero - Ronald Rengifo",
-          lugar: "Salas 1, 2 – Sede Pance",
+          ponente: "",
+          lugar: "Salas de Sistemas 1, 2 – Bloque B – Sede Pance",
           tipo: "Competencia",
-          destacado: false
+          destacado: false,
+          organizador: "Profesores Brandon Rosero - Ronald Rengifo"
         },
         {
           id: 6,
           hora: "9:00 am - 12:00 pm",
           titulo: "Visita Empresarial",
           ponente: "",
-          lugar: "Centro de Innovación y Desarrollo Empresarial - CIDE",
+          lugar: "Por Confirmar",
           tipo: "Visita",
           destacado: false,
           imagen: VisitaEmpr12nov
@@ -451,22 +499,24 @@ export default function CronogramaActividades() {
           id: 8,
           hora: "2:00 pm - 5:00 pm",
           titulo: "Hackathon Unicatólica",
-          ponente: "Profesores Brandon Rosero - Ronald Rengifo",
-          lugar: "Salas 1, 2, 3 – Sede Pance",
+          ponente: "",
+          lugar: "Salas de Sistemas 1, 2, 3 – Bloque B – Sede Pance",
           tipo: "Competencia",
           destacado: false,
+          organizador: "Profesores Brandon Rosero - Ronald Rengifo"
         },
         {
           id: 9,
           hora: "6:30 pm - 9:30 pm",
           titulo: "Hackathon Universidades",
-          ponente: "Profesores José Hernando Mosquera, Kellin, Nelson Andrade",
-          lugar: "Salas 1, 2, 3 – Sede Pance",
+          ponente: "",
+          lugar: "Salas de Sistemas 1, 2, 3 – Bloque B – Sede Pance",
           tipo: "Competencia",
           destacado: true,
           imagen: HackathonImg,
           botonRegistro: true,
-          urlRegistro: "/formulario"
+          urlRegistro: "/formulario",
+          organizador: "Profesores José Hernando Mosquera, Kellin, Nelson Andrade"
         },
         {
           id: 10,
@@ -722,6 +772,144 @@ export default function CronogramaActividades() {
     };
   };
 
+  // Función para obtener el texto del botón unificado
+  const getTextoBoton = (_actividad: Actividad, infoCupos: CupoInfo): string => {
+    if (!infoCupos.disponible) {
+      return "Cupo Agotado";
+    }
+    return "Inscríbete";
+  };
+
+  // Función para obtener la clase CSS del botón unificada
+  const getClaseBoton = (infoCupos: CupoInfo): string => {
+    const baseClass = "w-full py-3 px-6 rounded-lg transition-all duration-300 font-semibold border-b-4 text-base transform hover:scale-105 active:scale-95 ";
+
+    if (!infoCupos.disponible) {
+      return baseClass + "bg-gray-400 text-gray-200 border-gray-500 cursor-not-allowed hover:scale-100";
+    }
+
+    return baseClass + "bg-gradient-to-r from-uniblue to-blue-600 text-white border-blue-800 hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl";
+  };
+
+  // Función para renderizar la información del organizador o ponente
+  const renderOrganizadorPonente = (actividad: Actividad) => {
+    if (actividad.organizador) {
+      return (
+        <div className="flex items-start gap-3">
+          <div className="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+            <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
+          </div>
+          <div className="flex-1">
+            <p className="text-sm text-gray-500 mb-1">Organizador</p>
+            <span
+              className="font-medium text-gray-800 cursor-help hover:text-green-600 transition-colors duration-200 border-b border-dashed border-gray-400"
+              onMouseEnter={(e) => mostrarTooltipPonente(actividad.organizador!, e)}
+              onMouseLeave={ocultarTooltip}
+            >
+              {actividad.organizador}
+            </span>
+          </div>
+        </div>
+      );
+    } else if (actividad.ponente) {
+      return (
+        <div className="flex items-start gap-3">
+          <div className="w-8 h-8 bg-uniblue/10 rounded-lg flex items-center justify-center flex-shrink-0">
+            <svg className="w-4 h-4 text-uniblue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+          </div>
+          <div className="flex-1">
+            <p className="text-sm text-gray-500 mb-1">Ponente</p>
+            <span
+              className="font-medium text-gray-800 cursor-help hover:text-uniblue transition-colors duration-200 border-b border-dashed border-gray-400"
+              onMouseEnter={(e) => mostrarTooltipPonente(actividad.ponente, e)}
+              onMouseLeave={ocultarTooltip}
+            >
+              {actividad.ponente}
+            </span>
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
+
+  // Función para renderizar participantes de conversatorios - CON IMÁGENES REALES
+  const renderParticipantesConversatorio = (actividad: Actividad) => {
+    if (actividad.tipo === "Conversatorio" && actividad.participantes && actividad.participantes.length > 0) {
+      return (
+        <div className="space-y-3 mt-4">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-6 h-6 bg-uniblue/10 rounded flex items-center justify-center flex-shrink-0">
+              <svg className="w-3 h-3 text-uniblue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283-.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+            <h4 className="text-sm font-semibold text-gray-800">Participantes</h4>
+          </div>
+
+          <div className="space-y-2">
+            {actividad.participantes.map((participante, index) => {
+              const nombreCompleto = participante.split(' - ')[0].trim();
+              const esModerador = participante.toLowerCase().includes('moderador');
+              const ponenteInfo = basePonentes[nombreCompleto];
+
+              return (
+                <div
+                  key={index}
+                  className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded transition-colors duration-200 group cursor-help"
+                  onMouseEnter={(e) => mostrarTooltipPonente(nombreCompleto, e)}
+                  onMouseLeave={ocultarTooltip}
+                >
+                  {/* Avatar con imagen real o iniciales */}
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden ${esModerador ? 'ring-1 ring-unigold' : ''
+                    }`}>
+                    {ponenteInfo?.foto ? (
+                      <img
+                        src={ponenteInfo.foto}
+                        alt={nombreCompleto}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div className={`w-full h-full flex items-center justify-center text-xs font-semibold ${esModerador
+                        ? 'bg-unigold/20 text-unigold'
+                        : 'bg-uniblue/10 text-uniblue'
+                        }`}>
+                        {nombreCompleto.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-baseline gap-2 flex-wrap">
+                      <span className={`text-sm font-semibold text-gray-900 break-words ${esModerador ? 'text-unigold-dark' : ''
+                        } group-hover:text-uniblue transition-colors duration-200`}>
+                        {nombreCompleto}
+                      </span>
+                      {esModerador && (
+                        <span className="bg-unigold/10 text-unigold text-xs px-2 py-0.5 rounded-full font-semibold whitespace-nowrap flex-shrink-0">
+                          Mod
+                        </span>
+                      )}
+                    </div>
+                    {participante.includes(' - ') && (
+                      <p className="text-xs text-gray-600 mt-0.5 leading-tight">
+                        {participante.split(' - ')[1]}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      );
+    }
+    return null;
+  };
   return (
     <div className="w-full my-12 relative">
       {tooltipVisible && ponenteSeleccionado && (
@@ -800,8 +988,8 @@ export default function CronogramaActividades() {
                 <button
                   onClick={() => setIsAutoPlaying(!isAutoPlaying)}
                   className={`relative p-3 rounded-full transition-all duration-300 ${isAutoPlaying
-                      ? 'bg-green-500 text-white shadow-lg'
-                      : 'bg-red-500 text-white shadow-lg'
+                    ? 'bg-green-500 text-white shadow-lg'
+                    : 'bg-red-500 text-white shadow-lg'
                     }`}
                   title={isAutoPlaying ? 'Carrusel activo - Click para pausar' : 'Carrusel pausado - Click para activar'}
                 >
@@ -853,98 +1041,103 @@ export default function CronogramaActividades() {
               className="flex transition-transform duration-500 ease-in-out"
               style={{ transform: `translateX(-${currentSlide * 100}%)` }}
             >
-              {eventosDestacados.map((evento) => (
-                <div key={evento.id} className="w-full flex-shrink-0">
-                  <div className="flex flex-col lg:flex-row items-center gap-6 p-6">
-                    {/* Imagen del evento */}
-                    <div className="flex-1">
-                      <img
-                        src={evento.imagen || ConferenciaImg}
-                        alt={evento.titulo}
-                        className="w-full h-64 lg:h-80 object-cover rounded-2xl shadow-lg"
-                      />
-                    </div>
+              {eventosDestacados.map((evento) => {
+                const infoCupos = obtenerInfoCupos(evento.id);
+                const textoBoton = getTextoBoton(evento, infoCupos);
+                const claseBoton = getClaseBoton(infoCupos);
 
-                    {/* Información del evento */}
-                    <div className="flex-1 text-center lg:text-left">
-                      <div className="flex flex-wrap gap-2 mb-4 justify-center lg:justify-start">
-                        <div className="bg-uniblue text-white px-4 py-1 rounded-full text-sm font-bold">
-                          EVENTO DESTACADO
-                        </div>
-                        <div className="bg-unigold text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
-                          <span>{getIconoTipo(evento.tipo)}</span>
-                          {evento.tipo}
-                        </div>
+                return (
+                  <div key={evento.id} className="w-full flex-shrink-0">
+                    <div className="flex flex-col lg:flex-row items-center gap-6 p-6">
+                      {/* Imagen del evento */}
+                      <div className="flex-1">
+                        <img
+                          src={evento.imagen || ConferenciaImg}
+                          alt={evento.titulo}
+                          className="w-full h-64 lg:h-80 object-cover rounded-2xl shadow-lg"
+                        />
                       </div>
 
-                      <h3 className="text-2xl font-bold text-gray-800 mb-4 leading-tight">
-                        {evento.titulo}
-                      </h3>
+                      {/* Información del evento */}
+                      <div className="flex-1 text-center lg:text-left">
+                        <div className="flex flex-wrap gap-2 mb-4 justify-center lg:justify-start">
+                          <div className="bg-uniblue text-white px-4 py-1 rounded-full text-sm font-bold">
+                            EVENTO DESTACADO
+                          </div>
+                          <div className="bg-unigold text-white px-3 py-1 rounded-full text-sm font-medium flex items-center gap-1">
+                            <span>{getIconoTipo(evento.tipo)}</span>
+                            {evento.tipo}
+                          </div>
+                        </div>
 
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 text-gray-700">
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 bg-uniblue rounded-full flex items-center justify-center flex-shrink-0">
-                            <span className="text-xs text-white">📅</span>
-                          </div>
-                          <span className="text-sm font-medium">
-                            {cronograma.find(dia =>
-                              dia.actividades.some(a => a.id === evento.id)
-                            )?.dia.replace('LUNES ', 'Lun ').replace('MARTES ', 'Mar ').replace('MIÉRCOLES ', 'Mié ').replace('JUEVES ', 'Jue ').replace('VIERNES ', 'Vie ').replace('SÁBADO ', 'Sáb ')}
-                          </span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 bg-uniblue rounded-full flex items-center justify-center flex-shrink-0">
-                            <span className="text-xs text-white">🕒</span>
-                          </div>
-                          <span className="text-sm font-medium">{evento.hora}</span>
-                        </div>
-                        <div className="flex items-center gap-2">
-                          <div className="w-6 h-6 bg-uniblue rounded-full flex items-center justify-center flex-shrink-0">
-                            <span className="text-xs text-white">📍</span>
-                          </div>
-                          <span className="text-sm font-medium">{evento.lugar}</span>
-                        </div>
-                        {evento.ponente && (
+                        <h3 className="text-2xl font-bold text-gray-800 mb-4 leading-tight">
+                          {evento.titulo}
+                        </h3>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6 text-gray-700">
                           <div className="flex items-center gap-2">
                             <div className="w-6 h-6 bg-uniblue rounded-full flex items-center justify-center flex-shrink-0">
-                              <span className="text-xs text-white">🎤</span>
+                              <span className="text-xs text-white">📅</span>
                             </div>
-                            <span
-                              className="text-sm font-semibold text-uniblue cursor-help hover:text-blue-700 transition-colors duration-200"
-                              onMouseEnter={(e) => mostrarTooltipPonente(evento.ponente, e)}
-                              onMouseLeave={ocultarTooltip}
-                            >
-                              {evento.ponente.split(' - ')[0]}
+                            <span className="text-sm font-medium">
+                              {cronograma.find(dia =>
+                                dia.actividades.some(a => a.id === evento.id)
+                              )?.dia.replace('LUNES ', 'Lun ').replace('MARTES ', 'Mar ').replace('MIÉRCOLES ', 'Mié ').replace('JUEVES ', 'Jue ').replace('VIERNES ', 'Vie ').replace('SÁBADO ', 'Sáb ')}
                             </span>
                           </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 bg-uniblue rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-xs text-white">🕒</span>
+                            </div>
+                            <span className="text-sm font-medium">{evento.hora}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <div className="w-6 h-6 bg-uniblue rounded-full flex items-center justify-center flex-shrink-0">
+                              <span className="text-xs text-white">📍</span>
+                            </div>
+                            <span className="text-sm font-medium">{evento.lugar}</span>
+                          </div>
+                          {(evento.ponente || evento.organizador) && (
+                            <div className="flex items-center gap-2">
+                              <div className="w-6 h-6 bg-uniblue rounded-full flex items-center justify-center flex-shrink-0">
+                                <span className="text-xs text-white">
+                                  {evento.organizador ? "👥" : "🎤"}
+                                </span>
+                              </div>
+                              <span
+                                className="text-sm font-semibold text-uniblue cursor-help hover:text-blue-700 transition-colors duration-200"
+                                onMouseEnter={(e) => mostrarTooltipPonente(evento.organizador || evento.ponente, e)}
+                                onMouseLeave={ocultarTooltip}
+                              >
+                                {(evento.organizador || evento.ponente).split(' - ')[0]}
+                              </span>
+                            </div>
+                          )}
+                        </div>
+
+                        {/* Cupos para la actividad */}
+                        <div className="mb-4">
+                          {renderBadgeCupos(evento.id)}
+                        </div>
+
+                        <button
+                          onClick={() => handleRegistro(evento)}
+                          disabled={!infoCupos.disponible}
+                          className={claseBoton}
+                        >
+                          {textoBoton}
+                        </button>
+
+                        {evento.exclusivo && (
+                          <p className="text-sm text-gray-600 italic">
+                            {evento.exclusivo}
+                          </p>
                         )}
                       </div>
-
-                      {/* Cupos para la actividad */}
-                      <div className="mb-4">
-                        {renderBadgeCupos(evento.id)}
-                      </div>
-
-                      <button
-                        onClick={() => handleRegistro(evento)}
-                        disabled={!obtenerInfoCupos(evento.id).disponible}
-                        className={`px-8 py-3 rounded-md text-lg font-medium transition-colors duration-200 border-b-4 mb-3 ${!obtenerInfoCupos(evento.id).disponible
-                            ? "bg-gray-400 text-gray-200 border-gray-500 cursor-not-allowed"
-                            : "bg-uniblue text-white hover:bg-blue-700 border-blue-800 hover:border-blue-900"
-                          }`}
-                      >
-                        {!obtenerInfoCupos(evento.id).disponible ? "Cupo Agotado" : "Inscribirme"}
-                      </button>
-
-                      {evento.exclusivo && (
-                        <p className="text-sm text-gray-600 italic">
-                          {evento.exclusivo}
-                        </p>
-                      )}
                     </div>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
             {/* Indicadores de slide */}
@@ -954,8 +1147,8 @@ export default function CronogramaActividades() {
                   key={index}
                   onClick={() => goToSlide(index)}
                   className={`w-3 h-3 rounded-full transition-all duration-300 ${index === currentSlide
-                      ? 'bg-uniblue w-8'
-                      : 'bg-gray-300 hover:bg-gray-400'
+                    ? 'bg-uniblue w-8'
+                    : 'bg-gray-300 hover:bg-gray-400'
                     }`}
                   aria-label={`Ir al evento ${index + 1}`}
                 />
@@ -1019,184 +1212,150 @@ export default function CronogramaActividades() {
               {/* CONTENIDO DEL ACORDEÓN */}
               {diasAbiertos[index] && (
                 <div className="bg-gradient-to-br from-gray-50 to-white p-8 border-t border-gray-200">
-                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                    {dia.actividades.map((actividad) => (
-                      <div
-                        key={actividad.id}
-                        className={`bg-white rounded-2xl shadow-sm border transition-all duration-300 hover:shadow-md overflow-hidden ${actividad.destacado
-                          ? "border-uniblue border-l-4"
-                          : "border-gray-200 border-l-4 border-l-gray-300"
-                          }`}
-                      >
-                        {/* Encabezado de la actividad */}
+                  <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {dia.actividades.map((actividad) => {
+                      const infoCupos = obtenerInfoCupos(actividad.id);
+                      const textoBoton = getTextoBoton(actividad, infoCupos);
+                      const claseBoton = getClaseBoton(infoCupos);
+
+                      return (
                         <div
-                          className={`p-4 ${actividad.destacado
-                            ? "bg-gradient-to-r from-uniblue to-blue-600"
-                            : "bg-gradient-to-r from-gray-100 to-gray-200"
+                          key={actividad.id}
+                          className={`bg-white rounded-2xl shadow-sm border transition-all duration-300 hover:shadow-md overflow-hidden ${actividad.destacado
+                            ? "border-uniblue border-l-4"
+                            : "border-gray-200 border-l-4 border-l-gray-300"
                             }`}
                         >
-                          <div className="flex items-center justify-between">
-                            <div className={`font-bold text-lg ${actividad.destacado ? "text-white" : "text-gray-800"
-                              }`}>
-                              {actividad.hora}
-                            </div>
-                            <div className="flex items-center gap-2">
-                              <span className="text-xl">{getIconoTipo(actividad.tipo)}</span>
-                              <span
-                                className={`text-xs font-semibold px-3 py-1 rounded-full ${actividad.destacado
-                                  ? "bg-white/20 text-white"
-                                  : "bg-gray-300 text-gray-700"
-                                  }`}
-                              >
-                                {actividad.tipo}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-
-                        {/* Contenido de la actividad */}
-                        <div className="p-6">
-                          <h4
-                            className={`text-xl font-bold mb-4 leading-tight ${actividad.destacado ? "text-uniblue" : "text-gray-800"
+                          {/* Encabezado de la actividad */}
+                          <div
+                            className={`p-4 ${actividad.destacado
+                              ? "bg-gradient-to-r from-uniblue to-blue-600"
+                              : "bg-gradient-to-r from-gray-100 to-gray-200"
                               }`}
                           >
-                            {actividad.titulo}
-                          </h4>
+                            <div className="flex items-center justify-between">
+                              <div className={`font-bold text-lg ${actividad.destacado ? "text-white" : "text-gray-800"
+                                }`}>
+                                {actividad.hora}
+                              </div>
+                              <div className="flex items-center gap-2">
+                                <span className="text-xl">{getIconoTipo(actividad.tipo)}</span>
+                                <span
+                                  className={`text-xs font-semibold px-3 py-1 rounded-full ${actividad.destacado
+                                    ? "bg-white/20 text-white"
+                                    : "bg-gray-300 text-gray-700"
+                                    }`}
+                                >
+                                  {actividad.tipo}
+                                </span>
+                              </div>
+                            </div>
+                          </div>
 
-                          <div className="space-y-3 mb-4">
-                            {/* Ponente */}
-                            {actividad.ponente && (
+                          {/* Contenido de la actividad */}
+                          <div className="p-6">
+                            <h4
+                              className={`text-xl font-bold mb-4 leading-tight ${actividad.destacado ? "text-uniblue" : "text-gray-800"
+                                }`}
+                            >
+                              {actividad.titulo}
+                            </h4>
+
+                            <div className="space-y-3 mb-4">
+                              {/* Organizador o Ponente */}
+                              {renderOrganizadorPonente(actividad)}
+
+                              {/* Participantes del Conversatorio */}
+                              {renderParticipantesConversatorio(actividad)}
+
+                              {/* Lugar */}
                               <div className="flex items-start gap-3">
-                                <div className="w-8 h-8 bg-uniblue/10 rounded-lg flex items-center justify-center flex-shrink-0">
-                                  <svg className="w-4 h-4 text-uniblue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                                <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                  <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                                   </svg>
                                 </div>
                                 <div className="flex-1">
-                                  <p className="text-sm text-gray-500 mb-1">Ponente</p>
-                                  <span
-                                    className="font-medium text-gray-800 cursor-help hover:text-uniblue transition-colors duration-200 border-b border-dashed border-gray-400"
-                                    onMouseEnter={(e) => mostrarTooltipPonente(actividad.ponente, e)}
-                                    onMouseLeave={ocultarTooltip}
+                                  <p className="text-sm text-gray-500 mb-1">Ubicación</p>
+                                  <button
+                                    onClick={() => abrirGoogleMaps(actividad.lugar)}
+                                    className="font-medium text-gray-800 cursor-pointer hover:text-uniblue transition-colors duration-200 border-b border-dashed border-gray-400 hover:border-uniblue text-left"
+                                    title="Haz clic para ver en Google Maps"
                                   >
-                                    {actividad.ponente}
-                                  </span>
+                                    {actividad.lugar}
+                                    <span className="ml-1 text-xs text-uniblue">📍</span>
+                                  </button>
                                 </div>
+                              </div>
+
+                              {/* Aliado estratégico */}
+                              {actividad.aliado && (
+                                <div className="flex items-start gap-3">
+                                  <div className="w-8 h-8 bg-unigold/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                                    <svg className="w-4 h-4 text-unigold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                                    </svg>
+                                  </div>
+                                  <div className="flex-1">
+                                    <p className="text-sm text-gray-500 mb-1">Aliado Estratégico</p>
+                                    <span className="font-semibold text-uniblue">{actividad.aliado}</span>
+                                  </div>
+                                </div>
+                              )}
+                            </div>
+
+                            {/* Badges */}
+                            <div className="flex flex-wrap gap-2 mb-4">
+                              {actividad.destacado && (
+                                <span className="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-semibold border border-yellow-200 flex items-center gap-1">
+                                  <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
+                                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                                  </svg>
+                                  Destacado
+                                </span>
+                              )}
+                              {actividad.exclusivo && (
+                                <span className="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full font-semibold border border-purple-200 flex items-center gap-1">
+                                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                  </svg>
+                                  {actividad.exclusivo}
+                                </span>
+                              )}
+                              {/* Badge de cupos para actividades con registro */}
+                              {(actividad.botonRegistro || (actividad.destacado && actividad.tipo === "Conferencia")) && (
+                                renderBadgeCupos(actividad.id)
+                              )}
+                            </div>
+
+                            {/* Imagen de la actividad si existe - MOVIDA ARRIBA DEL BOTÓN */}
+                            {actividad.imagen && (
+                              <div className="mb-6"> {/* Aumenté el margen inferior a mb-6 para más espacio */}
+                                <img
+                                  src={actividad.imagen}
+                                  alt={actividad.titulo}
+                                  className="w-full h-48 object-cover rounded-xl shadow-md"
+                                />
                               </div>
                             )}
 
-                            {/* Lugar */}
-                            <div className="flex items-start gap-3">
-                              <div className="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                                </svg>
-                              </div>
-                              <div className="flex-1">
-                                <p className="text-sm text-gray-500 mb-1">Ubicación</p>
+                            {/* Botón de inscripción para conferencias destacadas - MOVIDO DESPUÉS DE LA IMAGEN */}
+                            {(actividad.destacado && actividad.tipo === "Conferencia") || actividad.botonRegistro ? (
+                              <div className="mt-4">
                                 <button
-                                  onClick={() => abrirGoogleMaps(actividad.lugar)}
-                                  className="font-medium text-gray-800 cursor-pointer hover:text-uniblue transition-colors duration-200 border-b border-dashed border-gray-400 hover:border-uniblue text-left"
-                                  title="Haz clic para ver en Google Maps"
+                                  onClick={() => handleRegistro(actividad)}
+                                  disabled={!infoCupos.disponible}
+                                  className={claseBoton}
                                 >
-                                  {actividad.lugar}
-                                  <span className="ml-1 text-xs text-uniblue">📍</span>
+                                  {textoBoton}
                                 </button>
                               </div>
-                            </div>
-
-                            {/* Aliado estratégico */}
-                            {actividad.aliado && (
-                              <div className="flex items-start gap-3">
-                                <div className="w-8 h-8 bg-unigold/20 rounded-lg flex items-center justify-center flex-shrink-0">
-                                  <svg className="w-4 h-4 text-unigold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-                                  </svg>
-                                </div>
-                                <div className="flex-1">
-                                  <p className="text-sm text-gray-500 mb-1">Aliado Estratégico</p>
-                                  <span className="font-semibold text-uniblue">{actividad.aliado}</span>
-                                </div>
-                              </div>
-                            )}
+                            ) : null}
                           </div>
-
-                          {/* Badges */}
-                          <div className="flex flex-wrap gap-2 mb-4">
-                            {actividad.destacado && (
-                              <span className="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-semibold border border-yellow-200 flex items-center gap-1">
-                                <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
-                                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                                </svg>
-                                Destacado
-                              </span>
-                            )}
-                            {actividad.exclusivo && (
-                              <span className="bg-purple-100 text-purple-800 text-xs px-3 py-1 rounded-full font-semibold border border-purple-200 flex items-center gap-1">
-                                <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                </svg>
-                                {actividad.exclusivo}
-                              </span>
-                            )}
-                            {/* Badge de cupos para actividades con registro */}
-                            {(actividad.botonRegistro || (actividad.destacado && actividad.tipo === "Conferencia")) && (
-                              renderBadgeCupos(actividad.id)
-                            )}
-                          </div>
-
-                          {/* Imagen de la actividad si existe - MOVIDA ARRIBA DEL BOTÓN */}
-                          {actividad.imagen && (
-                            <div className="mb-6"> {/* Aumenté el margen inferior a mb-6 para más espacio */}
-                              <img
-                                src={actividad.imagen}
-                                alt={actividad.titulo}
-                                className="w-full h-48 object-cover rounded-xl shadow-md"
-                              />
-                            </div>
-                          )}
-
-                          {/* Botón de inscripción para conferencias destacadas - MOVIDO DESPUÉS DE LA IMAGEN */}
-                          {(actividad.destacado && actividad.tipo === "Conferencia") || actividad.botonRegistro ? (
-                            <div className="mt-4">
-                              <button
-                                onClick={() => handleRegistro(actividad)}
-                                disabled={!obtenerInfoCupos(actividad.id).disponible}
-                                className={`w-full py-3 px-6 rounded-lg transition-colors duration-200 font-medium border-b-4 text-base ${!obtenerInfoCupos(actividad.id).disponible
-                                  ? "bg-gray-400 text-gray-200 border-gray-500 cursor-not-allowed"
-                                  : actividad.id === 13 // Botón especial para Zona América
-                                    ? "bg-blue-600 text-white hover:bg-blue-700 border-blue-800 hover:border-blue-900"
-                                    : actividad.id === 2 // ✅ NUEVO: Botón especial para Acto Inaugural
-                                      ? "bg-blue-600 text-white hover:bg-blue-700 border-blue-800 hover:border-blue-900"
-                                      : "bg-uniblue text-white hover:bg-blue-700 border-blue-800 hover:border-blue-900"
-                                  }`}
-                              >
-                                {actividad.id === 13
-                                  ? !obtenerInfoCupos(actividad.id).disponible
-                                    ? "🏢 Cupo Agotado - Zona América"
-                                    : "🏢 Registrar en Visita Zona América"
-                                  : actividad.id === 2 // ✅ NUEVO: Texto especial para Acto Inaugural
-                                    ? !obtenerInfoCupos(actividad.id).disponible
-                                      ? "🎉 Cupo Agotado - Acto Inaugural"
-                                      : "🎉 Inscribirme en Acto Inaugural"
-                                    : actividad.botonRegistro
-                                      ? actividad.urlRegistro?.includes('technological')
-                                        ? !obtenerInfoCupos(actividad.id).disponible
-                                          ? "🔬 Cupo Agotado"
-                                          : "🔬 Registrar en Technological Touch"
-                                        : !obtenerInfoCupos(actividad.id).disponible
-                                          ? "🏆 Cupo Agotado"
-                                          : "🏆 Registrar en Hackathon"
-                                      : !obtenerInfoCupos(actividad.id).disponible
-                                        ? "Cupo Agotado"
-                                        : "Inscribirme"}
-                              </button>
-                            </div>
-                          ) : null}
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                 </div>
               )}
