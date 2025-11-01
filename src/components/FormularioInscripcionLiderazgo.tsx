@@ -252,7 +252,7 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                                         <div className="relative">
                                             <img
                                                 src={ximena}
-                                                alt="Ximena Otero Pilonieta"
+                                                alt="CoachXimena Otero Pilonieta"
                                                 className="w-32 h-32 rounded-full object-cover border-4 border-uniblue shadow-md"
                                             />
                                             <div className="absolute -bottom-2 -right-2 bg-unigold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">

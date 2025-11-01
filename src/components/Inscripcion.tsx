@@ -16,7 +16,6 @@ import CarlosMolina from "../assets/ponentes/carlos-molina.jpg";
 import JorgeBris from "../assets/ponentes/jorge-bris.jpg";
 import BrandoRonald from "../assets/ponentes/HACKATON copia-8.png";
 import ComiteHackathon from "../assets/ponentes/comite-hackaton.png";
-import Monseñor from "../assets/ponentes/mons-luis-fernando-rodriguez-velasquez.jpg";
 import Vicerrector from "../assets/ponentes/jorge-silva.jpg";
 import VicSiigo from "../assets/ponentes/jaime-adalberto-lópez.jpg";
 import DecanaClara from "../assets/ponentes/clara-eugenia-satizabal.png";
@@ -28,6 +27,8 @@ interface Ponente {
   titulo: string;
   foto: string;
   especialidad: string;
+  experiencia?: string;
+  linkTrayectoria?: string;
 }
 
 interface CupoInfo {
@@ -53,7 +54,7 @@ interface Actividad {
   urlRegistro?: string;
   imagen?: string;
   organizador?: string;
-  participantes?: string[]; // NUEVO CAMPO PARA CONVERSATORIOS
+  participantes?: string[];
 }
 
 interface DiaCronograma {
@@ -82,6 +83,111 @@ export default function CronogramaActividades() {
   const [currentSlide, setCurrentSlide] = useState<number>(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState<boolean>(true);
   const carouselRef = useRef<HTMLDivElement>(null);
+
+  // Estados para el temporizador del tooltip
+  const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
+  const progressBarRef = useRef<HTMLDivElement>(null);
+
+  // ✅ NUEVA FUNCIÓN: Obtener cupos por defecto específicos para cada actividad
+  const obtenerCuposPorDefecto = (): { [key: number]: CupoInfo } => {
+    return {
+      1: { // Liderazgo
+        disponible: true,
+        cuposDisponibles: 80,
+        cupoMaximo: 100,
+        inscritos: 20,
+        actividad: "Desarrollo Personal y Liderazgo",
+        mensaje: "Usuarios Registrados: 20/100"
+      },
+      2: { // Inaugural
+        disponible: true,
+        cuposDisponibles: 500,
+        cupoMaximo: 500,
+        inscritos: 0,
+        actividad: "Acto Inaugural",
+        mensaje: "Usuarios Registrados: 0/500"
+      },
+      5: { // Hackathon Colegios - NUEVO
+        disponible: true,
+        cuposDisponibles: 50,
+        cupoMaximo: 80,
+        inscritos: 30,
+        actividad: "Hackathon Colegios",
+        mensaje: "Usuarios Registrados: 30/80"
+      },
+      9: { // Hackathon Universidades
+        disponible: true,
+        cuposDisponibles: 150,
+        cupoMaximo: 150,
+        inscritos: 0,
+        actividad: "Hackathon Universidades",
+        mensaje: "Usuarios Registrados: 0/150"
+      },
+      11: { // Dobla Lumen - NUEVO
+        disponible: true,
+        cuposDisponibles: 100,
+        cupoMaximo: 100,
+        inscritos: 0,
+        actividad: "Dobla Lumen",
+        mensaje: "Usuarios Registrados: 0/100"
+      },
+      12: { // IA en la Práctica y Casos de Uso - NUEVO
+        disponible: true,
+        cuposDisponibles: 40,
+        cupoMaximo: 40,
+        inscritos: 0,
+        actividad: "IA en la Práctica y Casos de Uso",
+        mensaje: "Usuarios Registrados: 0/40"
+      },
+      13: { // Zona América
+        disponible: true,
+        cuposDisponibles: 40,
+        cupoMaximo: 40,
+        inscritos: 0,
+        actividad: "Visita Empresarial – ZONAMERICA",
+        mensaje: "Usuarios Registrados: 0/40"
+      },
+      14: { // Olimpiada en Lógica Matemática - NUEVO
+        disponible: true,
+        cuposDisponibles: 100,
+        cupoMaximo: 100,
+        inscritos: 0,
+        actividad: "Olimpiada en Lógica Matemática",
+        mensaje: "Usuarios Registrados: 0/100"
+      },
+      15: { // Technological Touch
+        disponible: true,
+        cuposDisponibles: 200,
+        cupoMaximo: 200,
+        inscritos: 0,
+        actividad: "Technological Touch 2025",
+        mensaje: "Usuarios Registrados: 0/200"
+      },
+      21: { // Visita Empresarial CDI Alimentos Cárnicos - NUEVO
+        disponible: true,
+        cuposDisponibles: 24,
+        cupoMaximo: 24,
+        inscritos: 0,
+        actividad: "Visita Empresarial CDI ALIMENTOS CÁRNICOS",
+        mensaje: "Usuarios Registrados: 0/24"
+      }
+    };
+  };
+
+  // ✅ NUEVA FUNCIÓN: Obtener cupo por defecto para una actividad específica
+  const obtenerCupoPorDefecto = (id: number): { id: number, data: CupoInfo } => {
+    const cuposPorDefecto = obtenerCuposPorDefecto();
+    const cupoDefault = cuposPorDefecto[id] || {
+      disponible: true,
+      cuposDisponibles: 40,
+      cupoMaximo: 40,
+      inscritos: 0,
+      actividad: `Actividad ${id}`,
+      mensaje: "Usuarios Registrados: 0/40"
+    };
+
+    return { id, data: cupoDefault };
+  };
 
   // Función para cargar los cupos de las actividades
   const cargarCuposActividades = async () => {
@@ -137,31 +243,13 @@ export default function CronogramaActividades() {
             return { id, data: cupoInfo };
           } else {
             console.warn(`Error en respuesta para actividad ${id}:`, response.status);
-            return {
-              id,
-              data: {
-                disponible: true,
-                cuposDisponibles: 50,
-                cupoMaximo: 50,
-                inscritos: 0,
-                actividad: `Actividad ${id}`,
-                mensaje: "Usuarios Registrados: 0/50"
-              }
-            };
+            // ✅ NUEVO: Retornar valores por defecto específicos para cada actividad
+            return obtenerCupoPorDefecto(id);
           }
         } catch (error) {
           console.error(`Error cargando registros para actividad ${id}:`, error);
-          return {
-            id,
-            data: {
-              disponible: true,
-              cuposDisponibles: 50,
-              cupoMaximo: 50,
-              inscritos: 0,
-              actividad: `Actividad ${id}`,
-              mensaje: "Usuarios Registrados: 0/50"
-            }
-          };
+          // ✅ NUEVO: Retornar valores por defecto específicos para cada actividad
+          return obtenerCupoPorDefecto(id);
         }
       });
 
@@ -177,48 +265,8 @@ export default function CronogramaActividades() {
       setCuposActividades(nuevosCupos);
     } catch (error) {
       console.error('Error cargando registros:', error);
-      setCuposActividades({
-        1: {
-          disponible: true,
-          cuposDisponibles: 80,
-          cupoMaximo: 100,
-          inscritos: 0,
-          actividad: "Liderazgo",
-          mensaje: "Usuarios Registrados: 0/80"
-        },
-        2: {
-          disponible: true,
-          cuposDisponibles: 500,
-          cupoMaximo: 500,
-          inscritos: 0,
-          actividad: "Inaugural",
-          mensaje: "Usuarios Registrados: 0/500"
-        },
-        9: {
-          disponible: true,
-          cuposDisponibles: 150,
-          cupoMaximo: 150,
-          inscritos: 0,
-          actividad: "Hackathon Universidades",
-          mensaje: "Usuarios Registrados: 0/150"
-        },
-        13: {
-          disponible: true,
-          cuposDisponibles: 40,
-          cupoMaximo: 40,
-          inscritos: 0,
-          actividad: "Zona América",
-          mensaje: "Usuarios Registrados: 0/40"
-        },
-        15: {
-          disponible: true,
-          cuposDisponibles: 200,
-          cupoMaximo: 200,
-          inscritos: 0,
-          actividad: "Technological Touch",
-          mensaje: "Usuarios Registrados: 0/200"
-        }
-      });
+      // ✅ NUEVO: Estado por defecto actualizado con los nuevos cupos
+      setCuposActividades(obtenerCuposPorDefecto());
     } finally {
       setCargandoCupos(false);
     }
@@ -235,7 +283,9 @@ export default function CronogramaActividades() {
 
     // ✅ SIEMPRE retorna un objeto CupoInfo, nunca null
     if (!info) {
-      return {
+      // ✅ NUEVO: Usar los valores por defecto específicos
+      const cuposPorDefecto = obtenerCuposPorDefecto();
+      return cuposPorDefecto[actividadId] || {
         disponible: true,
         cuposDisponibles: 40,
         cupoMaximo: 40,
@@ -321,41 +371,45 @@ export default function CronogramaActividades() {
 
   // Base de datos de ponentes con tipado
   const basePonentes: { [key: string]: Ponente } = {
-    "Ximena Otero Pilonieta - Coach": {
-      nombre: "Ximena Otero Pilonieta",
-      titulo: "Coach Profesional & Consultora en Liderazgo",
+    "Coach Ximena Otero Pilonieta": {
+      nombre: "Coach Ximena Otero Pilonieta",
+      titulo: "Abogada & Coach en Eneagrama, Desarrollo Personal y Liderazgo",
       foto: XimenaOtero,
       especialidad: "Desarrollo Personal y Liderazgo",
+      experiencia: "Profesional Especializado Grado 33, Corte Constitucional",
+      linkTrayectoria: "https://www.linkedin.com/in/ximena-otero-pilonieta-73482339/"
     },
-    "Ing. Julián Portocarrero H.": {
-      nombre: "Julián Portocarrero Hermann",
-      titulo: "Ingeniero de Sistemas & Especialista en IA",
+    "P&D Julián Portocarrero Hermann": {
+      nombre: "P&D Julián Portocarrero Hermann",
+      titulo: "Ingeniero Mecánico",
       foto: JulianPortocarrero,
-      especialidad: "Inteligencia Artificial y Educación",
-    },
-    "PhD Julián Portocarrero Hermann": {
-      nombre: "Julián Portocarrero Hermann",
-      titulo: "PhD en Ciencias de la Computación",
-      foto: JulianPortocarrero,
-      especialidad: "Investigación en IA y Machine Learning",
+      especialidad: "Ingeniero Mecánico",
+      experiencia: "Gerente Técnico, P&D Ingeniería SAS; Docente, UNICUCES & EMAVI; Gerente Técnico, Pincay Ingenieros SAS; Docente-Investigador UAO",
+      linkTrayectoria: "https://www.linkedin.com/in/juli%C3%A1n-portocarrero-77b95148/"
     },
     "Mag. Lorena Cerón": {
-      nombre: "Lorena Cerón",
-      titulo: "Magister en Ingeniería de Software",
+      nombre: "Ing. Lorena Cerón",
+      titulo: "Ingeniera de Sistemas, Especialista y Magíster en Informática Educativa",
       foto: LorenaCeron,
       especialidad: "IA Aplicada y Casos de Uso Empresarial",
+      experiencia: "Profesora Facultad de Ingeniería, Programa Ingeniería de Sistemas, Modalidad Virtual y Sincrónica Universidad Santiago de Cali",
+      linkTrayectoria: "https://www.linkedin.com/in/lorena-cer%C3%B3n-9b485247/"
     },
     "Mag. Carlos Molina": {
-      nombre: "Carlos Molina",
-      titulo: "Magister en Educación & Tecnología",
+      nombre: "Ing. Carlos Molina",
+      titulo: "Profesor de Ingeniería Informática",
       foto: CarlosMolina,
-      especialidad: "Metodologías de Enseñanza y Tecnología Educativa",
+      especialidad: "Director de Proyectos de Ingeniería Informática, Redtauros",
+      experiencia: "Profesor de Ingeniería Informática, Unicatólica; Director de Proyectos de Ingeniería Informática, Redtauros y Prometheus Techs; Lider Formación y Desarrollo, Cafeto Software; Docente en Redes, Telecomunicaciones, Linux y Windows Server, Utap Cali",
+      linkTrayectoria: "https://www.linkedin.com/in/carlos-eduardo-molina-contreras-455a0931/"
     },
-    "PhD Jorge Luis Bris": {
-      nombre: "Jorge Luis Bris",
-      titulo: "PhD en Ingeniería de Sistemas",
+    "P&D Jorge Luis Bris": {
+      nombre: "P&D Jorge Luis Bris",
+      titulo: "Full Professor - Mechanical Engineering Department en Universidad del Norte",
       foto: JorgeBris,
       especialidad: "Formación en Ingeniería y Acreditación de Programas",
+      experiencia: "Sala de Ingeniería, Industria y Construcción CONACES, Ministerio de Educación Nacional; Full Professor - Mechanical Engineering Department, Universidad del Norte",
+      linkTrayectoria: "https://www.linkedin.com/in/jorge-bris-4355a673/"
     },
     "Profesores Brandon Rosero - Ronald Rengifo": {
       nombre: "Brandon Rosero y Ronald Rengifo",
@@ -363,42 +417,44 @@ export default function CronogramaActividades() {
       foto: BrandoRonald,
       especialidad: "Hackathons y Competencias de Programación",
     },
-    "Profesores José Hernando Mosquera, Kellin, Nelson Andrade": {
-      nombre: "José Hernando Mosquera, Kellin, Nelson Andrade",
+    "Profesores José Hernando Mosquera & Nelson Andrade": {
+      nombre: "Profesores José Hernando Mosquera & Nelson Andrade",
       titulo: "Comité de Hackathon Universidades",
       foto: ComiteHackathon,
       especialidad: "Coordinación de Eventos Tecnológicos Interuniversitarios",
     },
     // NUEVOS PONENTES PARA EL CONVERSATORIO
-    "Monseñor Luis Fernando Rodríguez Velázquez": {
-      nombre: "Monseñor Luis Fernando Rodríguez Velázquez",
-      titulo: "Rector Universidad Católica Lumen Gentium",
-      foto: Monseñor,
-      especialidad: "Liderazgo Educativo y Gestión Universitaria",
-    },
-    "Jorge Antonio Silva Leal": {
-      nombre: "Jorge Antonio Silva Leal",
+    "P&D Jorge Antonio Silva Leal": {
+      nombre: "P&D Jorge Antonio Silva Leal",
       titulo: "Vicerrector Académico",
       foto: Vicerrector,
       especialidad: "Gestión Académica y Planeación Educativa",
+      experiencia: "Vicerrector Académico, Unicatólica; Vicerrector Académico, Decano Facultad de Ingeniería, Universidad Santiago de Cali",
+      linkTrayectoria: "https://www.linkedin.com/in/jorge-antonio-silva-leal-a36394326/"
     },
-    "Jaime Adalberto López Vivas": {
-      nombre: "Jaime Adalberto López Vivas",
-      titulo: "Senior Vicepresidente de Siigo",
+    "P&D Jaime Adalberto López Vivas": {
+      nombre: "P&D Jaime Adalberto López Vivas",
+      titulo: "Senior VP of Engineering at SIIGO | Software Architect | Tech Mentor",
       foto: VicSiigo,
       especialidad: "Liderazgo Empresarial y Tecnología",
+      experiencia: "Senior VP of Engineering at SIIGO, Software Architect, Software Engineer, SIIGO; University Teacher, Universidad del Cauca",
+      linkTrayectoria: "https://www.linkedin.com/in/jaimelopezv/"
     },
-    "Clara Eugenia Satizabal Serna": {
-      nombre: "Clara Eugenia Satizabal Serna",
-      titulo: "Decana Facultad de Ingeniería (Moderadora)",
+    "Ing. Clara Eugenia Satizabal Serna": {
+      nombre: "Ing. Clara Eugenia Satizabal Serna",
+      titulo: "Decana Facultad de Ingeniería",
       foto: DecanaClara,
-      especialidad: "Ingeniería y Gestión Académica",
+      especialidad: "Gerencia de Proyectos, Maestría en Gestión de Proyectos Tecnológicos y candidata a Doctora en Ciencias de la Educación",
+      experiencia: "Docente, Investigadora y Directora de Programas Académicos",
+      linkTrayectoria: "https://lnkd.in/gqGwkJvX"
     },
     "Ing. José Armando Ordóñez Córdoba": {
       nombre: "Ing. José Armando Ordóñez Córdoba",
       titulo: "Profesor del Dpto. Computación y Sistemas Inteligentes - Universidad ICESI",
       foto: ProfesorComputacion,
-      especialidad: "Inteligencia Artificial y Sistemas Computacionales",
+      especialidad: "Acompañando organizaciones en la adopción de IA, a través de diagnóstico, formación ejecutiva y desarrollo de soluciones con impacto medible",
+      experiencia: "Artificial Intelligence Masters Director, Director of Data Science Masters, Universidad ICESI; PostDoctoral AI Researcher, AI Researcher, Universidad del Cauca",
+      linkTrayectoria: "https://www.linkedin.com/in/armandoordonez/"
     }
   };
 
@@ -410,7 +466,7 @@ export default function CronogramaActividades() {
           id: 1,
           hora: "3:00 pm - 5:00 pm",
           titulo: "Desarrollo Personal y Liderazgo",
-          ponente: "Ximena Otero Pilonieta - Coach",
+          ponente: "Coach Ximena Otero Pilonieta",
           lugar: "Auditorio 1 – Sede Pance",
           tipo: "Conferencia",
           destacado: true,
@@ -437,7 +493,7 @@ export default function CronogramaActividades() {
           id: 3,
           hora: "7:20 pm - 8:20 pm",
           titulo: "Aplicaciones de la I.A en la Educación",
-          ponente: "Ing. Julián Portocarrero H.",
+          ponente: "P&D Julián Portocarrero Hermann",
           lugar: "Auditorio Lumen – Sede Meléndez",
           tipo: "Conferencia",
           aliado: "Escuela Militar de Aviación Marco Fidel Suarez – EMAVI",
@@ -451,14 +507,12 @@ export default function CronogramaActividades() {
           lugar: "Auditorio Lumen – Sede Meléndez",
           tipo: "Conversatorio",
           destacado: true,
-          // NUEVO: Agregados los participantes del conversatorio
           participantes: [
-            "Clara Eugenia Satizabal Serna - Decana Facultad de Ingeniería (Moderadora)",
-            "Ing. José Armando Ordóñez Córdoba - Profesor Universidad ICESI",
-            "Ing. Julián Portocarrero H. - Especialista en IA",
-            "Jorge Antonio Silva Leal - Vicerrector Académico",
-            "Jaime Adalberto López Vivas - Senior Vicepresidente de Siigo",
-            "Monseñor Luis Fernando Rodríguez Velázquez - Rector Universidad Católica Lumen Gentium",
+            "Ing. Clara Eugenia Satizabal Serna - Decana Facultad de Ingeniería",
+            "Ing. José Armando Ordóñez Córdoba - Profesor del Dpto. Computación y Sistemas Inteligentes - Universidad ICESI",
+            "P&D Jaime Adalberto López Vivas - Senior VP of Engineering at SIIGO",
+            "P&D Jorge Antonio Silva Leal - Vicerrector Académico",
+            "P&D Julián Portocarrero Hermann - Ingeniero Mecánico",
           ]
         }
       ]
@@ -490,7 +544,7 @@ export default function CronogramaActividades() {
           id: 7,
           hora: "10:00 am - 11:00 am",
           titulo: "Conferencia",
-          ponente: "PhD Julián Portocarrero Hermann",
+          ponente: "P&D Julián Portocarrero Hermann",
           lugar: "Auditorio 1 – Sede Pance",
           tipo: "Conferencia",
           destacado: false
@@ -516,7 +570,7 @@ export default function CronogramaActividades() {
           imagen: HackathonImg,
           botonRegistro: true,
           urlRegistro: "/formulario",
-          organizador: "Profesores José Hernando Mosquera, Kellin, Nelson Andrade"
+          organizador: "Profesores José Hernando Mosquera & Nelson Andrade"
         },
         {
           id: 10,
@@ -612,7 +666,7 @@ export default function CronogramaActividades() {
           id: 18,
           hora: "11:00 am - 12:00 pm",
           titulo: "Entrevista: La formación de los programas de Ingeniería. Caso Universidad del Norte",
-          ponente: "PhD Jorge Luis Bris",
+          ponente: "P&D Jorge Luis Bris",
           lugar: "Estudio de Radio Lumen – Sede Meléndez",
           tipo: "Entrevista",
           destacado: false
@@ -684,6 +738,80 @@ export default function CronogramaActividades() {
     return () => clearInterval(interval);
   }, [isAutoPlaying, currentSlide]);
 
+  // Función para detener el ocultamiento automático
+  const detenerOcultamiento = () => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      setTimeoutId(null);
+    }
+    // Detener la animación de la barra de progreso
+    if (progressBarRef.current) {
+      progressBarRef.current.style.transition = 'none';
+      progressBarRef.current.style.width = '100%';
+    }
+  };
+
+  // Función para iniciar el ocultamiento después de tiempo
+  const iniciarOcultamiento = () => {
+    // Esperar 5 segundos antes de ocultar
+    const id = setTimeout(() => {
+      ocultarTooltip();
+    }, 5000);
+    setTimeoutId(id);
+
+    // Reiniciar animación de barra de progreso
+    if (progressBarRef.current) {
+      progressBarRef.current.style.transition = 'width 5s linear';
+      progressBarRef.current.style.width = '0%';
+    }
+  };
+
+  // Función para mostrar tooltip de ponente
+  const mostrarTooltipPonente = (ponenteNombre: string, event: React.MouseEvent): void => {
+    const ponenteInfo = basePonentes[ponenteNombre];
+    if (ponenteInfo) {
+      setPonenteSeleccionado(ponenteInfo);
+      setTooltipPosition({
+        x: event.clientX,
+        y: event.clientY
+      });
+      setTooltipVisible(true);
+
+      // Iniciar temporizador para ocultar automáticamente después de 5 segundos
+      const id = setTimeout(() => {
+        ocultarTooltip();
+      }, 5000);
+      setTimeoutId(id);
+
+      // Iniciar animación de barra de progreso
+      setTimeout(() => {
+        if (progressBarRef.current) {
+          progressBarRef.current.style.transition = 'width 5s linear';
+          progressBarRef.current.style.width = '0%';
+        }
+      }, 100);
+    }
+  };
+
+  // Función para ocultar tooltip
+  const ocultarTooltip = (): void => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+      setTimeoutId(null);
+    }
+    setTooltipVisible(false);
+    setPonenteSeleccionado(null);
+  };
+
+  // Limpiar timeout al desmontar el componente
+  useEffect(() => {
+    return () => {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [timeoutId]);
+
   const getIconoTipo = (tipo: string): string => {
     const iconos: { [key: string]: string } = {
       Conferencia: "🎤",
@@ -744,24 +872,6 @@ export default function CronogramaActividades() {
       // Comportamiento por defecto para otras actividades
       window.location.href = `${FORM_URL}?actividad=${actividad.id}`;
     }
-  };
-
-  // Funciones para manejar el tooltip con tipado correcto
-  const mostrarTooltipPonente = (ponenteNombre: string, event: React.MouseEvent): void => {
-    const ponenteInfo = basePonentes[ponenteNombre];
-    if (ponenteInfo) {
-      setPonenteSeleccionado(ponenteInfo);
-      setTooltipPosition({
-        x: event.clientX,
-        y: event.clientY
-      });
-      setTooltipVisible(true);
-    }
-  };
-
-  const ocultarTooltip = (): void => {
-    setTooltipVisible(false);
-    setPonenteSeleccionado(null);
   };
 
   const parseFecha = (fechaStr: string): { diaNumero: string; mes: string } => {
@@ -910,54 +1020,138 @@ export default function CronogramaActividades() {
     }
     return null;
   };
+
   return (
     <div className="w-full my-12 relative">
       {tooltipVisible && ponenteSeleccionado && (
         <div
-          className="fixed z-50 bg-white rounded-2xl shadow-2xl p-6 max-w-sm animate-scale-in border border-gray-100"
+          className="fixed z-50 bg-white rounded-xl shadow-2xl p-5 max-w-md border border-gray-200/80 backdrop-blur-sm"
           style={{
-            left: `${tooltipPosition.x + 20}px`,
-            top: `${tooltipPosition.y - 100}px`,
+            left: `${Math.min(tooltipPosition.x + 15, window.innerWidth - 420)}px`,
+            top: `${Math.max(tooltipPosition.y - 200, 20)}px`,
           }}
-          onMouseLeave={ocultarTooltip}
+          onMouseEnter={detenerOcultamiento}
+          onMouseLeave={iniciarOcultamiento}
         >
-          {/* Borde gradiente decorativo */}
-          <div className="absolute -inset-0.5 bg-gradient-to-r from-uniblue to-blue-600 rounded-2xl -z-10 opacity-10"></div>
+          {/* Indicador de tiempo */}
+          <div className="absolute top-3 right-3 flex items-center gap-1">
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span className="text-xs text-gray-500 font-medium">Disponible</span>
+          </div>
 
-          <div className="flex items-start gap-4 mb-4">
+          {/* Header con gradiente sutil */}
+          <div className="flex items-start gap-4 mb-4 pb-4 border-b border-gray-100">
             <div className="relative flex-shrink-0">
               {ponenteSeleccionado.foto ? (
-                <div className="relative group">
+                <div className="relative">
                   <img
                     src={ponenteSeleccionado.foto}
                     alt={ponenteSeleccionado.nombre}
-                    className="w-16 h-16 rounded-xl object-cover shadow-md border-2 border-white transition-transform duration-300 group-hover:scale-105"
+                    className="w-20 h-20 rounded-lg object-cover shadow-md border border-gray-200"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-br from-transparent to-uniblue/20 rounded-xl"></div>
+                  <div className="absolute inset-0 bg-gradient-to-br from-transparent to-gray-900/10 rounded-lg"></div>
                 </div>
               ) : (
-                <div className="w-16 h-16 bg-gradient-to-br from-uniblue to-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-lg shadow-md hover:shadow-lg transition-shadow duration-300">
-                  {ponenteSeleccionado.nombre.split(' ').map(n => n[0]).join('').toUpperCase()}
+                <div className="w-20 h-20 bg-gradient-to-br from-uniblue to-blue-600 rounded-lg flex items-center justify-center text-white font-bold text-xl shadow-md">
+                  {ponenteSeleccionado.nombre.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
                 </div>
               )}
             </div>
 
             <div className="flex-1 min-w-0">
-              <h3 className="font-bold text-gray-800 text-lg leading-tight mb-1">
+              <h3 className="font-bold text-gray-900 text-lg leading-tight mb-2">
                 {ponenteSeleccionado.nombre}
               </h3>
-              <div className="inline-flex items-center bg-uniblue/10 text-uniblue px-3 py-1 rounded-full text-xs font-semibold mb-2 border border-uniblue/20">
-                <span className="w-1.5 h-1.5 bg-uniblue rounded-full mr-2 animate-pulse"></span>
-                {ponenteSeleccionado.titulo}
+              
+              <div className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 mb-3">
+                <p className="text-sm font-semibold text-blue-800 leading-tight">
+                  {ponenteSeleccionado.titulo}
+                </p>
               </div>
-              <p className="text-sm text-gray-600 leading-relaxed">
-                {ponenteSeleccionado.especialidad}
-              </p>
+              
+              {ponenteSeleccionado.especialidad && (
+                <div className="flex items-start gap-2 mb-2">
+                  <svg className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                  <p className="text-sm text-gray-700 font-medium">
+                    {ponenteSeleccionado.especialidad}
+                  </p>
+                </div>
+              )}
             </div>
           </div>
 
-          <div className="absolute -left-2 top-12">
-            <div className="w-4 h-4 bg-white border-l border-b border-gray-100 rotate-45 shadow-sm"></div>
+          {/* Contenido informativo */}
+          <div className="space-y-3">
+            {ponenteSeleccionado.experiencia && (
+              <div>
+                <div className="flex items-center gap-2 mb-3">
+                  <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2V6" />
+                  </svg>
+                  <h4 className="text-sm font-semibold text-gray-800">Experiencia Profesional</h4>
+                </div>
+                <div className="space-y-2 bg-gray-50 rounded-lg p-4 border border-gray-200">
+                  {ponenteSeleccionado.experiencia.split(';').map((item, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <div className="w-5 h-5 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <svg className="w-3 h-3 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                      <span className="text-sm text-gray-700 leading-relaxed">{item.trim()}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {ponenteSeleccionado.linkTrayectoria && (
+              <div className="pt-3 border-t border-gray-100">
+                <div className="flex items-center gap-2 mb-2">
+                  <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                  </svg>
+                  <h4 className="text-sm font-semibold text-gray-800">Conecta con el profesional</h4>
+                </div>
+                <a 
+                  href={ponenteSeleccionado.linkTrayectoria} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 w-full px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-200 font-semibold text-sm shadow-md hover:shadow-lg group"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    console.log('Navegando a LinkedIn de:', ponenteSeleccionado.nombre);
+                  }}
+                >
+                  <svg className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
+                  <span className="flex-1 text-center">Ver Perfil en LinkedIn</span>
+                  <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+                <p className="text-xs text-gray-500 text-center mt-2">
+                  El enlace se abrirá en una nueva pestaña
+                </p>
+              </div>
+            )}
+          </div>
+
+          {/* Barra de tiempo */}
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200 rounded-b-xl overflow-hidden">
+            <div 
+              className="h-full bg-green-500 transition-all duration-5000 ease-linear"
+              style={{ width: '100%' }}
+              ref={progressBarRef}
+            ></div>
+          </div>
+
+          {/* Flecha del tooltip */}
+          <div className="absolute -left-2 top-8">
+            <div className="w-3 h-3 bg-white border-l border-b border-gray-200 rotate-45"></div>
           </div>
         </div>
       )}
@@ -1163,7 +1357,6 @@ export default function CronogramaActividades() {
         </div>
       </div>
 
-      {/* Resto del código del cronograma (se mantiene igual) */}
       {/* Cronograma por días con acordeón */}
       <div className="max-w-7xl mx-auto px-4">
         {cronograma.map((dia, index) => {
@@ -1329,9 +1522,9 @@ export default function CronogramaActividades() {
                               )}
                             </div>
 
-                            {/* Imagen de la actividad si existe - MOVIDA ARRIBA DEL BOTÓN */}
+                            {/* Imagen de la actividad si existe */}
                             {actividad.imagen && (
-                              <div className="mb-6"> {/* Aumenté el margen inferior a mb-6 para más espacio */}
+                              <div className="mb-6">
                                 <img
                                   src={actividad.imagen}
                                   alt={actividad.titulo}
@@ -1340,7 +1533,7 @@ export default function CronogramaActividades() {
                               </div>
                             )}
 
-                            {/* Botón de inscripción para conferencias destacadas - MOVIDO DESPUÉS DE LA IMAGEN */}
+                            {/* Botón de inscripción para conferencias destacadas */}
                             {(actividad.destacado && actividad.tipo === "Conferencia") || actividad.botonRegistro ? (
                               <div className="mt-4">
                                 <button
