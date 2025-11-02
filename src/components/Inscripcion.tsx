@@ -195,7 +195,7 @@ export default function CronogramaActividades() {
       setCargandoCupos(true);
 
       // IDs de actividades que tienen registro
-      const actividadesConRegistro = [1, 2, 9, 13, 15]; // Liderazgo, Inaugural, Hackathon, ZonaAmerica, Technological Touch
+      const actividadesConRegistro = [1, 2, 9, 11, 13, 15]; // Liderazgo, Inaugural, Hackathon, DoblaLumen, ZonaAmerica, Technological Touch
 
       const promesasCupos = actividadesConRegistro.map(async (id) => {
         try {
@@ -210,6 +210,9 @@ export default function CronogramaActividades() {
               break;
             case 9: // Hackathon
               endpoint = `${API_URL}/inscripciones/estado-registros`;
+              break;
+              case 11: // DoblaLumen
+              endpoint = `${API_URL}/doblalumen/estado-registros`; // ✅ CORREGIDO
               break;
             case 13: // Zona América
               endpoint = `${API_URL}/visitazonaamerica/estado-registros`;
@@ -589,7 +592,10 @@ export default function CronogramaActividades() {
           ponente: "",
           lugar: "Auditorio 1 – Sede Pance",
           tipo: "Evento",
-          destacado: false
+          destacado: true,
+          botonRegistro: true,
+          urlRegistro: "/formulario-doblalumen",
+          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762091474/DOBLALUMEN-8_toblne.png",
         },
         {
           id: 12,
