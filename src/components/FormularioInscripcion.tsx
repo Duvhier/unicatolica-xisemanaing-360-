@@ -61,7 +61,7 @@ const FormularioInscripcion: React.FC = () => {
     correo: '',
     telefono: '',
     rol: '',
-    tipoEstudiante: '',
+    tipoEstudiante: 'participante',
     idEstudiante: '',
     facultad: '',
     programa: '',
@@ -84,11 +84,11 @@ const FormularioInscripcion: React.FC = () => {
   const [successOpen, setSuccessOpen] = useState(false);
   const [qrSrc, setQrSrc] = useState<string | null>(null);
   const [aceptaTerminos, setAceptaTerminos] = useState(false);
-  
+
   // ✅ NUEVOS ESTADOS para manejar errores de duplicidad
   const [fieldErrors, setFieldErrors] = useState<FieldError[]>([]);
   const [isCheckingDuplicates, setIsCheckingDuplicates] = useState(false);
-  
+
   const formSectionRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -104,7 +104,7 @@ const FormularioInscripcion: React.FC = () => {
         (f: Facultad) => f.id === formData.facultad
       );
       setProgramasFiltrados(facultadSeleccionada ? facultadSeleccionada.programas : []);
-      
+
       // Reset programa cuando cambia la facultad
       setFormData(prev => ({
         ...prev,
@@ -117,6 +117,7 @@ const FormularioInscripcion: React.FC = () => {
   }, [formData.facultad]);
 
   // Reset campos de equipo cuando cambia el tipo de estudiante
+  /*
   useEffect(() => {
     if (formData.rol === 'estudiante' && formData.tipoEstudiante !== 'participante') {
       setFormData(prev => ({
@@ -132,6 +133,7 @@ const FormularioInscripcion: React.FC = () => {
       }));
     }
   }, [formData.tipoEstudiante, formData.rol]);
+  */
 
   // ✅ NUEVA FUNCIÓN: Limpiar errores de un campo específico
   const clearFieldError = (fieldName: string) => {
@@ -140,7 +142,7 @@ const FormularioInscripcion: React.FC = () => {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
-    
+
     setFormData(prev => ({
       ...prev,
       [name]: value
@@ -170,18 +172,18 @@ const FormularioInscripcion: React.FC = () => {
   const generarOpcionesSemestres = () => {
     const programaSeleccionado = programasFiltrados.find(p => p.id === formData.programa);
     const maxSemestres = programaSeleccionado ? programaSeleccionado.semestres : 10;
-    
+
     const opciones = [];
     for (let i = 1; i <= maxSemestres; i++) {
-      const roman = i === 1 ? 'I' : 
-                   i === 2 ? 'II' : 
-                   i === 3 ? 'III' : 
-                   i === 4 ? 'IV' : 
-                   i === 5 ? 'V' : 
-                   i === 6 ? 'VI' : 
-                   i === 7 ? 'VII' : 
-                   i === 8 ? 'VIII' : 
-                   i === 9 ? 'IX' : 'X';
+      const roman = i === 1 ? 'I' :
+        i === 2 ? 'II' :
+          i === 3 ? 'III' :
+            i === 4 ? 'IV' :
+              i === 5 ? 'V' :
+                i === 6 ? 'VI' :
+                  i === 7 ? 'VII' :
+                    i === 8 ? 'VIII' :
+                      i === 9 ? 'IX' : 'X';
       opciones.push(
         <option key={i} value={roman}>
           {roman} Semestre
@@ -213,7 +215,7 @@ const FormularioInscripcion: React.FC = () => {
 
       if (response.ok) {
         const data = await response.json();
-        
+
         // Actualizar errores basado en la respuesta
         const newErrors: FieldError[] = [];
         if (!data.disponibilidad.cedula && field === 'cedula') {
@@ -268,23 +270,9 @@ const FormularioInscripcion: React.FC = () => {
 
     // Validaciones específicas por rol
     if (formData.rol === 'estudiante') {
-      if (!formData.tipoEstudiante || !formData.idEstudiante.trim() || !formData.facultad || !formData.programa || !formData.semestre) {
+      if (!formData.idEstudiante.trim() || !formData.facultad || !formData.programa || !formData.semestre) {
         alert('Por favor complete todos los campos requeridos para estudiantes');
         return false;
-      }
-
-      // Validaciones específicas para participantes
-      if (formData.tipoEstudiante === 'participante') {
-        if (!formData.nombre_equipo.trim() || 
-            !formData.nombre_proyecto.trim() || 
-            !formData.descripcion_proyecto.trim() || 
-            !formData.categoria_participacion || 
-            !formData.institucion_equipo.trim() || 
-            !formData.email_equipo.trim() || 
-            !formData.integrantes.trim()) {
-          alert('Por favor complete todos los campos requeridos para el equipo participante');
-          return false;
-        }
       }
     } else if (formData.rol === 'egresado') {
       if (!formData.programa) {
@@ -319,7 +307,7 @@ const FormularioInscripcion: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validarFormulario()) {
       return;
     }
@@ -343,9 +331,7 @@ const FormularioInscripcion: React.FC = () => {
         payload.facultad = formData.facultad;
         payload.programa = formData.programa;
         payload.semestre = formData.semestre;
-        
-        // Solo enviar datos del equipo si es participante
-        if (formData.tipoEstudiante === 'participante') {
+            // ✅ TODOS los estudiantes ahora envían datos de equipo
           payload.grupo = {
             nombre: formData.nombre_equipo.trim(),
             integrantes: formData.integrantes.split(',').map(i => i.trim()).filter(i => i),
@@ -357,8 +343,7 @@ const FormularioInscripcion: React.FC = () => {
             institucion: formData.institucion_equipo.trim(),
             correo: formData.email_equipo.trim(),
             telefono: formData.telefono_equipo?.trim() || ''
-          };
-        }
+          };        
       } else if (formData.rol === 'egresado') {
         payload.programa = formData.programa;
         if (formData.empresa.trim()) {
@@ -386,7 +371,7 @@ const FormularioInscripcion: React.FC = () => {
       // ✅ MANEJO MEJORADO DE ERRORES DE DUPLICIDAD
       if (!res.ok) {
         const err = await res.json().catch(() => ({}));
-        
+
         // Si es error de duplicidad (409), mostrar errores específicos
         if (res.status === 409 && Array.isArray(err.errors)) {
           const duplicateErrors: FieldError[] = err.errors.map((errorMsg: string) => {
@@ -397,11 +382,11 @@ const FormularioInscripcion: React.FC = () => {
             if (errorMsg.includes('correo')) return { field: 'correo', message: errorMsg };
             return { field: 'general', message: errorMsg };
           });
-          
+
           setFieldErrors(duplicateErrors);
           throw new Error('Datos duplicados encontrados. Por favor verifique la información.');
         }
-        
+
         const msg = err?.message || 'Error registrando la inscripción';
         const errors = Array.isArray(err?.errors) ? `\n- ${err.errors.join('\n- ')}` : '';
         throw new Error(`${msg}${errors}`);
@@ -441,7 +426,7 @@ const FormularioInscripcion: React.FC = () => {
 
     } catch (error: any) {
       console.error('Error en submit:', error);
-      
+
       // ✅ Mostrar mensaje de error específico para duplicados
       if (error.message.includes('duplicados')) {
         alert(`❌ ${error.message}\n\nErrores:\n${fieldErrors.map(err => `• ${err.message}`).join('\n')}`);
@@ -475,25 +460,22 @@ const FormularioInscripcion: React.FC = () => {
         return (
           <div className="grid md:grid-cols-2 gap-6 mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
             <div className="form-group md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Tipo de Estudiante <span className="text-red-500">*</span>
-              </label>
-              <select
-                name="tipoEstudiante"
-                value={formData.tipoEstudiante}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 bg-white"
-                required
-              >
-                <option value="">Seleccionar Tipo</option>
-                <option value="asistente">Asistente (Solo observación)</option>
-                <option value="participante">Participante (Va a competir)</option>
-              </select>
-              <p className="text-sm text-gray-500 mt-1">
-                {formData.tipoEstudiante === 'participante'
-                  ? 'Los participantes deben formar equipo y presentar un proyecto'
-                  : 'Los asistentes pueden observar las competencias sin participar activamente'}
-              </p>
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
+                    <svg className="w-4 h-4 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-green-800">Modo Participante</h3>
+                    <p className="text-sm text-green-700 mt-1">
+                      Estás registrándote como <strong>participante activo</strong> en la competencia.
+                      Deberás formar equipo y presentar un proyecto.
+                    </p>
+                  </div>
+                </div>
+              </div>
             </div>
 
             <div className="form-group">
@@ -505,10 +487,9 @@ const FormularioInscripcion: React.FC = () => {
                 name="idEstudiante"
                 value={formData.idEstudiante}
                 onChange={handleInputChange}
-                onBlur={(e) => verificarDisponibilidad('idEstudiante', e.target.value)} // ✅ Verificar al salir del campo
-                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 ${
-                  getFieldError('idEstudiante') ? 'border-red-300 bg-red-50' : 'border-gray-300'
-                }`}
+                onBlur={(e) => verificarDisponibilidad('idEstudiante', e.target.value)}
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 ${getFieldError('idEstudiante') ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                  }`}
                 placeholder="Ej: 000123456"
                 required
               />
@@ -603,7 +584,7 @@ const FormularioInscripcion: React.FC = () => {
                 required
               >
                 <option value="">Seleccionar Programa</option>
-                {(facultadesData as any).facultades.flatMap((facultad: Facultad) => 
+                {(facultadesData as any).facultades.flatMap((facultad: Facultad) =>
                   facultad.programas.map((programa: Programa) => (
                     <option key={programa.id} value={programa.id}>
                       {programa.nombre}
@@ -708,7 +689,7 @@ const FormularioInscripcion: React.FC = () => {
 
   // Renderizar datos del equipo solo para estudiantes participantes
   const renderDatosEquipo = () => {
-    if (formData.rol === 'estudiante' && formData.tipoEstudiante === 'participante') {
+    if (formData.rol === 'estudiante') {
       return (
         <div className="border-t border-gray-200 pt-8">
           <div className="border-l-4 border-unigold pl-4 mb-6">
@@ -729,9 +710,8 @@ const FormularioInscripcion: React.FC = () => {
                 value={formData.nombre_equipo}
                 onChange={handleInputChange}
                 onBlur={(e) => verificarDisponibilidad('nombre_equipo', e.target.value)} // ✅ Verificar al salir del campo
-                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 ${
-                  getFieldError('nombre_equipo') ? 'border-red-300 bg-red-50' : 'border-gray-300'
-                }`}
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 ${getFieldError('nombre_equipo') ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                  }`}
                 placeholder="Un nombre único que lo identifique en la competencia"
                 required
               />
@@ -764,9 +744,8 @@ const FormularioInscripcion: React.FC = () => {
                 value={formData.nombre_proyecto}
                 onChange={handleInputChange}
                 onBlur={(e) => verificarDisponibilidad('nombre_proyecto', e.target.value)} // ✅ Verificar al salir del campo
-                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 ${
-                  getFieldError('nombre_proyecto') ? 'border-red-300 bg-red-50' : 'border-gray-300'
-                }`}
+                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 ${getFieldError('nombre_proyecto') ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                  }`}
                 placeholder="Nombre del proyecto de ingeniería"
                 required
               />
@@ -975,9 +954,8 @@ const FormularioInscripcion: React.FC = () => {
                     value={formData.cedula}
                     onChange={handleInputChange}
                     onBlur={(e) => verificarDisponibilidad('cedula', e.target.value)} // ✅ Verificar al salir del campo
-                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 ${
-                      getFieldError('cedula') ? 'border-red-300 bg-red-50' : 'border-gray-300'
-                    }`}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 ${getFieldError('cedula') ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                      }`}
                     placeholder="Número de cédula"
                     required
                   />
@@ -994,9 +972,8 @@ const FormularioInscripcion: React.FC = () => {
                     value={formData.correo}
                     onChange={handleInputChange}
                     onBlur={(e) => verificarDisponibilidad('correo', e.target.value)} // ✅ Verificar al salir del campo
-                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 ${
-                      getFieldError('correo') ? 'border-red-300 bg-red-50' : 'border-gray-300'
-                    }`}
+                    className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 ${getFieldError('correo') ? 'border-red-300 bg-red-50' : 'border-gray-300'
+                      }`}
                     placeholder="correo@ejemplo.com"
                     required
                   />
@@ -1067,11 +1044,11 @@ const FormularioInscripcion: React.FC = () => {
             {/* Confirmación */}
             <div className="form-group mt-8">
               <label className="checkbox-modern">
-                <input 
-                  type="checkbox" 
+                <input
+                  type="checkbox"
                   checked={aceptaTerminos}
                   onChange={handleCheckboxChange}
-                  required 
+                  required
                 />
                 <div className="checkbox-label">
                   Acepto el tratamiento de mis datos personales. <span className="required">*</span>
@@ -1085,10 +1062,10 @@ const FormularioInscripcion: React.FC = () => {
               disabled={isSubmitting || !aceptaTerminos || hasDuplicateErrors() || isCheckingDuplicates}
               className="w-full bg-uniblue text-white py-3 px-6 rounded-md font-medium text-base hover:bg-blue-700 disabled:bg-gray-300 disabled:text-gray-500 disabled:cursor-not-allowed transition-colors duration-200 border-b-4 border-blue-800 hover:border-blue-900 disabled:border-gray-400 mt-6"
             >
-              {isSubmitting ? 'Enviando...' : 
-               isCheckingDuplicates ? 'Verificando...' : 
-               hasDuplicateErrors() ? 'Corrija los errores' : 
-               'Finalizar Inscripción'}
+              {isSubmitting ? 'Enviando...' :
+                isCheckingDuplicates ? 'Verificando...' :
+                  hasDuplicateErrors() ? 'Corrija los errores' :
+                    'Finalizar Inscripción'}
             </button>
           </div>
         </form>

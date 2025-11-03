@@ -78,6 +78,7 @@ export default function CronogramaActividades() {
   const [ponenteSeleccionado, setPonenteSeleccionado] = useState<Ponente | null>(null);
   const [cuposActividades, setCuposActividades] = useState<{ [key: number]: CupoInfo }>({});
   const [cargandoCupos, setCargandoCupos] = useState<boolean>(true);
+  
 
   // Estados para el carrusel
   const [currentSlide, setCurrentSlide] = useState<number>(0);
@@ -170,7 +171,31 @@ export default function CronogramaActividades() {
         inscritos: 0,
         actividad: "Visita Empresarial CDI ALIMENTOS CÁRNICOS",
         mensaje: "Usuarios Registrados: 0/24"
-      }
+      },
+      22: { // Certificación Full Stack - Día 1
+        disponible: true,
+        cuposDisponibles: 30,
+        cupoMaximo: 30,
+        inscritos: 0,
+        actividad: "Certificación Full Stack: Spring Boot, Angular & AI",
+        mensaje: "Usuarios Registrados: 0/30"
+      },
+      23: { // Certificación Full Stack - Día 2
+        disponible: true,
+        cuposDisponibles: 30,
+        cupoMaximo: 30,
+        inscritos: 0,
+        actividad: "Certificación Full Stack: Frontend Empresarial con Angular + AI",
+        mensaje: "Usuarios Registrados: 0/30"
+      },
+      24: { // Certificación Full Stack - Día 3
+        disponible: true,
+        cuposDisponibles: 30,
+        cupoMaximo: 30,
+        inscritos: 0,
+        actividad: "Certificación Full Stack: Integración Full Stack con AI",
+        mensaje: "Usuarios Registrados: 0/30"
+      },
     };
   };
 
@@ -195,7 +220,7 @@ export default function CronogramaActividades() {
       setCargandoCupos(true);
 
       // IDs de actividades que tienen registro
-      const actividadesConRegistro = [1, 2, 9, 11, 13, 15]; // Liderazgo, Inaugural, Hackathon, DoblaLumen, ZonaAmerica, Technological Touch
+      const actividadesConRegistro = [1, 2, 9, 11, 13, 15, 22, 23, 24]; // Liderazgo, Inaugural, Hackathon, DoblaLumen, ZonaAmerica, Technological Touch
 
       const promesasCupos = actividadesConRegistro.map(async (id) => {
         try {
@@ -211,14 +236,19 @@ export default function CronogramaActividades() {
             case 9: // Hackathon
               endpoint = `${API_URL}/inscripciones/estado-registros`;
               break;
-              case 11: // DoblaLumen
-              endpoint = `${API_URL}/doblalumen/estado-registros`; // ✅ CORREGIDO
+            case 11: // DoblaLumen
+              endpoint = `${API_URL}/doblalumen/estado-registros`;
               break;
             case 13: // Zona América
               endpoint = `${API_URL}/visitazonaamerica/estado-registros`;
               break;
             case 15: // Technological Touch
               endpoint = `${API_URL}/technological/estado-registros`;
+              break;
+            case 22: // Certificación Full Stack Día 1
+            case 23: // Certificación Full Stack Día 2  
+            case 24: // Certificación Full Stack Día 3
+              endpoint = `${API_URL}/desarrollofullstack/estado-registros`;
               break;
             default:
               endpoint = `${API_URL}/api/actividades/estadisticas/${id}`;
@@ -426,7 +456,6 @@ export default function CronogramaActividades() {
       foto: ComiteHackathon,
       especialidad: "Coordinación de Eventos Tecnológicos Interuniversitarios",
     },
-    // NUEVOS PONENTES PARA EL CONVERSATORIO
     "P&D Jorge Antonio Silva Leal": {
       nombre: "P&D Jorge Antonio Silva Leal",
       titulo: "Vicerrector Académico",
@@ -458,7 +487,15 @@ export default function CronogramaActividades() {
       especialidad: "Acompañando organizaciones en la adopción de IA, a través de diagnóstico, formación ejecutiva y desarrollo de soluciones con impacto medible",
       experiencia: "Artificial Intelligence Masters Director, Director of Data Science Masters, Universidad ICESI; PostDoctoral AI Researcher, AI Researcher, Universidad del Cauca",
       linkTrayectoria: "https://www.linkedin.com/in/armandoordonez/"
-    }
+    },
+    "DevSeniorCode Academy": {
+      nombre: "DevSeniorCode Academy",
+      titulo: "Academia Especializada en Desarrollo de Software e Inteligencia Artificial",
+      foto: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762102414/devsenioform_rjas9y.jpg", // Puedes cambiar esta imagen
+      especialidad: "Formación en Spring Boot, Angular, AI y Desarrollo Full Stack",
+      experiencia: "Capacitación en tecnologías modernas para el desarrollo de aplicaciones empresariales; Especialistas en integración de Inteligencia Artificial en aplicaciones web; Formación con certificación internacional",
+      linkTrayectoria: "https://www.devseniorcode.com"
+    },
   };
 
   const cronograma: DiaCronograma[] = [
@@ -473,7 +510,23 @@ export default function CronogramaActividades() {
           lugar: "Auditorio 1 – Sede Pance",
           tipo: "Conferencia",
           destacado: true,
+          imagen: ConferenciaImg,
           exclusivo: "Docentes y Administrativos"
+        },
+        // NUEVO EVENTO - CERTIFICACIÓN FULL STACK
+        {
+          id: 22,
+          hora: "8:00 pm - 10:00 pm",
+          titulo: "Certificación Full Stack: Spring Boot, Angular & AI",
+          ponente: "DevSeniorCode Academy",
+          lugar: "Modalidad Virtual",
+          tipo: "Curso",
+          destacado: true,
+          exclusivo: "Estudiantes",
+          aliado: "DevSeniorCode Academy",
+          botonRegistro: true,
+          urlRegistro: "/formulario-fullstack",
+          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762102414/devsenioform_rjas9y.jpg" // Puedes cambiar esta imagen después
         }
       ]
     },
@@ -582,7 +635,9 @@ export default function CronogramaActividades() {
           ponente: "",
           lugar: "Laboratorio de Ingeniería e Innovación – Sede Pance",
           tipo: "Taller",
-          destacado: false,
+          destacado: true,
+          botonRegistro: true,
+          urlRegistro: "/formulario-industriaenaccion",
           imagen: IndustriaAcImg
         },
         {
@@ -605,6 +660,20 @@ export default function CronogramaActividades() {
           lugar: "Salón A201 – Sede Pance",
           tipo: "Conferencia",
           destacado: false
+        },
+        {
+          id: 23,
+          hora: "8:00 pm - 10:00 pm",
+          titulo: "Certificación Full Stack: Frontend Empresarial con Angular + AI",
+          ponente: "DevSeniorCode Academy",
+          lugar: "Modalidad Virtual",
+          tipo: "Curso",
+          destacado: true,
+          exclusivo: "Estudiantes",
+          aliado: "DevSeniorCode Academy",
+          botonRegistro: true,
+          urlRegistro: "/formulario-fullstack",
+          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762102414/devsenioform_rjas9y.jpg"
         }
       ]
     },
@@ -694,7 +763,21 @@ export default function CronogramaActividades() {
           lugar: "Auditorio LUMEN - Sede Meléndez",
           tipo: "Ceremonia",
           imagen: ActoClausuraImg,
+          destacado: false,
+        },
+        {
+          id: 24,
+          hora: "8:00 pm - 10:00 pm",
+          titulo: "Certificación Full Stack: Integración Full Stack con AI",
+          ponente: "DevSeniorCode Academy",
+          lugar: "Modalidad Virtual",
+          tipo: "Curso",
           destacado: true,
+          exclusivo: "Estudiantes",
+          aliado: "DevSeniorCode Academy",
+          botonRegistro: true,
+          urlRegistro: "/formulario-fullstack",
+          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762102414/devsenioform_rjas9y.jpg"
         }
       ]
     },
@@ -828,7 +911,8 @@ export default function CronogramaActividades() {
       Ceremonia: "⭐",
       Evento: "🎉",
       Networking: "🤝",
-      Entrevista: "🎙️"
+      Entrevista: "🎙️",
+      Curso: "💻"
     };
     return iconos[tipo] || "📅";
   };
@@ -1068,13 +1152,13 @@ export default function CronogramaActividades() {
               <h3 className="font-bold text-gray-900 text-lg leading-tight mb-2">
                 {ponenteSeleccionado.nombre}
               </h3>
-              
+
               <div className="bg-blue-50 border border-blue-200 rounded-lg px-3 py-2 mb-3">
                 <p className="text-sm font-semibold text-blue-800 leading-tight">
                   {ponenteSeleccionado.titulo}
                 </p>
               </div>
-              
+
               {ponenteSeleccionado.especialidad && (
                 <div className="flex items-start gap-2 mb-2">
                   <svg className="w-4 h-4 text-gray-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1116,23 +1200,23 @@ export default function CronogramaActividades() {
             {ponenteSeleccionado.linkTrayectoria && (
               <div className="pt-3 border-t border-gray-100">
                 <div className="flex items-center gap-2 mb-2">
-                  <svg className="w-4 h-4 text-green-600" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/>
+                  <svg className="w-4 h-4 text-uniblue" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
                   </svg>
                   <h4 className="text-sm font-semibold text-gray-800">Conecta con el profesional</h4>
                 </div>
-                <a 
-                  href={ponenteSeleccionado.linkTrayectoria} 
-                  target="_blank" 
+                <a
+                  href={ponenteSeleccionado.linkTrayectoria}
+                  target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-3 w-full px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 text-white rounded-lg hover:from-green-700 hover:to-green-800 transition-all duration-200 font-semibold text-sm shadow-md hover:shadow-lg group"
+                  className="inline-flex items-center gap-3 w-full px-4 py-3 bg-gradient-to-r from-uniblue to-blue-600 text-white rounded-lg hover:from-blue-700 hover:to-blue-800 transition-all duration-200 font-semibold text-sm shadow-md hover:shadow-lg group"
                   onClick={(e) => {
                     e.stopPropagation();
                     console.log('Navegando a LinkedIn de:', ponenteSeleccionado.nombre);
                   }}
                 >
                   <svg className="w-5 h-5 group-hover:scale-110 transition-transform duration-200" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
                   </svg>
                   <span className="flex-1 text-center">Ver Perfil en LinkedIn</span>
                   <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -1148,8 +1232,8 @@ export default function CronogramaActividades() {
 
           {/* Barra de tiempo */}
           <div className="absolute bottom-0 left-0 right-0 h-1 bg-gray-200 rounded-b-xl overflow-hidden">
-            <div 
-              className="h-full bg-green-500 transition-all duration-5000 ease-linear"
+            <div
+              className="h-full bg-blue-500 transition-all duration-5000 ease-linear"
               style={{ width: '100%' }}
               ref={progressBarRef}
             ></div>
@@ -1483,7 +1567,12 @@ export default function CronogramaActividades() {
                                     title="Haz clic para ver en Google Maps"
                                   >
                                     {actividad.lugar}
-                                    <span className="ml-1 text-xs text-uniblue">📍</span>
+                                    {actividad.lugar.toLowerCase().includes('virtual') && (
+                                      <span className="ml-1 text-xs text-green-600">🌐</span> // Icono de globo para virtual
+                                    )}
+                                    {!actividad.lugar.toLowerCase().includes('virtual') && (
+                                      <span className="ml-1 text-xs text-uniblue">📍</span> // Icono de ubicación para presencial
+                                    )}
                                   </button>
                                 </div>
                               </div>
