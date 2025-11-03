@@ -9,6 +9,7 @@ import Visita14nov from "../assets/VISITA EMPRESARIAL - 14-8.png";
 import Visita15nov from "../assets/VISITA EMPRESARIAL -8.png";
 import HackathonImg from "../assets/HACKATON copia-8.png";
 import ActoClausuraImg from "../assets/ACTO CLAUSURA-8.png";
+import OlimpiadaImg from "../assets/OLIMPIADAS MATEMATICAS -8.png";
 import XimenaOtero from "../assets/ponentes/ximena-otero.jpg";
 import JulianPortocarrero from "../assets/ponentes/julian-portocarrero.jpg";
 import LorenaCeron from "../assets/ponentes/lorena-ceron.jpg";
@@ -78,7 +79,7 @@ export default function CronogramaActividades() {
   const [ponenteSeleccionado, setPonenteSeleccionado] = useState<Ponente | null>(null);
   const [cuposActividades, setCuposActividades] = useState<{ [key: number]: CupoInfo }>({});
   const [cargandoCupos, setCargandoCupos] = useState<boolean>(true);
-  
+
 
   // Estados para el carrusel
   const [currentSlide, setCurrentSlide] = useState<number>(0);
@@ -115,6 +116,14 @@ export default function CronogramaActividades() {
         inscritos: 30,
         actividad: "Hackathon Colegios",
         mensaje: "Usuarios Registrados: 30/80"
+      },
+      6: { // EMAVI
+        disponible: true,
+        cuposDisponibles: 40,
+        cupoMaximo: 40,
+        inscritos: 0,
+        actividad: "Visita Emavi",
+        mensaje: "Usuarios Registrados: 0/40"
       },
       9: { // Hackathon Universidades
         disponible: true,
@@ -220,7 +229,7 @@ export default function CronogramaActividades() {
       setCargandoCupos(true);
 
       // IDs de actividades que tienen registro
-      const actividadesConRegistro = [1, 2, 9, 11, 13, 15, 22, 23, 24]; // Liderazgo, Inaugural, Hackathon, DoblaLumen, ZonaAmerica, Technological Touch
+      const actividadesConRegistro = [1, 2, 5, 6, 9, 10, 11, 12, 13, 14, 15, 21, 22, 23, 24];
 
       const promesasCupos = actividadesConRegistro.map(async (id) => {
         try {
@@ -233,17 +242,35 @@ export default function CronogramaActividades() {
             case 2: // Inaugural
               endpoint = `${API_URL}/asistenciainaugural/estado-registros`;
               break;
-            case 9: // Hackathon
+            case 5: // Hackathon Colegios - NUEVO
+              endpoint = `${API_URL}/hackathoncolegios/estado-registros`;
+              break;
+            case 6: // EMAVI
+              endpoint = `${API_URL}/visitaemavi/estado-registros`;
+              break;
+            case 9: // Hackathon Universidades
               endpoint = `${API_URL}/inscripciones/estado-registros`;
+              break;
+            case 10: // Industria en Acción - CORREGIDO: usar endpoint existente
+              endpoint = `${API_URL}/industriaenaccion/estado-registros`;
               break;
             case 11: // DoblaLumen
               endpoint = `${API_URL}/doblalumen/estado-registros`;
               break;
+            case 12: // IA en la Práctica - NUEVO
+              endpoint = `${API_URL}/ia-practica/estado-registros`;
+              break;
             case 13: // Zona América
               endpoint = `${API_URL}/visitazonaamerica/estado-registros`;
               break;
+            case 14: // Olimpiada Matemática - NUEVO
+              endpoint = `${API_URL}/olimpiadasmatematicas/estado-registros`;
+              break;
             case 15: // Technological Touch
               endpoint = `${API_URL}/technological/estado-registros`;
+              break;
+            case 21: // CDI Alimentos Cárnicos
+              endpoint = `${API_URL}/visitacarnicos/estado-registros`;
               break;
             case 22: // Certificación Full Stack Día 1
             case 23: // Certificación Full Stack Día 2  
@@ -253,7 +280,6 @@ export default function CronogramaActividades() {
             default:
               endpoint = `${API_URL}/api/actividades/estadisticas/${id}`;
           }
-
           const response = await fetch(endpoint);
           if (response.ok) {
             const data = await response.json();
@@ -496,6 +522,14 @@ export default function CronogramaActividades() {
       experiencia: "Capacitación en tecnologías modernas para el desarrollo de aplicaciones empresariales; Especialistas en integración de Inteligencia Artificial en aplicaciones web; Formación con certificación internacional",
       linkTrayectoria: "https://www.devseniorcode.com"
     },
+    "Docente Jenny Alejandra Cadena Solarte": {
+      nombre: "Docente Jenny Alejandra Cadena Solarte",
+      titulo: "Docente en Fundación Universitaria Católica Lumen Gentium",
+      foto: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762200946/jenny-cadena_skjthl.jpg",
+      especialidad: "Administración y atención al cliente. Experiencia como Administrador, Auxiliar administrativo, Auxiliar de apoyo y Ejecutivo de servicio.",
+      experiencia: "Coordinadora Fundación Universitaria Católica Lumen Gentium; Docente Universitaria Corporación Universitaria Minuto de Dios",
+      linkTrayectoria: "https://www.linkedin.com/in/jenny-alejandra-cadena-solarte-a60a2929/?trk=opento_nprofile_details"
+    },
   };
 
   const cronograma: DiaCronograma[] = [
@@ -588,13 +622,15 @@ export default function CronogramaActividades() {
         },
         {
           id: 6,
-          hora: "9:00 am - 12:00 pm",
-          titulo: "Visita Empresarial",
+          hora: "8:00 am - 12:00 pm",
+          titulo: "Visita Empresarial - EMAVI",
           ponente: "",
-          lugar: "Por Confirmar",
+          lugar: "Escuela Militar de Aviación - EMAVI",
           tipo: "Visita",
-          destacado: false,
-          imagen: VisitaEmpr12nov
+          destacado: true,
+          imagen: VisitaEmpr12nov,
+          botonRegistro: true,
+          urlRegistro: "/formulario-visitaemavi"
         },
         {
           id: 7,
@@ -699,7 +735,11 @@ export default function CronogramaActividades() {
           ponente: "",
           lugar: "Sala 3 de Sistemas – Sede Pance",
           tipo: "Competencia",
-          destacado: false
+          destacado: true,
+          botonRegistro: true,
+          urlRegistro: "/formulario-olimpiadasmatematicas",
+          imagen: OlimpiadaImg,
+          organizador: "Docente Jenny Alejandra Cadena Solarte"
         },
         {
           id: 15,
@@ -731,11 +771,11 @@ export default function CronogramaActividades() {
         {
           id: 17,
           hora: "10:00 am - 11:00 am",
-          titulo: "Taller Aplicado / Refuerzo",
+          titulo: "Taller Instalación de WordPress ",
           ponente: "Mag. Carlos Molina",
           lugar: "Sala 2 de Sistemas – Sede Pance",
           tipo: "Taller",
-          destacado: false
+          destacado: true
         },
         {
           id: 18,
@@ -791,7 +831,9 @@ export default function CronogramaActividades() {
           ponente: "",
           lugar: "CDI Alimentos Cárnicos",
           tipo: "Visita",
-          destacado: false,
+          destacado: true,
+          botonRegistro: true,
+          urlRegistro: "/formulario-visitacarnicos",
           imagen: Visita15nov
         }
       ]

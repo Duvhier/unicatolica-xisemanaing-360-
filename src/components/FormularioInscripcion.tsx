@@ -5,6 +5,9 @@ import './FormularioInscripcion.css';
 import HackathonImg from '@/assets/hackathonevento.jpg';
 import facultadesData from '@/assets/facultadesyprogramasacademicos.json';
 
+// Importar los iconos
+import { MapPinIcon, ClockIcon, TrophyIcon, UserIcon } from '@heroicons/react/24/outline';
+
 // Interfaces para los tipos de datos
 interface Programa {
   id: string;
@@ -115,25 +118,6 @@ const FormularioInscripcion: React.FC = () => {
       setProgramasFiltrados([]);
     }
   }, [formData.facultad]);
-
-  // Reset campos de equipo cuando cambia el tipo de estudiante
-  /*
-  useEffect(() => {
-    if (formData.rol === 'estudiante' && formData.tipoEstudiante !== 'participante') {
-      setFormData(prev => ({
-        ...prev,
-        nombre_equipo: '',
-        nombre_proyecto: '',
-        descripcion_proyecto: '',
-        categoria_participacion: '',
-        institucion_equipo: '',
-        email_equipo: '',
-        telefono_equipo: '',
-        integrantes: ''
-      }));
-    }
-  }, [formData.tipoEstudiante, formData.rol]);
-  */
 
   // ✅ NUEVA FUNCIÓN: Limpiar errores de un campo específico
   const clearFieldError = (fieldName: string) => {
@@ -480,7 +464,10 @@ const FormularioInscripcion: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                ID <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <UserIcon className="w-4 h-4 text-uniblue" />
+                  ID <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -501,7 +488,10 @@ const FormularioInscripcion: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Facultad <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <MapPinIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Facultad <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="facultad"
@@ -521,7 +511,10 @@ const FormularioInscripcion: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Programa Académico <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <TrophyIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Programa Académico <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="programa"
@@ -547,7 +540,10 @@ const FormularioInscripcion: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Semestre <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <ClockIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Semestre <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="semestre"
@@ -574,7 +570,10 @@ const FormularioInscripcion: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-6 mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Programa de Egreso <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <TrophyIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Programa de Egreso <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="programa"
@@ -596,7 +595,10 @@ const FormularioInscripcion: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Empresa donde labora (Opcional)
+                <div className="flex items-center gap-2">
+                  <MapPinIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Empresa donde labora (Opcional)
+                </div>
               </label>
               <input
                 type="text"
@@ -617,7 +619,10 @@ const FormularioInscripcion: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-6 mt-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Área/Departamento <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <MapPinIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Área/Departamento <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -632,7 +637,10 @@ const FormularioInscripcion: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Cargo <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <UserIcon className="w-4 h-4 text-uniblue" />
+                  Cargo <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -652,7 +660,10 @@ const FormularioInscripcion: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-6 mt-6 p-4 bg-orange-50 rounded-lg border border-orange-200">
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Empresa/Institución <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <MapPinIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Empresa/Institución <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -667,7 +678,10 @@ const FormularioInscripcion: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Cargo <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <UserIcon className="w-4 h-4 text-uniblue" />
+                  Cargo <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -693,7 +707,10 @@ const FormularioInscripcion: React.FC = () => {
       return (
         <div className="border-t border-gray-200 pt-8">
           <div className="border-l-4 border-unigold pl-4 mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">Datos del Equipo</h2>
+            <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+              <TrophyIcon className="w-6 h-6 text-unigold" />
+              Datos del Equipo
+            </h2>
             <p className="text-sm text-gray-600 mt-1">
               Complete la información de su equipo para la competencia
             </p>
@@ -702,14 +719,17 @@ const FormularioInscripcion: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-6">
             <div className="form-group md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Nombre del Equipo <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <TrophyIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Nombre del Equipo <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
                 name="nombre_equipo"
                 value={formData.nombre_equipo}
                 onChange={handleInputChange}
-                onBlur={(e) => verificarDisponibilidad('nombre_equipo', e.target.value)} // ✅ Verificar al salir del campo
+                onBlur={(e) => verificarDisponibilidad('nombre_equipo', e.target.value)}
                 className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 ${getFieldError('nombre_equipo') ? 'border-red-300 bg-red-50' : 'border-gray-300'
                   }`}
                 placeholder="Un nombre único que lo identifique en la competencia"
@@ -720,7 +740,10 @@ const FormularioInscripcion: React.FC = () => {
 
             <div className="form-group md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Integrantes del Equipo <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <UserIcon className="w-4 h-4 text-uniblue" />
+                  Integrantes del Equipo <span className="text-red-500">*</span>
+                </div>
               </label>
               <textarea
                 name="integrantes"
@@ -736,14 +759,17 @@ const FormularioInscripcion: React.FC = () => {
 
             <div className="form-group md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Nombre del Proyecto <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <TrophyIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Nombre del Proyecto <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
                 name="nombre_proyecto"
                 value={formData.nombre_proyecto}
                 onChange={handleInputChange}
-                onBlur={(e) => verificarDisponibilidad('nombre_proyecto', e.target.value)} // ✅ Verificar al salir del campo
+                onBlur={(e) => verificarDisponibilidad('nombre_proyecto', e.target.value)}
                 className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 ${getFieldError('nombre_proyecto') ? 'border-red-300 bg-red-50' : 'border-gray-300'
                   }`}
                 placeholder="Nombre del proyecto de ingeniería"
@@ -754,7 +780,10 @@ const FormularioInscripcion: React.FC = () => {
 
             <div className="form-group md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Descripción del Proyecto <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <MapPinIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Descripción del Proyecto <span className="text-red-500">*</span>
+                </div>
               </label>
               <textarea
                 name="descripcion_proyecto"
@@ -769,7 +798,10 @@ const FormularioInscripcion: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Categoría de Participación <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <TrophyIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Categoría de Participación <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="categoria_participacion"
@@ -788,7 +820,10 @@ const FormularioInscripcion: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Institución/Universidad <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <MapPinIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Institución/Universidad <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -803,7 +838,10 @@ const FormularioInscripcion: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Correo Electrónico del Equipo <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <UserIcon className="w-4 h-4 text-uniblue" />
+                  Correo Electrónico del Equipo <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="email"
@@ -818,7 +856,10 @@ const FormularioInscripcion: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Teléfono del Equipo (Opcional)
+                <div className="flex items-center gap-2">
+                  <ClockIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Teléfono del Equipo (Opcional)
+                </div>
               </label>
               <input
                 type="tel"
@@ -860,7 +901,8 @@ const FormularioInscripcion: React.FC = () => {
           </div>
 
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-800 mb-2">
+            <h1 className="text-2xl font-bold text-gray-800 mb-2 flex items-center justify-center gap-2">
+              <TrophyIcon className="w-8 h-8 text-uniblue" />
               HACKATHON UNIVERSIDADES
             </h1>
             <p className="text-lg text-uniblue font-semibold mb-4">
@@ -868,13 +910,16 @@ const FormularioInscripcion: React.FC = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4">
-              <span className="bg-uniblue text-white px-4 py-2 rounded-full text-sm font-medium">
+              <span className="bg-uniblue text-white px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2">
+                <ClockIcon className="w-4 h-4" />
                 Miércoles 12 de Noviembre
               </span>
-              <span className="text-gray-600 font-medium">
+              <span className="text-gray-600 font-medium flex items-center gap-2">
+                <ClockIcon className="w-4 h-4 text-uniblue" />
                 6:30 pm a 9:30 pm
               </span>
-              <span className="text-gray-600 font-medium">
+              <span className="text-gray-600 font-medium flex items-center gap-2">
+                <MapPinIcon className="w-4 h-4 text-uniblue" />
                 Sala de 1, 2, 3 - Sede Pance
               </span>
             </div>
@@ -893,7 +938,10 @@ const FormularioInscripcion: React.FC = () => {
           {/* Información del Evento */}
           <div className="mb-8">
             <div className="border-l-4 border-uniblue pl-4 mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">Información del Evento</h2>
+              <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                <MapPinIcon className="w-6 h-6 text-uniblue" />
+                Información del Evento
+              </h2>
             </div>
 
             <div className="bg-white rounded-xl shadow-sm border-2 border-uniblue">
@@ -904,17 +952,26 @@ const FormularioInscripcion: React.FC = () => {
               />
               <div className="p-6">
                 <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                  <span>📅</span>
+                  <ClockIcon className="w-4 h-4 text-uniblue" />
                   <span>Mié, Nov 12 | 6:30 pm - 9:30 pm</span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-3">Hackathon Universidades</h3>
+                <h3 className="text-xl font-bold text-gray-800 mb-3 flex items-center gap-2">
+                  <TrophyIcon className="w-5 h-5 text-uniblue" />
+                  Hackathon Universidades
+                </h3>
                 <p className="text-gray-600 leading-relaxed mb-4">
                   Competencia de programación y desarrollo para estudiantes universitarios
                 </p>
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <p className="text-sm text-blue-800">
-                    <strong>Lugar:</strong> Sala de 1, 2, 3 - Sede Pance<br />
-                    <strong>Profesores:</strong> José Hernando Mosquera, Kellin, Nelson Andrade
+                  <p className="text-sm text-blue-800 flex flex-col gap-1">
+                    <span className="flex items-center gap-2">
+                      <MapPinIcon className="w-4 h-4 text-uniblue" />
+                      <strong>Lugar:</strong> Sala de 1, 2, 3 - Sede Pance
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <UserIcon className="w-4 h-4 text-uniblue" />
+                      <strong>Profesores:</strong> José Hernando Mosquera, Kellin, Nelson Andrade
+                    </span>
                   </p>
                 </div>
               </div>
@@ -925,13 +982,19 @@ const FormularioInscripcion: React.FC = () => {
           <div ref={formSectionRef} className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
             <div className="mb-8">
               <div className="border-l-4 border-uniblue pl-4 mb-6">
-                <h2 className="text-2xl font-bold text-gray-800">Datos Personales</h2>
+                <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                  <UserIcon className="w-6 h-6 text-uniblue" />
+                  Datos Personales
+                </h2>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="form-group">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Nombre Completo <span className="text-red-500">*</span>
+                    <div className="flex items-center gap-2">
+                      <UserIcon className="w-4 h-4 text-uniblue" />
+                      Nombre Completo <span className="text-red-500">*</span>
+                    </div>
                   </label>
                   <input
                     type="text"
@@ -946,14 +1009,17 @@ const FormularioInscripcion: React.FC = () => {
 
                 <div className="form-group">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Cédula de Ciudadanía <span className="text-red-500">*</span>
+                    <div className="flex items-center gap-2">
+                      <UserIcon className="w-4 h-4 text-uniblue" />
+                      Cédula de Ciudadanía <span className="text-red-500">*</span>
+                    </div>
                   </label>
                   <input
                     type="text"
                     name="cedula"
                     value={formData.cedula}
                     onChange={handleInputChange}
-                    onBlur={(e) => verificarDisponibilidad('cedula', e.target.value)} // ✅ Verificar al salir del campo
+                    onBlur={(e) => verificarDisponibilidad('cedula', e.target.value)}
                     className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 ${getFieldError('cedula') ? 'border-red-300 bg-red-50' : 'border-gray-300'
                       }`}
                     placeholder="Número de cédula"
@@ -964,14 +1030,17 @@ const FormularioInscripcion: React.FC = () => {
 
                 <div className="form-group">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Correo Electrónico <span className="text-red-500">*</span>
+                    <div className="flex items-center gap-2">
+                      <UserIcon className="w-4 h-4 text-uniblue" />
+                      Correo Electrónico <span className="text-red-500">*</span>
+                    </div>
                   </label>
                   <input
                     type="email"
                     name="correo"
                     value={formData.correo}
                     onChange={handleInputChange}
-                    onBlur={(e) => verificarDisponibilidad('correo', e.target.value)} // ✅ Verificar al salir del campo
+                    onBlur={(e) => verificarDisponibilidad('correo', e.target.value)}
                     className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 ${getFieldError('correo') ? 'border-red-300 bg-red-50' : 'border-gray-300'
                       }`}
                     placeholder="correo@ejemplo.com"
@@ -982,7 +1051,10 @@ const FormularioInscripcion: React.FC = () => {
 
                 <div className="form-group">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Número de Celular <span className="text-red-500">*</span>
+                    <div className="flex items-center gap-2">
+                      <ClockIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                      Número de Celular <span className="text-red-500">*</span>
+                    </div>
                   </label>
                   <input
                     type="tel"
@@ -997,7 +1069,10 @@ const FormularioInscripcion: React.FC = () => {
 
                 <div className="form-group md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Rol <span className="text-red-500">*</span>
+                    <div className="flex items-center gap-2">
+                      <UserIcon className="w-4 h-4 text-uniblue" />
+                      Rol <span className="text-red-500">*</span>
+                    </div>
                   </label>
                   <select
                     name="rol"

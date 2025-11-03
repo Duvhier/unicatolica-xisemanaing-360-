@@ -4,6 +4,25 @@ import './FormularioInscripcion.css';
 import TechnologicalImg from '@/assets/TECNOLOGICAL TOUCH-8.png'; 
 import facultadesData from '@/assets/facultadesyprogramasacademicos.json';
 
+// Importar iconos de Heroicons
+import { 
+  MapPinIcon, 
+  ClockIcon, 
+  TrophyIcon, 
+  UserIcon,
+  AcademicCapIcon,
+  BuildingLibraryIcon,
+  CalendarIcon,
+  PhoneIcon,
+  EnvelopeIcon,
+  IdentificationIcon,
+  UsersIcon,
+  LightBulbIcon,
+  DocumentTextIcon,
+  BookOpenIcon,
+  BuildingOfficeIcon
+} from '@heroicons/react/24/outline';
+
 // Interfaces para los tipos de datos
 interface Programa {
   id: string;
@@ -475,7 +494,10 @@ const FormularioTechnological: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-6 mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
             <div className="form-group md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Tipo de Estudiante <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <TrophyIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Tipo de Estudiante <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="tipoEstudiante"
@@ -497,7 +519,10 @@ const FormularioTechnological: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                ID <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <IdentificationIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  ID <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -519,7 +544,10 @@ const FormularioTechnological: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Facultad <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <BuildingLibraryIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Facultad <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="facultad"
@@ -539,7 +567,10 @@ const FormularioTechnological: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Programa Académico <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <AcademicCapIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Programa Académico <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="programa"
@@ -565,7 +596,10 @@ const FormularioTechnological: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Semestre <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <CalendarIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Semestre <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="semestre"
@@ -592,7 +626,10 @@ const FormularioTechnological: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-6 mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Programa de Egreso <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <AcademicCapIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Programa de Egreso <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="programa"
@@ -614,7 +651,10 @@ const FormularioTechnological: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Empresa donde labora (Opcional)
+                <div className="flex items-center gap-2">
+                  <BuildingOfficeIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Empresa donde labora (Opcional)
+                </div>
               </label>
               <input
                 type="text"
@@ -635,7 +675,10 @@ const FormularioTechnological: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-6 mt-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Área/Departamento <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <MapPinIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Área/Departamento <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -650,7 +693,10 @@ const FormularioTechnological: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Cargo <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <UserIcon className="w-4 h-4 text-uniblue" />
+                  Cargo <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -670,7 +716,10 @@ const FormularioTechnological: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-6 mt-6 p-4 bg-orange-50 rounded-lg border border-orange-200">
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Empresa/Institución <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <BuildingOfficeIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Empresa/Institución <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -685,7 +734,10 @@ const FormularioTechnological: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Cargo <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <UserIcon className="w-4 h-4 text-uniblue" />
+                  Cargo <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -711,7 +763,10 @@ const FormularioTechnological: React.FC = () => {
       return (
         <div className="border-t border-gray-200 pt-8">
           <div className="border-l-4 border-unigold pl-4 mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">Datos del Proyecto</h2>
+            <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+              <LightBulbIcon className="w-6 h-6 text-unigold" />
+              Datos del Proyecto
+            </h2>
             <p className="text-sm text-gray-600 mt-1">
               Complete la información de su proyecto de investigación o semillero
             </p>
@@ -720,7 +775,10 @@ const FormularioTechnological: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-6">
             <div className="form-group md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Nombre del Equipo/Semillero <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <UsersIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Nombre del Equipo/Semillero <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -739,7 +797,10 @@ const FormularioTechnological: React.FC = () => {
 
             <div className="form-group md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Integrantes del Equipo <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <UserIcon className="w-4 h-4 text-uniblue" />
+                  Integrantes del Equipo <span className="text-red-500">*</span>
+                </div>
               </label>
               <textarea
                 name="integrantes"
@@ -755,7 +816,10 @@ const FormularioTechnological: React.FC = () => {
 
             <div className="form-group md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Nombre del Proyecto <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <LightBulbIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Nombre del Proyecto <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -774,7 +838,10 @@ const FormularioTechnological: React.FC = () => {
 
             <div className="form-group md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Descripción del Proyecto <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <DocumentTextIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Descripción del Proyecto <span className="text-red-500">*</span>
+                </div>
               </label>
               <textarea
                 name="descripcion_proyecto"
@@ -789,7 +856,10 @@ const FormularioTechnological: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Categoría de Participación <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <BookOpenIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Categoría de Participación <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="categoria_participacion"
@@ -808,7 +878,10 @@ const FormularioTechnological: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Institución/Universidad <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <BuildingLibraryIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Institución/Universidad <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -823,7 +896,10 @@ const FormularioTechnological: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Correo Electrónico del Equipo <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <EnvelopeIcon className="w-4 h-4 text-uniblue" />
+                  Correo Electrónico del Equipo <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="email"
@@ -838,7 +914,10 @@ const FormularioTechnological: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Teléfono del Equipo (Opcional)
+                <div className="flex items-center gap-2">
+                  <PhoneIcon className="w-4 h-4 text-uniblue" />
+                  Teléfono del Equipo (Opcional)
+                </div>
               </label>
               <input
                 type="tel"
@@ -880,7 +959,8 @@ const FormularioTechnological: React.FC = () => {
           </div>
 
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-800 mb-2">
+            <h1 className="text-2xl font-bold text-gray-800 mb-2 flex items-center justify-center gap-2">
+              <LightBulbIcon className="w-8 h-8 text-uniblue" />
               TECHNOLOGICAL TOUCH
             </h1>
             <p className="text-lg text-uniblue font-semibold mb-4">
@@ -888,13 +968,16 @@ const FormularioTechnological: React.FC = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4">
-              <span className="bg-uniblue text-white px-4 py-2 rounded-full text-sm font-medium">
+              <span className="bg-uniblue text-white px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2">
+                <CalendarIcon className="w-4 h-4" />
                 Jueves 13 de Noviembre
               </span>
-              <span className="text-gray-600 font-medium">
+              <span className="text-gray-600 font-medium flex items-center gap-2">
+                <ClockIcon className="w-4 h-4 text-uniblue" />
                 6:30 pm a 9:30 pm
               </span>
-              <span className="text-gray-600 font-medium">
+              <span className="text-gray-600 font-medium flex items-center gap-2">
+                <MapPinIcon className="w-4 h-4 text-uniblue" />
                 Sede Melendez Auditorio Lumen
               </span>
             </div>
@@ -913,7 +996,10 @@ const FormularioTechnological: React.FC = () => {
           {/* Información del Evento */}
           <div className="mb-8">
             <div className="border-l-4 border-uniblue pl-4 mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">Información del Evento</h2>
+              <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                <MapPinIcon className="w-6 h-6 text-uniblue" />
+                Información del Evento
+              </h2>
             </div>
 
             <div className="bg-white rounded-xl shadow-sm border-2 border-uniblue">
@@ -924,17 +1010,26 @@ const FormularioTechnological: React.FC = () => {
               />
               <div className="p-6">
                 <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                  <span>📅</span>
+                  <ClockIcon className="w-4 h-4 text-uniblue" />
                   <span>Jue, Nov 13 | 6:30 pm - 9:30 pm</span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-3">Technological Touch</h3>
+                <h3 className="text-xl font-bold text-gray-800 mb-3 flex items-center gap-2">
+                  <LightBulbIcon className="w-5 h-5 text-uniblue" />
+                  Technological Touch
+                </h3>
                 <p className="text-gray-600 leading-relaxed mb-4">
                   Ponencia: Estudiantes Semilleros de Investigación o Proyectos de Investigación
                 </p>
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <p className="text-sm text-blue-800">
-                    <strong>Lugar:</strong> Sede Melendez Auditorio Lumen<br />
-                    <strong>Ponentes:</strong> Estudiantes Semilleros de Investigación y Proyectos de Investigación
+                  <p className="text-sm text-blue-800 flex flex-col gap-1">
+                    <span className="flex items-center gap-2">
+                      <MapPinIcon className="w-4 h-4 text-uniblue" />
+                      <strong>Lugar:</strong> Sede Melendez Auditorio Lumen
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <UsersIcon className="w-4 h-4 text-uniblue" />
+                      <strong>Ponentes:</strong> Estudiantes Semilleros de Investigación y Proyectos de Investigación
+                    </span>
                   </p>
                 </div>
               </div>
@@ -945,13 +1040,19 @@ const FormularioTechnological: React.FC = () => {
           <div ref={formSectionRef} className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
             <div className="mb-8">
               <div className="border-l-4 border-uniblue pl-4 mb-6">
-                <h2 className="text-2xl font-bold text-gray-800">Datos Personales</h2>
+                <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                  <UserIcon className="w-6 h-6 text-uniblue" />
+                  Datos Personales
+                </h2>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="form-group">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Nombre Completo <span className="text-red-500">*</span>
+                    <div className="flex items-center gap-2">
+                      <UserIcon className="w-4 h-4 text-uniblue" />
+                      Nombre Completo <span className="text-red-500">*</span>
+                    </div>
                   </label>
                   <input
                     type="text"
@@ -966,7 +1067,10 @@ const FormularioTechnological: React.FC = () => {
 
                 <div className="form-group">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Cédula de Ciudadanía <span className="text-red-500">*</span>
+                    <div className="flex items-center gap-2">
+                      <IdentificationIcon className="w-4 h-4 text-uniblue" />
+                      Cédula de Ciudadanía <span className="text-red-500">*</span>
+                    </div>
                   </label>
                   <input
                     type="text"
@@ -985,7 +1089,10 @@ const FormularioTechnological: React.FC = () => {
 
                 <div className="form-group">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Correo Electrónico <span className="text-red-500">*</span>
+                    <div className="flex items-center gap-2">
+                      <EnvelopeIcon className="w-4 h-4 text-uniblue" />
+                      Correo Electrónico <span className="text-red-500">*</span>
+                    </div>
                   </label>
                   <input
                     type="email"
@@ -1004,7 +1111,10 @@ const FormularioTechnological: React.FC = () => {
 
                 <div className="form-group">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Número de Celular <span className="text-red-500">*</span>
+                    <div className="flex items-center gap-2">
+                      <PhoneIcon className="w-4 h-4 text-uniblue" />
+                      Número de Celular <span className="text-red-500">*</span>
+                    </div>
                   </label>
                   <input
                     type="tel"
@@ -1019,7 +1129,10 @@ const FormularioTechnological: React.FC = () => {
 
                 <div className="form-group md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Rol <span className="text-red-500">*</span>
+                    <div className="flex items-center gap-2">
+                      <UserIcon className="w-4 h-4 text-uniblue" />
+                      Rol <span className="text-red-500">*</span>
+                    </div>
                   </label>
                   <select
                     name="rol"

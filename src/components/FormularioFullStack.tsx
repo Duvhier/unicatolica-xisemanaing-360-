@@ -1,8 +1,40 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./FormularioInscripcionLiderazgo.css";
-import FullStackImg from "@/assets/ponentes/devsenioform.webp"; // Puedes cambiar esta imagen después
-import LogoFullStack from "@/assets/ponentes/devseniologo.png"; // Puedes cambiar esta imagen después
+import FullStackImg from "@/assets/ponentes/devsenioform.webp";
+import LogoFullStack from "@/assets/ponentes/devseniologo.png";
+
+// Importar HeroIcons
+import {
+  ArrowLeftIcon,
+  ChevronDownIcon,
+  ChevronUpIcon,
+  CalendarIcon,
+  MapPinIcon,
+  ClockIcon,
+  AcademicCapIcon,
+  ShieldCheckIcon,
+  UserIcon,
+  IdentificationIcon,
+  EnvelopeIcon,
+  PhoneIcon,
+  AcademicCapIcon as FacultyIcon,
+  BookOpenIcon,
+  ChartBarIcon,
+  CodeBracketIcon,
+  CpuChipIcon,
+  SparklesIcon,
+  LightBulbIcon,
+  CheckCircleIcon,
+  ExclamationTriangleIcon,
+  XCircleIcon,
+  QrCodeIcon
+} from "@heroicons/react/24/outline";
+
+import {
+  CalendarDaysIcon,
+  AcademicCapIcon as AcademicCapSolidIcon
+} from "@heroicons/react/24/solid";
 
 const FormularioFullStack: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -198,7 +230,8 @@ const FormularioFullStack: React.FC = () => {
         return (
             <>
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                        <IdentificationIcon className="w-4 h-4 text-blue-600" />
                         ID Estudiantil <span className="text-red-500">*</span>
                     </label>
                     <input
@@ -207,13 +240,14 @@ const FormularioFullStack: React.FC = () => {
                         value={formData.idEstudiante}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pl-10"
                         placeholder="Ej: A00123456"
                     />
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                        <FacultyIcon className="w-4 h-4 text-blue-600" />
                         Facultad <span className="text-red-500">*</span>
                     </label>
                     <select
@@ -221,7 +255,7 @@ const FormularioFullStack: React.FC = () => {
                         value={formData.facultad}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white pl-10"
                     >
                         <option value="">Seleccionar facultad</option>
                         <option value="Ingeniería">Facultad de Ingeniería</option>
@@ -232,7 +266,8 @@ const FormularioFullStack: React.FC = () => {
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                        <BookOpenIcon className="w-4 h-4 text-blue-600" />
                         Programa Académico <span className="text-red-500">*</span>
                     </label>
                     <select
@@ -240,7 +275,7 @@ const FormularioFullStack: React.FC = () => {
                         value={formData.programa}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white pl-10"
                     >
                         <option value="">Seleccionar programa</option>
                         <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
@@ -253,7 +288,8 @@ const FormularioFullStack: React.FC = () => {
                 </div>
 
                 <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                        <ChartBarIcon className="w-4 h-4 text-blue-600" />
                         Semestre <span className="text-red-500">*</span>
                     </label>
                     <select
@@ -261,7 +297,7 @@ const FormularioFullStack: React.FC = () => {
                         value={formData.semestre}
                         onChange={handleInputChange}
                         required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white pl-10"
                     >
                         <option value="">Seleccionar semestre</option>
                         <option value="1">1° Semestre</option>
@@ -295,9 +331,7 @@ const FormularioFullStack: React.FC = () => {
                         to="/"
                         className="inline-flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-blue-600 hover:bg-gray-50 rounded-lg transition-all duration-200 border border-gray-300 hover:border-gray-400 font-medium"
                     >
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M15 6L9 12L15 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                        </svg>
+                        <ArrowLeftIcon className="w-5 h-5" />
                         <span>Regresar</span>
                     </Link>
                 </div>
@@ -343,8 +377,8 @@ const FormularioFullStack: React.FC = () => {
                     <div className="flex items-center gap-4 p-4">
                         {/* Fecha */}
                         <div className="flex flex-col items-center justify-center bg-gray-100 rounded-md w-14 h-14 flex-shrink-0">
-                            <div className="text-lg font-bold text-gray-800">10</div>
-                            <div className="text-xs font-medium text-gray-600 uppercase">NOV</div>
+                            <CalendarDaysIcon className="w-6 h-6 text-blue-600" />
+                            <div className="text-xs font-medium text-gray-600 uppercase mt-1">NOV</div>
                         </div>
 
                         {/* Contenido */}
@@ -352,23 +386,22 @@ const FormularioFullStack: React.FC = () => {
                             <h3 className="font-semibold text-gray-800 mb-1">
                                 Certificación Full Stack: Spring Boot, Angular & AI
                             </h3>
-                            <div className="text-sm text-gray-600">
-                                <span>Horario: 8:00 pm a 10:00 pm | 3 sesiones (10, 12, 14 Nov)</span>
+                            <div className="text-sm text-gray-600 flex items-center gap-4 flex-wrap">
+                                <span className="flex items-center gap-1">
+                                    <ClockIcon className="w-4 h-4" />
+                                    8:00 pm - 10:00 pm
+                                </span>
+                                <span className="flex items-center gap-1">
+                                    <CalendarIcon className="w-4 h-4" />
+                                    3 sesiones (10, 12, 14 Nov)
+                                </span>
                             </div>
                         </div>
 
                         {/* Flecha */}
                         <div className={`text-gray-400 transition-transform duration-300 ${showEvento ? "rotate-180 text-blue-500" : ""
                             }`}>
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                                <path
-                                    d="M6 9L12 15L18 9"
-                                    stroke="currentColor"
-                                    strokeWidth="2"
-                                    strokeLinecap="round"
-                                    strokeLinejoin="round"
-                                />
-                            </svg>
+                            <ChevronDownIcon className="w-6 h-6" />
                         </div>
                     </div>
                 </section>
@@ -389,7 +422,7 @@ const FormularioFullStack: React.FC = () => {
                                                 className="w-32 h-32 rounded-full object-cover border-4 border-blue-500 shadow-md"
                                             />
                                             <div className="absolute -bottom-2 -right-2 bg-yellow-500 w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">
-                                                <span className="text-xs text-white">🏆</span>
+                                                <ShieldCheckIcon className="w-4 h-4 text-white" />
                                             </div>
                                         </div>
                                     </div>
@@ -413,27 +446,19 @@ const FormularioFullStack: React.FC = () => {
 
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-500">
                                             <div className="flex items-center gap-2">
-                                                <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                                </svg>
+                                                <CalendarDaysIcon className="w-4 h-4 text-blue-500" />
                                                 <span><strong>Fechas:</strong> 10, 12, 14 Nov 2025</span>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
-                                                </svg>
-                                                <span><strong>Lugar:</strong> Modalidad Virtual </span>
+                                                <MapPinIcon className="w-4 h-4 text-blue-500" />
+                                                <span><strong>Lugar:</strong> Modalidad Virtual</span>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                                                </svg>
+                                                <ClockIcon className="w-4 h-4 text-blue-500" />
                                                 <span><strong>Duración:</strong> 3 sesiones de 2 horas</span>
                                             </div>
                                             <div className="flex items-center gap-2">
-                                                <svg className="w-4 h-4 text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                                </svg>
+                                                <AcademicCapIcon className="w-4 h-4 text-blue-500" />
                                                 <span><strong>Certificado:</strong> Internacional DevSeniorCode</span>
                                             </div>
                                         </div>
@@ -443,10 +468,16 @@ const FormularioFullStack: React.FC = () => {
 
                             {/* Contenido del Curso */}
                             <section className="bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl p-6 border border-blue-200">
-                                <h4 className="text-lg font-bold text-gray-800 mb-4">📚 Contenido Académico</h4>
+                                <h4 className="text-lg font-bold text-gray-800 mb-4 flex items-center gap-2">
+                                    <BookOpenIcon className="w-5 h-5 text-blue-600" />
+                                    Contenido Académico
+                                </h4>
                                 <div className="grid md:grid-cols-3 gap-4">
                                     <div className="bg-white p-4 rounded-lg border border-blue-100">
-                                        <h5 className="font-semibold text-blue-600 mb-2">Clase 1 - Backend</h5>
+                                        <h5 className="font-semibold text-blue-600 mb-2 flex items-center gap-2">
+                                            <CodeBracketIcon className="w-4 h-4" />
+                                            Clase 1 - Backend
+                                        </h5>
                                         <ul className="text-sm text-gray-600 space-y-1">
                                             <li>• Spring Boot & APIs RESTful</li>
                                             <li>• PostgreSQL & Arquitectura</li>
@@ -454,7 +485,10 @@ const FormularioFullStack: React.FC = () => {
                                         </ul>
                                     </div>
                                     <div className="bg-white p-4 rounded-lg border border-blue-100">
-                                        <h5 className="font-semibold text-blue-600 mb-2">Clase 2 - Frontend</h5>
+                                        <h5 className="font-semibold text-blue-600 mb-2 flex items-center gap-2">
+                                            <CpuChipIcon className="w-4 h-4" />
+                                            Clase 2 - Frontend
+                                        </h5>
                                         <ul className="text-sm text-gray-600 space-y-1">
                                             <li>• Angular & Estructura Modular</li>
                                             <li>• Componentes & Consumo de APIs</li>
@@ -462,7 +496,10 @@ const FormularioFullStack: React.FC = () => {
                                         </ul>
                                     </div>
                                     <div className="bg-white p-4 rounded-lg border border-blue-100">
-                                        <h5 className="font-semibold text-blue-600 mb-2">Clase 3 - Integración</h5>
+                                        <h5 className="font-semibold text-blue-600 mb-2 flex items-center gap-2">
+                                            <SparklesIcon className="w-4 h-4" />
+                                            Clase 3 - Integración
+                                        </h5>
                                         <ul className="text-sm text-gray-600 space-y-1">
                                             <li>• Full Stack Integration</li>
                                             <li>• Flujo de Datos & Lógica</li>
@@ -482,35 +519,35 @@ const FormularioFullStack: React.FC = () => {
                                         className="w-full h-48 object-cover"
                                     />
                                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                                        <p className="text-white font-semibold text-sm">Certificación Internacional Full Stack</p>
+                                        <p className="text-white font-semibold text-sm flex items-center gap-2">
+                                            <AcademicCapSolidIcon className="w-4 h-4" />
+                                            Certificación Internacional Full Stack
+                                        </p>
                                     </div>
                                 </div>
 
                                 {/* Botón centrado */}
                                 <div className="text-center">
                                     <button
-                                        className="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl w-full max-w-md"
+                                        className="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl w-full max-w-md flex items-center justify-center gap-2"
                                         onClick={toggleFormulario}
                                     >
                                         {showFormulario ? (
-                                            <span className="flex items-center justify-center gap-2">
-                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
-                                                </svg>
+                                            <>
+                                                <ChevronUpIcon className="w-5 h-5" />
                                                 Cerrar formulario
-                                            </span>
+                                            </>
                                         ) : (
-                                            <span className="flex items-center justify-center gap-2">
-                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
-                                                </svg>
+                                            <>
+                                                <AcademicCapIcon className="w-5 h-5" />
                                                 Inscribirme a la certificación
-                                            </span>
+                                            </>
                                         )}
                                     </button>
 
-                                    <p className="text-sm text-gray-500 mt-3">
-                                        🎯 Cupo limitado a 30 estudiantes | 📜 Certificado internacional incluido
+                                    <p className="text-sm text-gray-500 mt-3 flex items-center justify-center gap-2">
+                                        <ShieldCheckIcon className="w-4 h-4" />
+                                        Cupo limitado a 30 estudiantes | Certificado Internacional Incluido
                                     </p>
                                 </div>
                             </section>
@@ -522,78 +559,94 @@ const FormularioFullStack: React.FC = () => {
                         <section ref={formularioRef} className="bg-white rounded-xl shadow-md border border-gray-200 p-6 mt-6">
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="border-l-4 border-blue-500 pl-4">
-                                    <h3 className="text-xl font-bold text-gray-800 mb-1">Formulario de Inscripción</h3>
+                                    <h3 className="text-xl font-bold text-gray-800 mb-1 flex items-center gap-2">
+                                        <UserIcon className="w-5 h-5 text-blue-600" />
+                                        Formulario de Inscripción
+                                    </h3>
                                     <p className="text-sm text-gray-600">Complete la información requerida para la certificación</p>
                                 </div>
 
                                 <div className="grid gap-4">
                                     {/* Información Personal */}
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
+                                        <div className="relative">
                                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                                 Nombre Completo <span className="text-red-500">*</span>
                                             </label>
-                                            <input
-                                                type="text"
-                                                name="nombre"
-                                                value={formData.nombre}
-                                                onChange={handleInputChange}
-                                                required
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                                placeholder="Ingrese su nombre completo"
-                                            />
+                                            <div className="relative">
+                                                <UserIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                                <input
+                                                    type="text"
+                                                    name="nombre"
+                                                    value={formData.nombre}
+                                                    onChange={handleInputChange}
+                                                    required
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pl-10"
+                                                    placeholder="Ingrese su nombre completo"
+                                                />
+                                            </div>
                                         </div>
 
-                                        <div>
+                                        <div className="relative">
                                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                                 Cédula <span className="text-red-500">*</span>
                                             </label>
-                                            <input
-                                                type="text"
-                                                name="cedula"
-                                                value={formData.cedula}
-                                                onChange={handleInputChange}
-                                                required
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                                placeholder="Número de cédula"
-                                            />
+                                            <div className="relative">
+                                                <IdentificationIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                                <input
+                                                    type="text"
+                                                    name="cedula"
+                                                    value={formData.cedula}
+                                                    onChange={handleInputChange}
+                                                    required
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pl-10"
+                                                    placeholder="Número de cédula"
+                                                />
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div>
+                                        <div className="relative">
                                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                                 Correo Electrónico <span className="text-red-500">*</span>
                                             </label>
-                                            <input
-                                                type="email"
-                                                name="correo"
-                                                value={formData.correo}
-                                                onChange={handleInputChange}
-                                                required
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                                placeholder="correo@ejemplo.com"
-                                            />
+                                            <div className="relative">
+                                                <EnvelopeIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                                <input
+                                                    type="email"
+                                                    name="correo"
+                                                    value={formData.correo}
+                                                    onChange={handleInputChange}
+                                                    required
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pl-10"
+                                                    placeholder="correo@ejemplo.com"
+                                                />
+                                            </div>
                                         </div>
 
-                                        <div>
+                                        <div className="relative">
                                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                                 Teléfono <span className="text-red-500">*</span>
                                             </label>
-                                            <input
-                                                type="tel"
-                                                name="telefono"
-                                                value={formData.telefono}
-                                                onChange={handleInputChange}
-                                                required
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                                placeholder="300 123 4567"
-                                            />
+                                            <div className="relative">
+                                                <PhoneIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
+                                                <input
+                                                    type="tel"
+                                                    name="telefono"
+                                                    value={formData.telefono}
+                                                    onChange={handleInputChange}
+                                                    required
+                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent pl-10"
+                                                    placeholder="300 123 4567"
+                                                />
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                                            <UserIcon className="w-4 h-4 text-blue-600" />
                                             Rol <span className="text-red-500">*</span>
                                         </label>
                                         <select
@@ -613,7 +666,10 @@ const FormularioFullStack: React.FC = () => {
 
                                     {/* Información Técnica */}
                                     <div className="border-t pt-4">
-                                        <h4 className="text-lg font-semibold text-gray-800 mb-3">💻 Información Técnica</h4>
+                                        <h4 className="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                                            <CodeBracketIcon className="w-5 h-5 text-blue-600" />
+                                            Información Técnica
+                                        </h4>
                                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                             <div>
                                                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -716,7 +772,10 @@ const FormularioFullStack: React.FC = () => {
 
                                     {/* Motivación y Expectativas */}
                                     <div className="border-t pt-4">
-                                        <h4 className="text-lg font-semibold text-gray-800 mb-3">🎯 Motivación y Expectativas</h4>
+                                        <h4 className="text-lg font-semibold text-gray-800 mb-3 flex items-center gap-2">
+                                            <LightBulbIcon className="w-5 h-5 text-blue-600" />
+                                            Motivación y Expectativas
+                                        </h4>
                                         <div className="space-y-4">
                                             <div>
                                                 <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -754,13 +813,24 @@ const FormularioFullStack: React.FC = () => {
                                 <button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition-colors duration-200"
+                                    className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition-colors duration-200 flex items-center justify-center gap-2"
                                 >
-                                    {isSubmitting ? 'Enviando inscripción...' : 'Confirmar inscripción a la certificación'}
+                                    {isSubmitting ? (
+                                        <>
+                                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                            Enviando inscripción...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <CheckCircleIcon className="w-5 h-5" />
+                                            Confirmar inscripción a la certificación
+                                        </>
+                                    )}
                                 </button>
 
                                 {error && (
-                                    <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg">
+                                    <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg flex items-center gap-2">
+                                        <ExclamationTriangleIcon className="w-4 h-4" />
                                         {error}
                                     </div>
                                 )}
@@ -778,17 +848,28 @@ const FormularioFullStack: React.FC = () => {
                         onClick={() => setSuccessOpen(false)}
                     />
                     <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-8 text-center">
-                        <h3 className="text-2xl font-bold text-blue-600">¡Inscripción Exitosa!</h3>
+                        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <CheckCircleIcon className="w-8 h-8 text-green-600" />
+                        </div>
+                        <h3 className="text-2xl font-bold text-gray-800">¡Inscripción Exitosa!</h3>
                         <p className="text-gray-600 mt-2">Tu registro para la certificación Full Stack ha sido confirmado.</p>
                         <div className="mt-5 flex items-center justify-center">
                             {qrSrc ? (
-                                <img
-                                    src={qrSrc}
-                                    alt="Código QR de confirmación"
-                                    className="h-56 w-56 object-contain rounded-lg border border-gray-200 shadow-sm"
-                                />
+                                <div className="relative">
+                                    <img
+                                        src={qrSrc}
+                                        alt="Código QR de confirmación"
+                                        className="h-56 w-56 object-contain rounded-lg border border-gray-200 shadow-sm"
+                                    />
+                                    <div className="absolute -top-2 -right-2 bg-blue-500 w-8 h-8 rounded-full flex items-center justify-center">
+                                        <QrCodeIcon className="w-4 h-4 text-white" />
+                                    </div>
+                                </div>
                             ) : (
-                                <div className="text-gray-500 text-sm">QR no proporcionado por el servidor.</div>
+                                <div className="text-gray-500 text-sm flex items-center gap-2">
+                                    <ExclamationTriangleIcon className="w-4 h-4" />
+                                    QR no proporcionado por el servidor.
+                                </div>
                             )}
                         </div>
                         <div className="mt-6 flex items-center justify-center gap-4">
@@ -797,16 +878,18 @@ const FormularioFullStack: React.FC = () => {
                                     href={qrSrc}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="bg-blue-600 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-blue-700 transition-all"
+                                    className="bg-blue-600 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-blue-700 transition-all flex items-center gap-2"
                                 >
+                                    <QrCodeIcon className="w-4 h-4" />
                                     Abrir QR
                                 </a>
                             )}
                             <button
                                 type="button"
                                 onClick={() => setSuccessOpen(false)}
-                                className="px-6 py-2.5 rounded-full border border-gray-300 font-semibold text-gray-700 hover:bg-gray-100 transition-all"
+                                className="px-6 py-2.5 rounded-full border border-gray-300 font-semibold text-gray-700 hover:bg-gray-100 transition-all flex items-center gap-2"
                             >
+                                <XCircleIcon className="w-4 h-4" />
                                 Cerrar
                             </button>
                         </div>
@@ -826,23 +909,17 @@ const FormularioFullStack: React.FC = () => {
                         <div className="flex justify-center mb-4">
                             {modalType === "error" && (
                                 <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
-                                    <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
+                                    <XCircleIcon className="w-8 h-8 text-red-600" />
                                 </div>
                             )}
                             {modalType === "warning" && (
                                 <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center">
-                                    <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
-                                    </svg>
+                                    <ExclamationTriangleIcon className="w-8 h-8 text-yellow-600" />
                                 </div>
                             )}
                             {modalType === "success" && (
                                 <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-                                    <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-                                    </svg>
+                                    <CheckCircleIcon className="w-8 h-8 text-green-600" />
                                 </div>
                             )}
                         </div>
@@ -861,11 +938,12 @@ const FormularioFullStack: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={closeModal}
-                                className={`px-8 py-3 rounded-full font-semibold text-white transition-all ${modalType === "error" ? "bg-red-600 hover:bg-red-700" :
+                                className={`px-8 py-3 rounded-full font-semibold text-white transition-all flex items-center gap-2 ${modalType === "error" ? "bg-red-600 hover:bg-red-700" :
                                     modalType === "warning" ? "bg-yellow-600 hover:bg-yellow-700" :
                                         "bg-green-600 hover:bg-green-700"
                                     }`}
                             >
+                                <CheckCircleIcon className="w-4 h-4" />
                                 Entendido
                             </button>
                         </div>

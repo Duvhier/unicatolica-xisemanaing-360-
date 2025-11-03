@@ -4,6 +4,68 @@ import "./FormularioInscripcionLiderazgo.css";
 import ConferenciaImg from "../assets/CONFERENCIA COACHING-8.png";
 import ximena from "@/assets/ximenaotero.jpg";
 
+// 🔹 Importar los iconos que necesitas
+const MapPinIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+  </svg>
+);
+
+const ClockIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
+
+const TrophyIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+  </svg>
+);
+
+const UserIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+  </svg>
+);
+
+const DocumentIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+  </svg>
+);
+
+const MailIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+  </svg>
+);
+
+const PhoneIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+  </svg>
+);
+
+const BuildingIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+  </svg>
+);
+
+const ShieldCheckIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+  </svg>
+);
+
+const BriefcaseIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2-2v2m8 0V6a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2V6" />
+  </svg>
+);
+
 const FormularioInscripcionLiderazgo: React.FC = () => {
     const [formData, setFormData] = useState({
         nombre: "",
@@ -186,7 +248,8 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                     </p>
 
                     <div className="bg-unigold/20 rounded-full px-6 py-3 inline-block">
-                        <p className="text-sm font-medium text-gray-800">
+                        <p className="text-sm font-medium text-gray-800 flex items-center justify-center gap-2">
+                            <ShieldCheckIcon className="w-4 h-4 text-unigold" />
                             Exclusiva para docentes y administrativos de UNICATÓLICA
                         </p>
                     </div>
@@ -220,8 +283,11 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                             <h3 className="font-semibold text-gray-800 mb-1">
                                 Conferencia: Desarrollo Personal y Liderazgo
                             </h3>
-                            <div className="text-sm text-gray-600">
-                                <span>Auditorio 1 - Sede Pance • 3:00 PM - 5:00 PM</span>
+                            <div className="text-sm text-gray-600 flex items-center gap-2">
+                                <ClockIcon className="w-4 h-4 text-uniblue" />
+                                <span>3:00 PM - 5:00 PM</span>
+                                <MapPinIcon className="w-4 h-4 text-uniblue" />
+                                <span>Auditorio 1 - Sede Pance</span>
                             </div>
                         </div>
 
@@ -240,6 +306,7 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                         </div>
                     </div>
                 </section>
+
                 {/* DESPLIEGUE EN CASCADA */}
                 <div ref={expandableRef} className={`expandable-content ${showEvento ? "expanded" : ""}`}>
                     {showEvento && (
@@ -252,11 +319,11 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                                         <div className="relative">
                                             <img
                                                 src={ximena}
-                                                alt="CoachXimena Otero Pilonieta"
+                                                alt="Coach Ximena Otero Pilonieta"
                                                 className="w-32 h-32 rounded-full object-cover border-4 border-uniblue shadow-md"
                                             />
                                             <div className="absolute -bottom-2 -right-2 bg-unigold w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">
-                                                <span className="text-xs">⭐</span>
+                                                <span className="text-xs text-white">⭐</span>
                                             </div>
                                         </div>
                                     </div>
@@ -281,15 +348,11 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
 
                                         <div className="flex items-center gap-4 text-sm text-gray-500">
                                             <span className="flex items-center gap-1 font-medium">
-                                                <svg className="w-4 h-4 text-uniblue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                                                </svg>
+                                                <ShieldCheckIcon className="w-4 h-4 text-uniblue" />
                                                 Coach Certificada
                                             </span>
                                             <span className="flex items-center gap-1 font-medium">
-                                                <svg className="w-4 h-4 text-uniblue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-                                                </svg>
+                                                <BriefcaseIcon className="w-4 h-4 text-uniblue" />
                                                 Abogada
                                             </span>
                                         </div>
@@ -334,7 +397,8 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                                         )}
                                     </button>
 
-                                    <p className="text-sm text-gray-500 mt-3">
+                                    <p className="text-sm text-gray-500 mt-3 flex items-center justify-center gap-2">
+                                        <TrophyIcon className="w-4 h-4 text-unigold" />
                                         ⚡ Confirmación inmediata
                                     </p>
                                 </div>
@@ -352,30 +416,89 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                                 </div>
 
                                 <div className="grid gap-4">
-                                    {[
-                                        { id: "nombre", label: "Nombre", type: "text" },
-                                        { id: "cedula", label: "Documento", type: "text" },
-                                        { id: "correo", label: "Correo", type: "email" },
-                                        { id: "telefono", label: "Teléfono", type: "tel" },
-                                        { id: "area", label: "Área", type: "text" },
-                                    ].map(({ id, label, type }) => (
-                                        <div key={id}>
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                                {label} <span className="text-red-500">*</span>
-                                            </label>
-                                            <input
-                                                type={type}
-                                                name={id}
-                                                value={(formData as any)[id]}
-                                                onChange={handleInputChange}
-                                                required
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent"
-                                            />
-                                        </div>
-                                    ))}
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                                            <UserIcon className="w-4 h-4 text-uniblue" />
+                                            Nombre Completo <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="nombre"
+                                            value={formData.nombre}
+                                            onChange={handleInputChange}
+                                            required
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent"
+                                            placeholder="Ingrese su nombre completo"
+                                        />
+                                    </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                                            <DocumentIcon className="w-4 h-4 text-uniblue" />
+                                            Documento <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="cedula"
+                                            value={formData.cedula}
+                                            onChange={handleInputChange}
+                                            required
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent"
+                                            placeholder="Número de documento"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                                            <MailIcon className="w-4 h-4 text-uniblue" />
+                                            Correo Electrónico <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="email"
+                                            name="correo"
+                                            value={formData.correo}
+                                            onChange={handleInputChange}
+                                            required
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent"
+                                            placeholder="correo@unicatolica.edu.co"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                                            <PhoneIcon className="w-4 h-4 text-uniblue" />
+                                            Teléfono <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="tel"
+                                            name="telefono"
+                                            value={formData.telefono}
+                                            onChange={handleInputChange}
+                                            required
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent"
+                                            placeholder="300 123 4567"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                                            <BuildingIcon className="w-4 h-4 text-uniblue" />
+                                            Área/Departamento <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="area"
+                                            value={formData.area}
+                                            onChange={handleInputChange}
+                                            required
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent"
+                                            placeholder="Ej: Facultad de Ingeniería"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                                            <BriefcaseIcon className="w-4 h-4 text-uniblue" />
                                             Rol <span className="text-red-500">*</span>
                                         </label>
                                         <select
@@ -396,13 +519,30 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                                 <button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="w-full bg-uniblue text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition-colors duration-200"
+                                    className="w-full bg-uniblue text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition-colors duration-200 flex items-center justify-center gap-2"
                                 >
-                                    {isSubmitting ? 'Enviando...' : 'Confirmar inscripción'}
+                                    {isSubmitting ? (
+                                        <>
+                                            <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2v4m0 12v4m8-10h-4M6 12H2" />
+                                            </svg>
+                                            Enviando...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                            </svg>
+                                            Confirmar Inscripción
+                                        </>
+                                    )}
                                 </button>
 
                                 {error && (
-                                    <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg">
+                                    <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg flex items-center gap-2">
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
                                         {error}
                                     </div>
                                 )}
@@ -420,7 +560,7 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                         onClick={() => setSuccessOpen(false)}
                     />
                     <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-8 text-center">
-                        <h3 className="text-2xl font-bold text-[#001b5e]">Inscripción registrada</h3>
+                        <h3 className="text-2xl font-bold text-uniblue">Inscripción registrada</h3>
                         <p className="text-gray-600 mt-2">Guarda o escanea tu código para confirmar.</p>
                         <div className="mt-5 flex items-center justify-center">
                             {qrSrc ? (
@@ -439,16 +579,22 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                                     href={qrSrc}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="bg-[#001b5e] text-white px-6 py-2.5 rounded-full font-semibold hover:bg-[#002b8a] transition-all"
+                                    className="bg-uniblue text-white px-6 py-2.5 rounded-full font-semibold hover:bg-blue-700 transition-all flex items-center gap-2"
                                 >
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                    </svg>
                                     Abrir QR
                                 </a>
                             )}
                             <button
                                 type="button"
                                 onClick={() => setSuccessOpen(false)}
-                                className="px-6 py-2.5 rounded-full border border-gray-300 font-semibold text-gray-700 hover:bg-gray-100 transition-all"
+                                className="px-6 py-2.5 rounded-full border border-gray-300 font-semibold text-gray-700 hover:bg-gray-100 transition-all flex items-center gap-2"
                             >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
                                 Cerrar
                             </button>
                         </div>
@@ -503,11 +649,14 @@ const FormularioInscripcionLiderazgo: React.FC = () => {
                             <button
                                 type="button"
                                 onClick={closeModal}
-                                className={`px-8 py-3 rounded-full font-semibold text-white transition-all ${modalType === "error" ? "bg-red-600 hover:bg-red-700" :
+                                className={`px-8 py-3 rounded-full font-semibold text-white transition-all flex items-center gap-2 ${modalType === "error" ? "bg-red-600 hover:bg-red-700" :
                                     modalType === "warning" ? "bg-yellow-600 hover:bg-yellow-700" :
                                         "bg-green-600 hover:bg-green-700"
                                     }`}
                             >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
                                 Entendido
                             </button>
                         </div>

@@ -4,6 +4,24 @@ import './FormularioInscripcion.css';
 import DobleLumenImg from '@/assets/DOBLALUMEN-8.png'; 
 import facultadesData from '@/assets/facultadesyprogramasacademicos.json';
 
+// Importar iconos de Heroicons
+import { 
+  MapPinIcon, 
+  ClockIcon, 
+  TrophyIcon, 
+  UserIcon,
+  AcademicCapIcon,
+  BuildingLibraryIcon,
+  CalendarIcon,
+  PhoneIcon,
+  EnvelopeIcon,
+  IdentificationIcon,
+  BookOpenIcon,
+  MicrophoneIcon,
+  PresentationChartBarIcon,
+  DocumentTextIcon
+} from '@heroicons/react/24/outline';
+
 // Interfaces para los tipos de datos
 interface Programa {
   id: string;
@@ -436,7 +454,10 @@ const FormularioDobleLumen: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-6 mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
             <div className="form-group md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Tipo de Participación <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <TrophyIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Tipo de Participación <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="tipoEstudiante"
@@ -458,7 +479,10 @@ const FormularioDobleLumen: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                ID Estudiantil <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <IdentificationIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  ID Estudiantil <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -480,7 +504,10 @@ const FormularioDobleLumen: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Facultad <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <BuildingLibraryIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Facultad <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="facultad"
@@ -500,7 +527,10 @@ const FormularioDobleLumen: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Programa Académico <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <AcademicCapIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Programa Académico <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="programa"
@@ -526,7 +556,10 @@ const FormularioDobleLumen: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Semestre <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <CalendarIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Semestre <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="semestre"
@@ -553,7 +586,10 @@ const FormularioDobleLumen: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-6 mt-6 p-4 bg-green-50 rounded-lg border border-green-200">
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Programa de Egreso <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <AcademicCapIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Programa de Egreso <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="programa"
@@ -575,7 +611,10 @@ const FormularioDobleLumen: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Empresa donde labora (Opcional)
+                <div className="flex items-center gap-2">
+                  <BuildingLibraryIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Empresa donde labora (Opcional)
+                </div>
               </label>
               <input
                 type="text"
@@ -596,7 +635,10 @@ const FormularioDobleLumen: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-6 mt-6 p-4 bg-purple-50 rounded-lg border border-purple-200">
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Área/Departamento <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <MapPinIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Área/Departamento <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -611,7 +653,10 @@ const FormularioDobleLumen: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Cargo <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <UserIcon className="w-4 h-4 text-uniblue" />
+                  Cargo <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -631,7 +676,10 @@ const FormularioDobleLumen: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-6 mt-6 p-4 bg-orange-50 rounded-lg border border-orange-200">
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Empresa/Institución <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <BuildingLibraryIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Empresa/Institución <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -646,7 +694,10 @@ const FormularioDobleLumen: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Cargo <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <UserIcon className="w-4 h-4 text-uniblue" />
+                  Cargo <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -672,7 +723,10 @@ const FormularioDobleLumen: React.FC = () => {
       return (
         <div className="border-t border-gray-200 pt-8">
           <div className="border-l-4 border-unigold pl-4 mb-6">
-            <h2 className="text-2xl font-bold text-gray-800">Datos de la Competencia de Inglés</h2>
+            <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+              <TrophyIcon className="w-6 h-6 text-unigold" />
+              Datos de la Competencia de Inglés
+            </h2>
             <p className="text-sm text-gray-600 mt-1">
               Complete la información específica para participar en la competencia de inglés
             </p>
@@ -681,7 +735,10 @@ const FormularioDobleLumen: React.FC = () => {
           <div className="grid md:grid-cols-2 gap-6">
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Nivel de Inglés <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <BookOpenIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Nivel de Inglés <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="nivel_ingles"
@@ -702,7 +759,10 @@ const FormularioDobleLumen: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Experiencia en Inglés <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <AcademicCapIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Experiencia en Inglés <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="experiencia_ingles"
@@ -722,7 +782,10 @@ const FormularioDobleLumen: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Modalidad de Participación <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <MicrophoneIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Modalidad de Participación <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="modalidad_participacion"
@@ -741,7 +804,10 @@ const FormularioDobleLumen: React.FC = () => {
 
             <div className="form-group">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Duración Estimada <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <ClockIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Duración Estimada <span className="text-red-500">*</span>
+                </div>
               </label>
               <select
                 name="duracion_participacion"
@@ -760,7 +826,10 @@ const FormularioDobleLumen: React.FC = () => {
 
             <div className="form-group md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Tema de Presentación/Discurso <span className="text-red-500">*</span>
+                <div className="flex items-center gap-2">
+                  <PresentationChartBarIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Tema de Presentación/Discurso <span className="text-red-500">*</span>
+                </div>
               </label>
               <input
                 type="text"
@@ -778,7 +847,10 @@ const FormularioDobleLumen: React.FC = () => {
 
             <div className="form-group md:col-span-2">
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Recursos Adicionales Necesarios (Opcional)
+                <div className="flex items-center gap-2">
+                  <DocumentTextIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                  Recursos Adicionales Necesarios (Opcional)
+                </div>
               </label>
               <textarea
                 name="recursos_adicionales"
@@ -823,7 +895,8 @@ const FormularioDobleLumen: React.FC = () => {
           </div>
 
           <div className="text-center">
-            <h1 className="text-2xl font-bold text-gray-800 mb-2">
+            <h1 className="text-2xl font-bold text-gray-800 mb-2 flex items-center justify-center gap-2">
+              <TrophyIcon className="w-8 h-8 text-orange-600" />
               DOBLE LUMEN
             </h1>
             <p className="text-lg text-orange-600 font-semibold mb-4">
@@ -831,13 +904,16 @@ const FormularioDobleLumen: React.FC = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4">
-              <span className="bg-orange-600 text-white px-4 py-2 rounded-full text-sm font-medium">
+              <span className="bg-orange-600 text-white px-4 py-2 rounded-full text-sm font-medium flex items-center gap-2">
+                <CalendarIcon className="w-4 h-4" />
                 Miércoles 12 de Noviembre
               </span>
-              <span className="text-gray-600 font-medium">
+              <span className="text-gray-600 font-medium flex items-center gap-2">
+                <ClockIcon className="w-4 h-4 text-orange-600" />
                 6:30 pm a 9:30 pm
               </span>
-              <span className="text-gray-600 font-medium">
+              <span className="text-gray-600 font-medium flex items-center gap-2">
+                <MapPinIcon className="w-4 h-4 text-orange-600" />
                 Auditorio 1 - Sede Pance
               </span>
             </div>
@@ -856,7 +932,10 @@ const FormularioDobleLumen: React.FC = () => {
           {/* Información del Evento */}
           <div className="mb-8">
             <div className="border-l-4 border-orange-600 pl-4 mb-6">
-              <h2 className="text-2xl font-bold text-gray-800">Información del Evento</h2>
+              <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                <MapPinIcon className="w-6 h-6 text-orange-600" />
+                Información del Evento
+              </h2>
             </div>
 
             <div className="bg-white rounded-xl shadow-sm border-2 border-orange-600">
@@ -867,18 +946,30 @@ const FormularioDobleLumen: React.FC = () => {
               />
               <div className="p-6">
                 <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                  <span>📅</span>
+                  <ClockIcon className="w-4 h-4 text-orange-600" />
                   <span>Mié, Nov 12 | 6:30 pm - 9:30 pm</span>
                 </div>
-                <h3 className="text-xl font-bold text-gray-800 mb-3">Doble Lumen - Competencia de Inglés</h3>
+                <h3 className="text-xl font-bold text-gray-800 mb-3 flex items-center gap-2">
+                  <TrophyIcon className="w-5 h-5 text-orange-600" />
+                  Doble Lumen - Competencia de Inglés
+                </h3>
                 <p className="text-gray-600 leading-relaxed mb-4">
                   Demuestra tus habilidades en speaking, presentation, debate y storytelling en inglés
                 </p>
                 <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
-                  <p className="text-sm text-orange-800">
-                    <strong>Lugar:</strong> Auditorio 1 - Sede Pance<br />
-                    <strong>Modalidades:</strong> Speaking, Presentation, Debate, Storytelling<br />
-                    <strong>Evaluación:</strong> Fluidez, pronunciación, vocabulario, coherencia
+                  <p className="text-sm text-orange-800 flex flex-col gap-1">
+                    <span className="flex items-center gap-2">
+                      <MapPinIcon className="w-4 h-4 text-orange-600" />
+                      <strong>Lugar:</strong> Auditorio 1 - Sede Pance
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <MicrophoneIcon className="w-4 h-4 text-orange-600" />
+                      <strong>Modalidades:</strong> Speaking, Presentation, Debate, Storytelling
+                    </span>
+                    <span className="flex items-center gap-2">
+                      <PresentationChartBarIcon className="w-4 h-4 text-orange-600" />
+                      <strong>Evaluación:</strong> Fluidez, pronunciación, vocabulario, coherencia
+                    </span>
                   </p>
                 </div>
               </div>
@@ -889,13 +980,19 @@ const FormularioDobleLumen: React.FC = () => {
           <div ref={formSectionRef} className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8">
             <div className="mb-8">
               <div className="border-l-4 border-orange-600 pl-4 mb-6">
-                <h2 className="text-2xl font-bold text-gray-800">Datos Personales</h2>
+                <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
+                  <UserIcon className="w-6 h-6 text-orange-600" />
+                  Datos Personales
+                </h2>
               </div>
 
               <div className="grid md:grid-cols-2 gap-6">
                 <div className="form-group">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Nombre Completo <span className="text-red-500">*</span>
+                    <div className="flex items-center gap-2">
+                      <UserIcon className="w-4 h-4 text-orange-600" />
+                      Nombre Completo <span className="text-red-500">*</span>
+                    </div>
                   </label>
                   <input
                     type="text"
@@ -910,7 +1007,10 @@ const FormularioDobleLumen: React.FC = () => {
 
                 <div className="form-group">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Cédula de Ciudadanía <span className="text-red-500">*</span>
+                    <div className="flex items-center gap-2">
+                      <IdentificationIcon className="w-4 h-4 text-orange-600" />
+                      Cédula de Ciudadanía <span className="text-red-500">*</span>
+                    </div>
                   </label>
                   <input
                     type="text"
@@ -929,7 +1029,10 @@ const FormularioDobleLumen: React.FC = () => {
 
                 <div className="form-group">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Correo Electrónico <span className="text-red-500">*</span>
+                    <div className="flex items-center gap-2">
+                      <EnvelopeIcon className="w-4 h-4 text-orange-600" />
+                      Correo Electrónico <span className="text-red-500">*</span>
+                    </div>
                   </label>
                   <input
                     type="email"
@@ -948,7 +1051,10 @@ const FormularioDobleLumen: React.FC = () => {
 
                 <div className="form-group">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Número de Celular <span className="text-red-500">*</span>
+                    <div className="flex items-center gap-2">
+                      <PhoneIcon className="w-4 h-4 text-orange-600" />
+                      Número de Celular <span className="text-red-500">*</span>
+                    </div>
                   </label>
                   <input
                     type="tel"
@@ -963,7 +1069,10 @@ const FormularioDobleLumen: React.FC = () => {
 
                 <div className="form-group md:col-span-2">
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Rol <span className="text-red-500">*</span>
+                    <div className="flex items-center gap-2">
+                      <UserIcon className="w-4 h-4 text-orange-600" />
+                      Rol <span className="text-red-500">*</span>
+                    </div>
                   </label>
                   <select
                     name="rol"

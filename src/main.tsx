@@ -12,6 +12,9 @@ import FormularioAsistenciaInaugural from './components/FormularioAsistenciaInau
 import FormularioDobleLumen from './components/FormularioDoblaLumen.tsx'
 import FormularioFullStack from './components/FormularioFullStack.tsx'
 import FormularioIndustriaAccion from './components/FormularioIndustriaenAccion.tsx'
+import FormularioEmavi from './components/FormularioEmavi.tsx'
+import FormularioCarnicos from './components/FormularioCarnicos.tsx'
+import FormularioOlimpiadasLogica from './components/FormularioOlimpiadasLogica.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -26,6 +29,9 @@ createRoot(document.getElementById('root')!).render(
         <Route path='/formulario-doblalumen' element={<FormularioDobleLumen />} />
         <Route path='/formulario-fullstack' element={<FormularioFullStack />} />
         <Route path='/formulario-industriaenaccion' element={<FormularioIndustriaAccion />} />
+        <Route path='/formulario-visitaemavi' element={<FormularioEmavi />} />
+        <Route path='/formulario-visitacarnicos' element={<FormularioCarnicos />} />
+        <Route path="/formulario-olimpiadasmatematicas" element={<FormularioOlimpiadasLogica />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
