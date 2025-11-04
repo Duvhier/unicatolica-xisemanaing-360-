@@ -13,6 +13,7 @@ import ActoClausuraImg from "../assets/ACTO CLAUSURA-8.png";
 import OlimpiadaImg from "../assets/OLIMPIADAS MATEMATICAS -8.png";
 import VueloImg from "../assets/INICIACION AL VUELO-8.png";
 import IAImg from "../assets/CONFERENCIA-IAPRACTICA-8.png";
+import EntrevistaImg from "../assets/ENTREVISTA-8.png";
 import XimenaOtero from "../assets/ponentes/ximena-otero.jpg";
 import WordpressImg from "../assets/WORDPRESS.jpg";
 import JulianPortocarrero from "../assets/ponentes/julian-portocarrero.jpg";
@@ -60,6 +61,8 @@ interface Actividad {
   imagen?: string;
   organizador?: string;
   participantes?: string[];
+  estado?: string; // ← NUEVA PROPIEDAD
+  mostrarRegistro?: boolean; // ← NUEVA PROPIEDAD
 }
 
 interface DiaCronograma {
@@ -83,7 +86,6 @@ export default function CronogramaActividades() {
   const [ponenteSeleccionado, setPonenteSeleccionado] = useState<Ponente | null>(null);
   const [cuposActividades, setCuposActividades] = useState<{ [key: number]: CupoInfo }>({});
   const [cargandoCupos, setCargandoCupos] = useState<boolean>(true);
-
 
   // Estados para el carrusel
   const [currentSlide, setCurrentSlide] = useState<number>(0);
@@ -457,6 +459,29 @@ export default function CronogramaActividades() {
     }));
   };
 
+  // ✅ NUEVA FUNCIÓN: Obtener estado del evento
+  const getEstadoEvento = (actividad: Actividad) => {
+    if (actividad.estado === "activo") {
+      return "activo";
+    }
+    return "normal";
+  };
+
+  // ✅ NUEVA FUNCIÓN: Renderizar badge de estado
+  const renderBadgeEstado = (actividad: Actividad) => {
+    const estado = getEstadoEvento(actividad);
+    
+    if (estado === "activo") {
+      return (
+        <span className="bg-red-100 text-red-800 text-xs px-3 py-1 rounded-full font-semibold border border-red-200 flex items-center gap-1 animate-pulse">
+          <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+          EN VIVO AHORA
+        </span>
+      );
+    }
+    return null;
+  };
+
   // Base de datos de ponentes con tipado
   const basePonentes: { [key: string]: Ponente } = {
     "Coach Ximena Otero Pilonieta": {
@@ -616,7 +641,8 @@ export default function CronogramaActividades() {
           lugar: "Auditorio Lumen – Sede Meléndez",
           tipo: "Conferencia",
           aliado: "Escuela Militar de Aviación Marco Fidel Suarez – EMAVI",
-          destacado: false
+          destacado: false,
+          mostrarRegistro: false // ← NUEVA PROPIEDAD
         },
         {
           id: 4,
@@ -625,7 +651,7 @@ export default function CronogramaActividades() {
           ponente: "",
           lugar: "Auditorio Lumen – Sede Meléndez",
           tipo: "Conversatorio",
-          destacado: true,
+          destacado: false,
           participantes: [
             "Ing. Clara Eugenia Satizabal Serna - Decana Facultad de Ingeniería",
             "Ing. José Armando Ordóñez Córdoba - Profesor del Dpto. Computación y Sistemas Inteligentes - Universidad ICESI",
@@ -821,16 +847,17 @@ export default function CronogramaActividades() {
         {
           id: 18,
           hora: "11:00 am - 12:00 pm",
-          titulo: "Entrevista: La formación de los programas de Ingeniería. Caso Universidad del Norte",
+          titulo: "Entrevista: La Formación de Los Programas de Ingeniería. Caso Universidad del Norte",
           ponente: "P&D Jorge Luis Bris",
           lugar: "Estudio de Radio Lumen – Sede Meléndez",
           tipo: "Entrevista",
-          destacado: false
+          destacado: false,
+          imagen: EntrevistaImg
         },
         {
           id: 19,
           hora: "6:30 pm - 8:00 pm",
-          titulo: "Construcción red de ingenieros integrados",
+          titulo: "Construcción Red de Ingenieros Integrados",
           ponente: "",
           lugar: "Auditorio LUMEN - Sede Meléndez",
           tipo: "Networking",
@@ -1590,17 +1617,19 @@ export default function CronogramaActividades() {
                           className={`bg-white rounded-2xl shadow-sm border transition-all duration-300 hover:shadow-md overflow-hidden ${actividad.destacado
                             ? "border-uniblue border-l-4"
                             : "border-gray-200 border-l-4 border-l-gray-300"
-                            }`}
+                            } ${actividad.estado === "activo" ? "border-l-4 border-l-red-500 bg-gradient-to-r from-white to-red-50" : ""}`}
                         >
                           {/* Encabezado de la actividad */}
                           <div
                             className={`p-4 ${actividad.destacado
                               ? "bg-gradient-to-r from-uniblue to-blue-600"
-                              : "bg-gradient-to-r from-gray-100 to-gray-200"
+                              : actividad.estado === "activo"
+                                ? "bg-gradient-to-r from-red-500 to-red-600"
+                                : "bg-gradient-to-r from-gray-100 to-gray-200"
                               }`}
                           >
                             <div className="flex items-center justify-between">
-                              <div className={`font-bold text-lg ${actividad.destacado ? "text-white" : "text-gray-800"
+                              <div className={`font-bold text-lg ${actividad.destacado ? "text-white" : actividad.estado === "activo" ? "text-white" : "text-gray-800"
                                 }`}>
                                 {actividad.hora}
                               </div>
@@ -1609,7 +1638,9 @@ export default function CronogramaActividades() {
                                 <span
                                   className={`text-xs font-semibold px-3 py-1 rounded-full ${actividad.destacado
                                     ? "bg-white/20 text-white"
-                                    : "bg-gray-300 text-gray-700"
+                                    : actividad.estado === "activo"
+                                      ? "bg-white/20 text-white"
+                                      : "bg-gray-300 text-gray-700"
                                     }`}
                                 >
                                   {actividad.tipo}
@@ -1621,7 +1652,7 @@ export default function CronogramaActividades() {
                           {/* Contenido de la actividad */}
                           <div className="p-6">
                             <h4
-                              className={`text-xl font-bold mb-4 leading-tight ${actividad.destacado ? "text-uniblue" : "text-gray-800"
+                              className={`text-xl font-bold mb-4 leading-tight ${actividad.destacado ? "text-uniblue" : actividad.estado === "activo" ? "text-red-700" : "text-gray-800"
                                 }`}
                             >
                               {actividad.titulo}
@@ -1678,6 +1709,9 @@ export default function CronogramaActividades() {
 
                             {/* Badges */}
                             <div className="flex flex-wrap gap-2 mb-4">
+                              {/* Badge de estado activo */}
+                              {renderBadgeEstado(actividad)}
+                              
                               {actividad.destacado && (
                                 <span className="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-semibold border border-yellow-200 flex items-center gap-1">
                                   <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
@@ -1695,7 +1729,8 @@ export default function CronogramaActividades() {
                                 </span>
                               )}
                               {/* Badge de cupos para actividades con registro */}
-                              {(actividad.botonRegistro || (actividad.destacado && actividad.tipo === "Conferencia")) && (
+                              {(actividad.botonRegistro || (actividad.destacado && actividad.tipo === "Conferencia")) && 
+                              actividad.id !== 3 && ( // ← EXCLUIR EVENTO CON ID 3(
                                 renderBadgeCupos(actividad.id)
                               )}
                             </div>
@@ -1712,7 +1747,8 @@ export default function CronogramaActividades() {
                             )}
 
                             {/* Botón de inscripción para conferencias destacadas */}
-                            {(actividad.destacado && actividad.tipo === "Conferencia") || actividad.botonRegistro ? (
+                            {((actividad.destacado && actividad.tipo === "Conferencia") || actividad.botonRegistro) && 
+                             actividad.mostrarRegistro !== false ? (
                               <div className="mt-4">
                                 <button
                                   onClick={() => handleRegistro(actividad)}

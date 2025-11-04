@@ -306,7 +306,7 @@ const FormularioHackathonMonitoria: React.FC = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(payload)
             });
-            
+
             if (!res.ok) {
                 const err = await res.json().catch(() => ({}));
 
@@ -908,7 +908,7 @@ const FormularioHackathonMonitoria: React.FC = () => {
                             {isSubmitting ? 'Enviando...' :
                                 isCheckingDuplicates ? 'Verificando...' :
                                     hasDuplicateErrors() ? 'Corrija los errores' :
-                                        'Inscribirse en Monitoría Remota'}
+                                        'Inscribirse'}
                         </button>
                     </div>
                 </form>
