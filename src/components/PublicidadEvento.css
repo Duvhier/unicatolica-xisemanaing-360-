@@ -333,6 +333,7 @@
   gap: 0.75rem;
   margin-bottom: 1rem;
   min-height: 50px;
+  width: 100%;
 }
 
 .elemento-nombre {
@@ -342,6 +343,7 @@
   line-height: 1.4;
   flex: 1;
   margin: 0;
+  text-align: center;
 }
 
 .elemento-categoria {
@@ -470,97 +472,9 @@
   animation-delay: 0.3s;
 }
 
-/* Responsive */
-@media (max-width: 768px) {
-  .publicidad-header h2 {
-    font-size: 2rem;
-  }
-
-  .nombre-imagen {
-    max-height: 35px;
-  }
-
-  .elemento-header {
-    min-height: 45px;
-  }
-  
-  .elementos-grid {
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-  }
-  
-  .filtros-grid {
-    gap: 0.5rem;
-  }
-  
-  .filtro-btn {
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-  }
-  
-  .elemento-imagen-container {
-    height: 200px;
-    padding: 1.5rem;
-  }
-  
-  .elemento-info {
-    padding: 1.5rem;
-  }
-  
-  .elemento-nombre {
-    font-size: 1.125rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .nombre-imagen {
-    max-height: 30px;
-  }
-  .elementos-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .publicidad-evento {
-    padding: 1rem 0.5rem;
-  }
-  
-  .elemento-imagen-container {
-    height: 180px;
-    padding: 1.25rem;
-  }
-  
-  .elemento-info {
-    padding: 1.25rem;
-  }
-  
-  .elemento-header {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.5rem;
-    min-height: 45px;
-    margin-bottom: 0.5rem;
-  }
-  
-  .elemento-categoria {
-    align-self: flex-start;
-  }
-}
-
-/* Estados vacíos */
-.elementos-grid:empty::before {
-  content: 'No se encontraron elementos';
-  display: block;
-  text-align: center;
-  color: #94a3b8;
-  font-size: 1.125rem;
-  padding: 3rem;
-  grid-column: 1 / -1;
-  background: #f8fafc;
-  border-radius: 12px;
-  border: 2px dashed #e2e8f0;
-}
-
-/* Agrega estos estilos al final de tu PublicidadEvento.css */
+/* ========================= */
+/* ESTILOS MEJORADOS PARA IMÁGENES DE NOMBRE EN MÓVIL */
+/* ========================= */
 
 /* Contenedor para la imagen del nombre */
 .nombre-imagen-container {
@@ -569,14 +483,19 @@
   align-items: center;
   margin-bottom: 1rem;
   padding: 0 0.5rem;
+  width: 100%;
+  text-align: center;
 }
 
 .nombre-imagen {
   max-width: 100%;
   max-height: 40px;
+  height: auto;
   object-fit: contain;
   filter: brightness(0.9);
   transition: all 0.3s ease;
+  display: block;
+  margin: 0 auto;
 }
 
 .elemento-card:hover .nombre-imagen {
@@ -640,3 +559,182 @@
   height: 1.25rem;
 }
 
+/* ========================= */
+/* RESPONSIVE MEJORADO PARA MÓVILES */
+/* ========================= */
+
+@media (max-width: 768px) {
+  .publicidad-header h2 {
+    font-size: 2rem;
+  }
+
+  /* Contenedor de imagen de nombre mejorado para móviles */
+  .nombre-imagen-container {
+    margin-bottom: 0.75rem;
+    padding: 0 1rem;
+    min-height: 35px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .nombre-imagen {
+    max-height: 35px;
+    max-width: 90%;
+    width: auto;
+    margin: 0 auto;
+  }
+
+  .elemento-header {
+    min-height: 45px;
+    margin-bottom: 0.75rem;
+    justify-content: center;
+    text-align: center;
+  }
+  
+  .elementos-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+  
+  .filtros-grid {
+    gap: 0.5rem;
+  }
+  
+  .filtro-btn {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+  
+  .elemento-imagen-container {
+    height: 200px;
+    padding: 1.5rem;
+  }
+  
+  .elemento-info {
+    padding: 1.5rem;
+  }
+  
+  .elemento-nombre {
+    font-size: 1.125rem;
+    text-align: center;
+  }
+
+  .elemento-descripcion {
+    text-align: center;
+    padding: 0 0.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .nombre-imagen-container {
+    padding: 0 0.75rem;
+  }
+
+  .nombre-imagen {
+    max-height: 32px;
+    max-width: 85%;
+  }
+
+  .elemento-header {
+    min-height: 40px;
+  }
+}
+
+@media (max-width: 480px) {
+  .publicidad-evento {
+    padding: 1rem 0.5rem;
+  }
+
+  .nombre-imagen-container {
+    padding: 0 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .nombre-imagen {
+    max-height: 30px;
+    max-width: 80%;
+  }
+
+  .elemento-header {
+    min-height: 35px;
+    margin-bottom: 0.5rem;
+  }
+
+  .elementos-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  
+  .elemento-imagen-container {
+    height: 180px;
+    padding: 1.25rem;
+  }
+  
+  .elemento-info {
+    padding: 1.25rem;
+  }
+  
+  .elemento-header {
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    min-height: 45px;
+    margin-bottom: 0.5rem;
+  }
+  
+  .elemento-categoria {
+    align-self: center;
+  }
+
+  .elemento-descripcion {
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    padding: 0;
+  }
+}
+
+@media (max-width: 380px) {
+  .nombre-imagen {
+    max-height: 28px;
+    max-width: 75%;
+  }
+
+  .elemento-header {
+    min-height: 32px;
+  }
+
+  .elemento-info {
+    padding: 1rem;
+  }
+}
+
+/* Estados vacíos */
+.elementos-grid:empty::before {
+  content: 'No se encontraron elementos';
+  display: block;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 1.125rem;
+  padding: 3rem;
+  grid-column: 1 / -1;
+  background: #f8fafc;
+  border-radius: 12px;
+  border: 2px dashed #e2e8f0;
+}
+
+/* Clase adicional para asegurar centrado en todos los dispositivos */
+.centrado-movil {
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  text-align: center !important;
+}
+
+/* Asegurar que las imágenes de nombre siempre estén centradas */
+.elemento-header .nombre-imagen-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}

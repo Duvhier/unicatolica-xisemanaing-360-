@@ -7,18 +7,21 @@ import FuerzaAereaLogo from "@/assets/publicidad/fuerzaaerea.png";
 import ZonaAmericaLogo from "@/assets/publicidad/Zonamerica - copia.png";
 import PriceSmartLogo from "@/assets/publicidad/pricesmart.png";
 import NutresaLogo from "@/assets/publicidad/gruponutresa.png";
+import CDICarnicosLogo from "@/assets/publicidad/alimentoscarnicos.png"; 
 
 import FondoEducacion from "@/assets/publicidad/fondo-escuelamarcofidel.jpg";
 import FondoDefensa from "@/assets/publicidad/fondo-educacion.jpg";
 import FondoTecnologia from "@/assets/publicidad/fondo-defensa.jpg";
 import FondoRetail from "@/assets/publicidad/fondo-retail.jpg";
 import FondoAlimentos from "@/assets/publicidad/fondo-alimentos.jpg";
+import FondoCarnicos from "@/assets/publicidad/fondo-carnicos.jpeg";
 
 import EmaviNombre from "@/assets/publicidad/emavitext.png";
 import FuerzaAereaNombre from "@/assets/publicidad/fuerzaaereatext.png";
 import ZonaAmericaNombre from "@/assets/publicidad/Zonamericatext.png";
 import PriceSmartNombre from "@/assets/publicidad/pricesmarttext.png";
 import NutresaNombre from "@/assets/publicidad/gruponutresatext.png";
+import CDICarnicosNombre from "@/assets/publicidad/alimentoscarnicosnombre.png"; 
 
 interface AliadoPatrocinador {
   id: number;
@@ -84,6 +87,16 @@ const PublicidadEvento: React.FC = () => {
       fondo: FondoAlimentos,
       descripcion: "Gestionamos nuestras actividades comprometidos con el desarrollo sostenible; con el mejor talento humano, la innovación sobresaliente y un comportamiento corporativo ejemplar. En Nutresa trabajamos día a día por nuestro propósito superior construir un mundo mejor donde el desarrollo sea para todos. ¡Nutresa, Tu Salud, Nuestra Prioridad!",
       website: "https://www.gruponutresa.com",
+    },
+    {
+      id: 6,
+      nombre: "CDI ALIMENTOS CÁRNICOS",
+      tipo: "aliado",
+      imagen: CDICarnicosLogo,
+      imagenNombre: CDICarnicosNombre,
+      fondo: FondoCarnicos,
+      descripcion: "Líder en la producción y distribución de alimentos cárnicos de alta calidad, comprometidos con la excelencia, innovación y sostenibilidad en cada uno de nuestros procesos. ¡CDI Alimentos Cárnicos, Calidad que se siente!",
+      website: "https://alimentoscarnicos.com.co/", // Ajusta la URL si es necesario
     }
   ];
 
