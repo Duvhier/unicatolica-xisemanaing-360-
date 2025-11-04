@@ -8,9 +8,13 @@ import VisitaZonaAmerica from "../assets/VISITA - EMPRESARIAL  -8 ZONAAMERICA.pn
 import Visita14nov from "../assets/VISITA EMPRESARIAL - 14-8.png";
 import Visita15nov from "../assets/VISITA EMPRESARIAL -8.png";
 import HackathonImg from "../assets/HACKATON copia-8.png";
+import HackathonMonitoriaImg from "../assets/HACKATON monitoria-8.png";
 import ActoClausuraImg from "../assets/ACTO CLAUSURA-8.png";
 import OlimpiadaImg from "../assets/OLIMPIADAS MATEMATICAS -8.png";
+import VueloImg from "../assets/INICIACION AL VUELO-8.png";
+import IAImg from "../assets/CONFERENCIA-IAPRACTICA-8.png";
 import XimenaOtero from "../assets/ponentes/ximena-otero.jpg";
+import WordpressImg from "../assets/WORDPRESS.jpg";
 import JulianPortocarrero from "../assets/ponentes/julian-portocarrero.jpg";
 import LorenaCeron from "../assets/ponentes/lorena-ceron.jpg";
 import CarlosMolina from "../assets/ponentes/carlos-molina.jpg";
@@ -125,6 +129,22 @@ export default function CronogramaActividades() {
         actividad: "Visita Emavi",
         mensaje: "Usuarios Registrados: 0/40"
       },
+      7: { // Iniciación al Vuelo y a La Cohetería
+        disponible: true,
+        cuposDisponibles: 40,
+        cupoMaximo: 40,
+        inscritos: 0,
+        actividad: "Iniciación al Vuelo y a La Cohetería",
+        mensaje: "Usuarios Registrados: 0/40"
+      },
+      8: { // Hackathon Monitoría Remota
+        disponible: true,
+        cuposDisponibles: 50,
+        cupoMaximo: 50,
+        inscritos: 0,
+        actividad: "Hackathon Monitoría Remota",
+        mensaje: "Usuarios Registrados: 0/50"
+      },
       9: { // Hackathon Universidades
         disponible: true,
         cuposDisponibles: 150,
@@ -229,7 +249,7 @@ export default function CronogramaActividades() {
       setCargandoCupos(true);
 
       // IDs de actividades que tienen registro
-      const actividadesConRegistro = [1, 2, 5, 6, 9, 10, 11, 12, 13, 14, 15, 21, 22, 23, 24];
+      const actividadesConRegistro = [1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 21, 22, 23, 24];
 
       const promesasCupos = actividadesConRegistro.map(async (id) => {
         try {
@@ -247,6 +267,12 @@ export default function CronogramaActividades() {
               break;
             case 6: // EMAVI
               endpoint = `${API_URL}/visitaemavi/estado-registros`;
+              break;
+            case 7: // Iniciación al Vuelo y a La Cohetería
+              endpoint = `${API_URL}/tallervuelo/estado-registros`;
+              break;
+            case 8: // Hackathon Monitoría Remota
+              endpoint = `${API_URL}/hackathonmonitoria/estado-registros`;
               break;
             case 9: // Hackathon Universidades
               endpoint = `${API_URL}/inscripciones/estado-registros`;
@@ -268,6 +294,9 @@ export default function CronogramaActividades() {
               break;
             case 15: // Technological Touch
               endpoint = `${API_URL}/technological/estado-registros`;
+              break;
+            case 17: // WordPress
+              endpoint = `${API_URL}/tallerwordpress/estado-registros`;
               break;
             case 21: // CDI Alimentos Cárnicos
               endpoint = `${API_URL}/visitacarnicos/estado-registros`;
@@ -582,7 +611,7 @@ export default function CronogramaActividades() {
         {
           id: 3,
           hora: "7:20 pm - 8:20 pm",
-          titulo: "Aplicaciones de la I.A en la Educación",
+          titulo: "Aplicaciones de La IA en La Educación",
           ponente: "P&D Julián Portocarrero Hermann",
           lugar: "Auditorio Lumen – Sede Meléndez",
           tipo: "Conferencia",
@@ -592,7 +621,7 @@ export default function CronogramaActividades() {
         {
           id: 4,
           hora: "8:30 pm - 9:00 pm",
-          titulo: "Conversatorio: La I.A y el Futuro Profesional",
+          titulo: "Conversatorio: La IA y El Futuro Profesional",
           ponente: "",
           lugar: "Auditorio Lumen – Sede Meléndez",
           tipo: "Conversatorio",
@@ -634,22 +663,28 @@ export default function CronogramaActividades() {
         },
         {
           id: 7,
-          hora: "10:00 am - 11:00 am",
-          titulo: "Conferencia",
+          hora: "10:00 am - 12:00 pm",
+          titulo: "Taller Teórico – Práctico de Iniciación al Vuelo y a La Cohetería ",
           ponente: "P&D Julián Portocarrero Hermann",
           lugar: "Auditorio 1 – Sede Pance",
           tipo: "Conferencia",
-          destacado: false
+          destacado: true,
+          imagen: VueloImg,
+          botonRegistro: true,
+          urlRegistro: "/formulario-tallervuelo"
         },
         {
           id: 8,
           hora: "2:00 pm - 5:00 pm",
           titulo: "Hackathon Unicatólica",
           ponente: "",
-          lugar: "Salas de Sistemas 1, 2, 3 – Bloque B – Sede Pance",
+          lugar: "Monitoría Remota",
           tipo: "Competencia",
-          destacado: false,
-          organizador: "Profesores Brandon Rosero - Ronald Rengifo"
+          destacado: true,
+          organizador: "Profesores Brandon Rosero - Ronald Rengifo",
+          imagen: HackathonMonitoriaImg,
+          botonRegistro: true,
+          urlRegistro: "/formulario-hackathonmonitoria"
         },
         {
           id: 9,
@@ -695,7 +730,10 @@ export default function CronogramaActividades() {
           ponente: "Mag. Lorena Cerón",
           lugar: "Salón A201 – Sede Pance",
           tipo: "Conferencia",
-          destacado: false
+          destacado: true,
+          botonRegistro: true,
+          urlRegistro: "/formulario-ia-practica",
+          imagen: IAImg
         },
         {
           id: 23,
@@ -775,7 +813,10 @@ export default function CronogramaActividades() {
           ponente: "Mag. Carlos Molina",
           lugar: "Sala 2 de Sistemas – Sede Pance",
           tipo: "Taller",
-          destacado: true
+          destacado: true,
+          botonRegistro: true,
+          urlRegistro: "/formulario-tallerwordpress",
+          imagen: WordpressImg
         },
         {
           id: 18,

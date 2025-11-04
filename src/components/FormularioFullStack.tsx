@@ -6,34 +6,34 @@ import LogoFullStack from "@/assets/ponentes/devseniologo.png";
 
 // Importar HeroIcons
 import {
-  ArrowLeftIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  CalendarIcon,
-  MapPinIcon,
-  ClockIcon,
-  AcademicCapIcon,
-  ShieldCheckIcon,
-  UserIcon,
-  IdentificationIcon,
-  EnvelopeIcon,
-  PhoneIcon,
-  AcademicCapIcon as FacultyIcon,
-  BookOpenIcon,
-  ChartBarIcon,
-  CodeBracketIcon,
-  CpuChipIcon,
-  SparklesIcon,
-  LightBulbIcon,
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-  XCircleIcon,
-  QrCodeIcon
+    ArrowLeftIcon,
+    ChevronDownIcon,
+    ChevronUpIcon,
+    CalendarIcon,
+    MapPinIcon,
+    ClockIcon,
+    AcademicCapIcon,
+    ShieldCheckIcon,
+    UserIcon,
+    IdentificationIcon,
+    EnvelopeIcon,
+    PhoneIcon,
+    AcademicCapIcon as FacultyIcon,
+    BookOpenIcon,
+    ChartBarIcon,
+    CodeBracketIcon,
+    CpuChipIcon,
+    SparklesIcon,
+    LightBulbIcon,
+    CheckCircleIcon,
+    ExclamationTriangleIcon,
+    XCircleIcon,
+    QrCodeIcon
 } from "@heroicons/react/24/outline";
 
 import {
-  CalendarDaysIcon,
-  AcademicCapIcon as AcademicCapSolidIcon
+    CalendarDaysIcon,
+    AcademicCapIcon as AcademicCapSolidIcon
 } from "@heroicons/react/24/solid";
 
 const FormularioFullStack: React.FC = () => {
@@ -159,7 +159,7 @@ const FormularioFullStack: React.FC = () => {
             // 🔹 Éxito
             setQrSrc(responseData?.qr || responseData?.qrData || null);
             setSuccessOpen(true);
-            
+
             // Limpiar formulario
             setFormData({
                 nombre: "",
@@ -529,18 +529,18 @@ const FormularioFullStack: React.FC = () => {
                                 {/* Botón centrado */}
                                 <div className="text-center">
                                     <button
-                                        className="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl w-full max-w-md flex items-center justify-center gap-2"
+                                        className="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl max-w-md flex items-center justify-center gap-2 mx-auto"
                                         onClick={toggleFormulario}
                                     >
                                         {showFormulario ? (
                                             <>
                                                 <ChevronUpIcon className="w-5 h-5" />
-                                                Cerrar formulario
+                                                Cerrar Formulario
                                             </>
                                         ) : (
                                             <>
                                                 <AcademicCapIcon className="w-5 h-5" />
-                                                Inscribirme a la certificación
+                                                Inscribirme
                                             </>
                                         )}
                                     </button>
@@ -818,12 +818,12 @@ const FormularioFullStack: React.FC = () => {
                                     {isSubmitting ? (
                                         <>
                                             <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                                            Enviando inscripción...
+                                            Enviando Inscripción...
                                         </>
                                     ) : (
                                         <>
                                             <CheckCircleIcon className="w-5 h-5" />
-                                            Confirmar inscripción a la certificación
+                                            Confirmar Inscripción
                                         </>
                                     )}
                                 </button>
