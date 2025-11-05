@@ -223,6 +223,7 @@ const FormularioCarnicos: React.FC = () => {
                         <option value="Ingeniería Industrial">Ingeniería Industrial</option>
                         <option value="Administración de Empresas">Administración de Empresas</option>
                         <option value="Contaduría Pública">Contaduría Pública</option>
+                        <option value="Tecnología en Gestión de Logística Empresarial">Tecnología en Gestión de Logística Empresarial</option>
                     </select>
                 </div>
             </>
