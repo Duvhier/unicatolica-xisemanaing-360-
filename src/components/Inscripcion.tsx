@@ -61,8 +61,8 @@ interface Actividad {
   imagen?: string;
   organizador?: string;
   participantes?: string[];
-  estado?: string; // ← NUEVA PROPIEDAD
-  mostrarRegistro?: boolean; // ← NUEVA PROPIEDAD
+  estado?: string;
+  mostrarRegistro?: boolean;
 }
 
 interface DiaCronograma {
@@ -86,6 +86,11 @@ export default function CronogramaActividades() {
   const [ponenteSeleccionado, setPonenteSeleccionado] = useState<Ponente | null>(null);
   const [cuposActividades, setCuposActividades] = useState<{ [key: number]: CupoInfo }>({});
   const [cargandoCupos, setCargandoCupos] = useState<boolean>(true);
+
+  // ✅ NUEVO ESTADO: Búsqueda
+  const [terminoBusqueda, setTerminoBusqueda] = useState<string>("");
+  const [resultadosBusqueda, setResultadosBusqueda] = useState<Actividad[]>([]);
+  const [mostrarResultados, setMostrarResultados] = useState<boolean>(false);
 
   // Estados para el carrusel
   const [currentSlide, setCurrentSlide] = useState<number>(0);
@@ -388,6 +393,56 @@ export default function CronogramaActividades() {
     return info;
   };
 
+  // ✅ NUEVA FUNCIÓN: Buscar actividades
+  const buscarActividades = (termino: string) => {
+    if (!termino.trim()) {
+      setResultadosBusqueda([]);
+      setMostrarResultados(false);
+      return;
+    }
+
+    const terminoLower = termino.toLowerCase().trim();
+    const todosEventos = cronograma.flatMap(dia => dia.actividades);
+
+    const resultados = todosEventos.filter(actividad => {
+      return (
+        actividad.titulo.toLowerCase().includes(terminoLower) ||
+        actividad.ponente.toLowerCase().includes(terminoLower) ||
+        actividad.lugar.toLowerCase().includes(terminoLower) ||
+        actividad.tipo.toLowerCase().includes(terminoLower) ||
+        (actividad.organizador && actividad.organizador.toLowerCase().includes(terminoLower)) ||
+        (actividad.aliado && actividad.aliado.toLowerCase().includes(terminoLower)) ||
+        (actividad.participantes && actividad.participantes.some(p => p.toLowerCase().includes(terminoLower)))
+      );
+    });
+
+    setResultadosBusqueda(resultados);
+    setMostrarResultados(true);
+
+    // Abrir todos los días que contengan resultados
+    const diasConResultados = new Set<number>();
+    cronograma.forEach((dia, index) => {
+      if (dia.actividades.some(actividad => resultados.includes(actividad))) {
+        diasConResultados.add(index);
+      }
+    });
+
+    setDiasAbiertos(prev => {
+      const nuevosDias = { ...prev };
+      diasConResultados.forEach(index => {
+        nuevosDias[index] = true;
+      });
+      return nuevosDias;
+    });
+  };
+
+  // ✅ NUEVA FUNCIÓN: Limpiar búsqueda
+  const limpiarBusqueda = () => {
+    setTerminoBusqueda("");
+    setResultadosBusqueda([]);
+    setMostrarResultados(false);
+  };
+
   // Función para renderizar el badge de usuarios registrados - MODIFICADA
   const renderBadgeCupos = (actividadId: number) => {
     // ✅ Ahora obtenerInfoCupos siempre retorna un objeto, no null
@@ -470,7 +525,7 @@ export default function CronogramaActividades() {
   // ✅ NUEVA FUNCIÓN: Renderizar badge de estado
   const renderBadgeEstado = (actividad: Actividad) => {
     const estado = getEstadoEvento(actividad);
-    
+
     if (estado === "activo") {
       return (
         <span className="bg-red-100 text-red-800 text-xs px-3 py-1 rounded-full font-semibold border border-red-200 flex items-center gap-1 animate-pulse">
@@ -571,7 +626,7 @@ export default function CronogramaActividades() {
     "DevSeniorCode Academy": {
       nombre: "DevSeniorCode Academy",
       titulo: "Academia Especializada en Desarrollo de Software e Inteligencia Artificial",
-      foto: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762102414/devsenioform_rjas9y.jpg", // Puedes cambiar esta imagen
+      foto: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762102414/devsenioform_rjas9y.jpg",
       especialidad: "Formación en Spring Boot, Angular, AI y Desarrollo Full Stack",
       experiencia: "Capacitación en tecnologías modernas para el desarrollo de aplicaciones empresariales; Especialistas en integración de Inteligencia Artificial en aplicaciones web; Formación con certificación internacional",
       linkTrayectoria: "https://www.devseniorcode.com"
@@ -601,7 +656,6 @@ export default function CronogramaActividades() {
           imagen: ConferenciaImg,
           exclusivo: "Docentes y Administrativos"
         },
-        // NUEVO EVENTO - CERTIFICACIÓN FULL STACK
         {
           id: 22,
           hora: "8:00 pm - 10:00 pm",
@@ -614,7 +668,7 @@ export default function CronogramaActividades() {
           aliado: "DevSeniorCode Academy",
           botonRegistro: true,
           urlRegistro: "/formulario-fullstack",
-          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762102414/devsenioform_rjas9y.jpg" // Puedes cambiar esta imagen después
+          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762102414/devsenioform_rjas9y.jpg"
         }
       ]
     },
@@ -642,7 +696,7 @@ export default function CronogramaActividades() {
           tipo: "Conferencia",
           aliado: "Escuela Militar de Aviación Marco Fidel Suarez – EMAVI",
           destacado: false,
-          mostrarRegistro: false // ← NUEVA PROPIEDAD
+          mostrarRegistro: false
         },
         {
           id: 4,
@@ -932,7 +986,7 @@ export default function CronogramaActividades() {
 
     const interval = setInterval(() => {
       nextSlide();
-    }, 5000); // Cambia cada 5 segundos
+    }, 5000);
 
     return () => clearInterval(interval);
   }, [isAutoPlaying, currentSlide]);
@@ -943,7 +997,6 @@ export default function CronogramaActividades() {
       clearTimeout(timeoutId);
       setTimeoutId(null);
     }
-    // Detener la animación de la barra de progreso
     if (progressBarRef.current) {
       progressBarRef.current.style.transition = 'none';
       progressBarRef.current.style.width = '100%';
@@ -952,13 +1005,11 @@ export default function CronogramaActividades() {
 
   // Función para iniciar el ocultamiento después de tiempo
   const iniciarOcultamiento = () => {
-    // Esperar 5 segundos antes de ocultar
     const id = setTimeout(() => {
       ocultarTooltip();
     }, 5000);
     setTimeoutId(id);
 
-    // Reiniciar animación de barra de progreso
     if (progressBarRef.current) {
       progressBarRef.current.style.transition = 'width 5s linear';
       progressBarRef.current.style.width = '0%';
@@ -976,13 +1027,11 @@ export default function CronogramaActividades() {
       });
       setTooltipVisible(true);
 
-      // Iniciar temporizador para ocultar automáticamente después de 5 segundos
       const id = setTimeout(() => {
         ocultarTooltip();
       }, 5000);
       setTimeoutId(id);
 
-      // Iniciar animación de barra de progreso
       setTimeout(() => {
         if (progressBarRef.current) {
           progressBarRef.current.style.transition = 'width 5s linear';
@@ -1029,7 +1078,6 @@ export default function CronogramaActividades() {
 
   // Agrega esta función para manejar el clic en la ubicación
   const abrirGoogleMaps = (lugar: string): void => {
-    // Mapeo de lugares a coordenadas o direcciones específicas
     const ubicaciones: { [key: string]: string } = {
       "Auditorio Lumen – Sede Meléndez": "3.3761867004376307, -76.54341424861032",
       "Auditorio 1 – Sede Pance": "3.345883489958763, -76.54095280254512",
@@ -1044,32 +1092,26 @@ export default function CronogramaActividades() {
       "CDI Alimentos Cárnicos": "3.519970195771467, -76.5100205483301"
     };
 
-    // Buscar la ubicación en el mapeo
     const coordenadas = ubicaciones[lugar];
 
     if (coordenadas) {
-      // Si tenemos coordenadas específicas, usar la URL de coordenadas
       window.open(`https://www.google.com/maps?q=${coordenadas}`, '_blank');
     } else {
-      // Si no tenemos coordenadas, hacer búsqueda por texto
       const lugarCodificado = encodeURIComponent(lugar);
       window.open(`https://www.google.com/maps/search/?api=1&query=${lugarCodificado}`, '_blank');
     }
   };
 
   const handleRegistro = (actividad: Actividad): void => {
-    // Verificar cupos antes de redirigir - CORREGIDA
     const infoCupos = obtenerInfoCupos(actividad.id);
-    if (!infoCupos.disponible) { // ✅ Ya no necesitamos verificar null
+    if (!infoCupos.disponible) {
       alert('Lo sentimos, no hay cupos disponibles para esta actividad.');
       return;
     }
 
     if (actividad.urlRegistro) {
-      // Redirigir a la URL específica del evento
       window.location.href = actividad.urlRegistro;
     } else {
-      // Comportamiento por defecto para otras actividades
       window.location.href = `${FORM_URL}?actividad=${actividad.id}`;
     }
   };
@@ -1174,7 +1216,6 @@ export default function CronogramaActividades() {
                   onMouseEnter={(e) => mostrarTooltipPonente(nombreCompleto, e)}
                   onMouseLeave={ocultarTooltip}
                 >
-                  {/* Avatar con imagen real o iniciales */}
                   <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden ${esModerador ? 'ring-1 ring-unigold' : ''
                     }`}>
                     {ponenteInfo?.foto ? (
@@ -1362,6 +1403,132 @@ export default function CronogramaActividades() {
           <h2 className="text-xl md:text-2xl font-bold text-gray-800 tracking-tight">
             AGENDATE
           </h2>
+        </div>
+
+        {/* ✅ NUEVO: BARRA DE BÚSQUEDA */}
+        {/* BARRA DE BÚSQUEDA - OPCIÓN 2: GLASSMORPHISM */}
+        <div className="max-w-2xl mx-auto mb-8 px-4">
+          <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl border border-white/20 p-6">
+            <div className="flex flex-col sm:flex-row gap-4 items-center">
+              <div className="flex-1 w-full">
+                <div className="relative">
+                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <svg className="h-5 w-5 text-uniblue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    value={terminoBusqueda}
+                    onChange={(e) => {
+                      setTerminoBusqueda(e.target.value);
+                      buscarActividades(e.target.value);
+                    }}
+                    placeholder="¿Qué evento estás buscando?"
+                    className="w-full pl-10 pr-4 py-4 bg-white/50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-uniblue focus:border-uniblue transition-all duration-200 backdrop-blur-sm placeholder-gray-500 text-gray-800 font-medium"
+                  />
+                  {terminoBusqueda && (
+                    <button
+                      onClick={limpiarBusqueda}
+                      className="absolute inset-y-0 right-0 pr-3 flex items-center hover:bg-gray-100 rounded-full p-1 transition-colors"
+                    >
+                      <svg className="h-5 w-5 text-gray-500 hover:text-gray-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
+              </div>
+
+              <button
+                onClick={() => buscarActividades(terminoBusqueda)}
+                disabled={!terminoBusqueda.trim()}
+                className="w-full sm:w-auto px-8 py-4 bg-uniblue text-white rounded-xl font-bold hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-3 shadow-lg hover:shadow-xl backdrop-blur-sm"
+              >
+                <svg className="h-5 w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                </svg>
+                Buscar
+              </button>
+            </div>
+
+            <div className="mt-3 flex flex-wrap gap-2 justify-center">
+              <span className="text-xs text-gray-500">Sugerencias:</span>
+              <button onClick={() => { setTerminoBusqueda("Hackathon"); buscarActividades("Hackathon"); }} className="text-xs bg-blue-100 text-uniblue px-2 py-1 rounded-full hover:bg-blue-200 transition-colors">Hackathon</button>
+              <button onClick={() => { setTerminoBusqueda("Conferencia"); buscarActividades("Conferencia"); }} className="text-xs bg-green-100 text-green-600 px-2 py-1 rounded-full hover:bg-green-200 transition-colors">Conferencia</button>
+              <button onClick={() => { setTerminoBusqueda("Visita"); buscarActividades("Visita"); }} className="text-xs bg-purple-100 text-purple-600 px-2 py-1 rounded-full hover:bg-purple-200 transition-colors">Visita</button>
+            </div>
+
+            {/* ✅ NUEVO: RESULTADOS DE BÚSQUEDA */}
+            {mostrarResultados && (
+              <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-200">
+                <div className="flex items-center justify-between mb-3">
+                  <h3 className="text-lg font-semibold text-gray-800 flex items-center gap-2">
+                    <svg className="h-5 w-5 text-uniblue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Resultados de búsqueda
+                  </h3>
+                  <span className="bg-uniblue text-white px-3 py-1 rounded-full text-sm font-medium">
+                    {resultadosBusqueda.length} {resultadosBusqueda.length === 1 ? 'resultado' : 'resultados'}
+                  </span>
+                </div>
+
+                {resultadosBusqueda.length > 0 ? (
+                  <div className="space-y-2 max-h-60 overflow-y-auto">
+                    {resultadosBusqueda.map((actividad) => (
+                      <div
+                        key={actividad.id}
+                        className="p-3 bg-white rounded-lg border border-gray-200 hover:border-uniblue transition-colors duration-200 cursor-pointer"
+                        onClick={() => {
+                          // Encontrar el día de la actividad y abrirlo
+                          const diaIndex = cronograma.findIndex(dia =>
+                            dia.actividades.some(a => a.id === actividad.id)
+                          );
+                          if (diaIndex !== -1) {
+                            setDiasAbiertos(prev => ({ ...prev, [diaIndex]: true }));
+                            // Scroll al día correspondiente
+                            setTimeout(() => {
+                              document.getElementById(`dia-${diaIndex}`)?.scrollIntoView({
+                                behavior: 'smooth',
+                                block: 'start'
+                              });
+                            }, 100);
+                          }
+                          setMostrarResultados(false);
+                        }}
+                      >
+                        <div className="flex items-start justify-between">
+                          <div>
+                            <h4 className="font-semibold text-gray-800 text-sm">{actividad.titulo}</h4>
+                            <p className="text-xs text-gray-600 mt-1">
+                              {actividad.hora} • {actividad.lugar}
+                            </p>
+                            {actividad.ponente && (
+                              <p className="text-xs text-gray-500 mt-1">
+                                Ponente: {actividad.ponente}
+                              </p>
+                            )}
+                          </div>
+                          <span className="bg-gray-100 text-gray-700 text-xs px-2 py-1 rounded-full whitespace-nowrap ml-2">
+                            {actividad.tipo}
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-center py-4 text-gray-500">
+                    <svg className="h-12 w-12 mx-auto text-gray-400 mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <p>No se encontraron resultados para "{terminoBusqueda}"</p>
+                    <p className="text-sm mt-1">Intenta con otros términos de búsqueda</p>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -1561,9 +1728,17 @@ export default function CronogramaActividades() {
       <div className="max-w-7xl mx-auto px-4">
         {cronograma.map((dia, index) => {
           const { diaNumero, mes } = parseFecha(dia.dia);
+          const actividadesDelDia = mostrarResultados && terminoBusqueda
+            ? dia.actividades.filter(actividad => resultadosBusqueda.includes(actividad))
+            : dia.actividades;
+
+          // Si estamos en modo búsqueda y este día no tiene resultados, no mostrar
+          if (mostrarResultados && terminoBusqueda && actividadesDelDia.length === 0) {
+            return null;
+          }
 
           return (
-            <div key={index} className="mb-6 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+            <div key={index} id={`dia-${index}`} className="mb-6 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
               <button
                 onClick={() => toggleDia(index)}
                 className={`w-full flex items-center justify-between p-5 transition-all duration-300 border-l-4 ${diasAbiertos[index]
@@ -1585,6 +1760,11 @@ export default function CronogramaActividades() {
                       }`}>
                       {dia.dia}
                     </h3>
+                    {mostrarResultados && terminoBusqueda && (
+                      <p className="text-sm text-green-600 font-medium mt-1">
+                        {actividadesDelDia.length} {actividadesDelDia.length === 1 ? 'resultado' : 'resultados'} encontrados
+                      </p>
+                    )}
                   </div>
                 </div>
 
@@ -1593,7 +1773,7 @@ export default function CronogramaActividades() {
                     ? 'bg-uniblue text-white'
                     : 'bg-gray-200 text-gray-700'
                     }`}>
-                    {dia.actividades.length}
+                    {actividadesDelDia.length}
                   </span>
                   <span className={`text-xl transition-transform duration-300 ${diasAbiertos[index] ? 'rotate-180 text-uniblue' : 'text-gray-500'
                     }`}>
@@ -1606,7 +1786,7 @@ export default function CronogramaActividades() {
               {diasAbiertos[index] && (
                 <div className="bg-gradient-to-br from-gray-50 to-white p-8 border-t border-gray-200">
                   <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-                    {dia.actividades.map((actividad) => {
+                    {actividadesDelDia.map((actividad) => {
                       const infoCupos = obtenerInfoCupos(actividad.id);
                       const textoBoton = getTextoBoton(actividad, infoCupos);
                       const claseBoton = getClaseBoton(infoCupos);
@@ -1682,10 +1862,10 @@ export default function CronogramaActividades() {
                                   >
                                     {actividad.lugar}
                                     {actividad.lugar.toLowerCase().includes('virtual') && (
-                                      <span className="ml-1 text-xs text-green-600">🌐</span> // Icono de globo para virtual
+                                      <span className="ml-1 text-xs text-green-600">🌐</span>
                                     )}
                                     {!actividad.lugar.toLowerCase().includes('virtual') && (
-                                      <span className="ml-1 text-xs text-uniblue">📍</span> // Icono de ubicación para presencial
+                                      <span className="ml-1 text-xs text-uniblue">📍</span>
                                     )}
                                   </button>
                                 </div>
@@ -1711,7 +1891,7 @@ export default function CronogramaActividades() {
                             <div className="flex flex-wrap gap-2 mb-4">
                               {/* Badge de estado activo */}
                               {renderBadgeEstado(actividad)}
-                              
+
                               {actividad.destacado && (
                                 <span className="bg-yellow-100 text-yellow-800 text-xs px-3 py-1 rounded-full font-semibold border border-yellow-200 flex items-center gap-1">
                                   <svg className="w-3 h-3" fill="currentColor" viewBox="0 0 20 20">
@@ -1729,10 +1909,10 @@ export default function CronogramaActividades() {
                                 </span>
                               )}
                               {/* Badge de cupos para actividades con registro */}
-                              {(actividad.botonRegistro || (actividad.destacado && actividad.tipo === "Conferencia")) && 
-                              actividad.id !== 3 && ( // ← EXCLUIR EVENTO CON ID 3(
-                                renderBadgeCupos(actividad.id)
-                              )}
+                              {(actividad.botonRegistro || (actividad.destacado && actividad.tipo === "Conferencia")) &&
+                                actividad.id !== 3 && (
+                                  renderBadgeCupos(actividad.id)
+                                )}
                             </div>
 
                             {/* Imagen de la actividad si existe */}
@@ -1747,8 +1927,8 @@ export default function CronogramaActividades() {
                             )}
 
                             {/* Botón de inscripción para conferencias destacadas */}
-                            {((actividad.destacado && actividad.tipo === "Conferencia") || actividad.botonRegistro) && 
-                             actividad.mostrarRegistro !== false ? (
+                            {((actividad.destacado && actividad.tipo === "Conferencia") || actividad.botonRegistro) &&
+                              actividad.mostrarRegistro !== false ? (
                               <div className="mt-4">
                                 <button
                                   onClick={() => handleRegistro(actividad)}
@@ -1769,6 +1949,36 @@ export default function CronogramaActividades() {
             </div>
           );
         })}
+
+        {/* ✅ NUEVO: MENSAJE CUANDO NO HAY RESULTADOS EN BÚSQUEDA */}
+        {mostrarResultados && resultadosBusqueda.length === 0 && (
+          <div className="text-center py-12">
+            <div className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8 max-w-2xl mx-auto">
+              <svg className="h-16 w-16 mx-auto text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <h3 className="text-xl font-bold text-gray-800 mb-2">No se encontraron resultados</h3>
+              <p className="text-gray-600 mb-4">
+                No hay eventos que coincidan con "<span className="font-semibold">{terminoBusqueda}</span>"
+              </p>
+              <div className="text-sm text-gray-500 mb-6">
+                <p>Sugerencias:</p>
+                <ul className="mt-2 space-y-1">
+                  <li>• Verifica la ortografía de las palabras</li>
+                  <li>• Usa términos más generales</li>
+                  <li>• Prueba con diferentes palabras clave</li>
+                  <li>• Busca por tipo de evento, ponente o lugar</li>
+                </ul>
+              </div>
+              <button
+                onClick={limpiarBusqueda}
+                className="px-6 py-3 bg-uniblue text-white rounded-xl font-semibold hover:bg-blue-700 transition-all duration-200"
+              >
+                Ver todos los eventos
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );

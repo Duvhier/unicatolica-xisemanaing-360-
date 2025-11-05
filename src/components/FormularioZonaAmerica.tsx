@@ -6,30 +6,30 @@ import LogoZonaAmerica from "@/assets/visitasevento.jpg";
 
 // Importar HeroIcons
 import {
-  ArrowLeftIcon,
-  ChevronDownIcon,
-  ChevronUpIcon,
-  MapPinIcon,
-  ClockIcon,
-  BuildingStorefrontIcon,
-  UserIcon,
-  IdentificationIcon,
-  EnvelopeIcon,
-  PhoneIcon,
-  BookOpenIcon,
-  HeartIcon,
-  TruckIcon,
-  CheckCircleIcon,
-  ExclamationTriangleIcon,
-  XCircleIcon,
-  QrCodeIcon,
-  BuildingOfficeIcon,
-  UserGroupIcon
+    ArrowLeftIcon,
+    ChevronDownIcon,
+    ChevronUpIcon,
+    MapPinIcon,
+    ClockIcon,
+    BuildingStorefrontIcon,
+    UserIcon,
+    IdentificationIcon,
+    EnvelopeIcon,
+    PhoneIcon,
+    BookOpenIcon,
+    HeartIcon,
+    TruckIcon,
+    CheckCircleIcon,
+    ExclamationTriangleIcon,
+    XCircleIcon,
+    QrCodeIcon,
+    BuildingOfficeIcon,
+    UserGroupIcon
 } from "@heroicons/react/24/outline";
 
 import {
-  CalendarDaysIcon,
-  BuildingStorefrontIcon as BuildingStorefrontSolidIcon
+    CalendarDaysIcon,
+    BuildingStorefrontIcon as BuildingStorefrontSolidIcon
 } from "@heroicons/react/24/solid";
 
 const FormularioZonaAmerica: React.FC = () => {
@@ -146,7 +146,7 @@ const FormularioZonaAmerica: React.FC = () => {
             // 🔹 Éxito
             setQrSrc(responseData?.qr || responseData?.qrData || null);
             setSuccessOpen(true);
-            
+
             // Limpiar formulario
             setFormData({
                 nombre: "",
@@ -425,22 +425,24 @@ const FormularioZonaAmerica: React.FC = () => {
 
                                 {/* Botón centrado */}
                                 <div className="text-center">
-                                    <button
-                                        className="bg-green-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-green-700 transition-all duration-300 shadow-lg hover:shadow-xl w-full max-w-md flex items-center justify-center gap-2"
-                                        onClick={toggleFormulario}
-                                    >
-                                        {showFormulario ? (
-                                            <>
-                                                <ChevronUpIcon className="w-5 h-5" />
-                                                Cerrar formulario
-                                            </>
-                                        ) : (
-                                            <>
-                                                <BuildingStorefrontIcon className="w-5 h-5" />
-                                                Reservar mi cupo
-                                            </>
-                                        )}
-                                    </button>
+                                    <div className="flex justify-center">
+                                        <button
+                                            className="bg-green-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-green-700 transition-all duration-300 shadow-lg hover:shadow-xl w-full max-w-md flex items-center justify-center gap-2"
+                                            onClick={toggleFormulario}
+                                        >
+                                            {showFormulario ? (
+                                                <>
+                                                    <ChevronUpIcon className="w-5 h-5" />
+                                                    Cerrar formulario
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <BuildingStorefrontIcon className="w-5 h-5" />
+                                                    Reservar mi cupo
+                                                </>
+                                            )}
+                                        </button>
+                                    </div>
 
                                     <p className="text-sm text-gray-500 mt-3 flex items-center justify-center gap-2">
                                         <UserGroupIcon className="w-4 h-4" />
