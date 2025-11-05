@@ -947,7 +947,7 @@ const FormularioTallerWordPress: React.FC = () => {
                       handleInputChange({ target: { name: 'telefono', value: formattedValue } });
                     }}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-all duration-200 placeholder-gray-400"
-                    placeholder="300 123 4567"
+                    placeholder="3001234567"
                     required
                   />
                   <p className="text-sm text-gray-500 mt-1">

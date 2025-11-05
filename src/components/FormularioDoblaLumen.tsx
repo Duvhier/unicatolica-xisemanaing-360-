@@ -1062,7 +1062,7 @@ const FormularioDobleLumen: React.FC = () => {
                     value={formData.telefono}
                     onChange={handleInputChange}
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-transparent transition-colors duration-200"
-                    placeholder="300 123 4567"
+                    placeholder="3001234567"
                     required
                   />
                 </div>

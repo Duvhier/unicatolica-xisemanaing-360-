@@ -92,6 +92,16 @@ const FormularioCarnicos: React.FC = () => {
             const responseData = await res.json();
 
             if (!res.ok) {
+                // 🔹 Manejo específico de errores de validación
+                if (responseData.errors && Array.isArray(responseData.errors)) {
+                    showModal(
+                        "Error de validación",
+                        responseData.errors.join('\n') || "Por favor, corrija los errores en el formulario",
+                        "error"
+                    );
+                    return;
+                }
+
                 // 🔹 Manejo específico de errores del backend
                 if (responseData.message?.includes("duplicados")) {
                     showModal(
@@ -144,7 +154,6 @@ const FormularioCarnicos: React.FC = () => {
             setIsSubmitting(false);
         }
     };
-
     const handleInputChange = (
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     ) => {
@@ -506,11 +515,15 @@ const FormularioCarnicos: React.FC = () => {
                                             value={formData.telefono}
                                             onChange={handleInputChange}
                                             required
+                                            pattern="[0-9\s]+"
+                                            title="Solo se permiten números"
                                             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
-                                            placeholder="300 123 4567"
+                                            placeholder="3001234567"
                                         />
+                                        <p className="text-xs text-gray-500 mt-1">
+                                            Solo números, sin símbolos especiales
+                                        </p>
                                     </div>
-
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">
                                             Perfil <span className="text-red-500">*</span>
