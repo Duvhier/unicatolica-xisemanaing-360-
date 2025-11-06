@@ -5,7 +5,6 @@ import Technological from "../assets/TECNOLOGICAL TOUCH-8.png";
 import IndustriaAcImg from "../assets/INDUSTRIA EN ACCION-8.png";
 import VisitaEmpr12nov from "../assets/VISITA EMPRESARIAL -12-8.png";
 import VisitaZonaAmerica from "../assets/VISITA - EMPRESARIAL  -8 ZONAAMERICA.png";
-import Visita14nov from "../assets/VISITA EMPRESARIAL - 14-8.png";
 import Visita15nov from "../assets/VISITA EMPRESARIAL -8.png";
 import HackathonImg from "../assets/HACKATON copia-8.png";
 import HackathonMonitoriaImg from "../assets/HACKATON monitoria-8.png";
@@ -160,6 +159,14 @@ export default function CronogramaActividades() {
         actividad: "Hackathon Universidades",
         mensaje: "Usuarios Registrados: 0/150"
       },
+      10: { // Industria en Acción
+        disponible: true,
+        cuposDisponibles: 20,
+        cupoMaximo: 28,
+        inscritos: 0,
+        actividad: "Industria en Acción",
+        mensaje: "Usuarios Registrados: 0/20"
+      },
       11: { // Dobla Lumen - NUEVO
         disponible: true,
         cuposDisponibles: 100,
@@ -200,6 +207,14 @@ export default function CronogramaActividades() {
         actividad: "Technological Touch 2025",
         mensaje: "Usuarios Registrados: 0/200"
       },
+      20: { // Clausura
+        disponible: true,
+        cuposDisponibles: 500,
+        cupoMaximo: 500,
+        inscritos: 0,
+        actividad: "Clausura",
+        mensaje: "Usuarios Registrados: 0/500"
+      },
       21: { // Visita Empresarial CDI Alimentos Cárnicos - NUEVO
         disponible: true,
         cuposDisponibles: 24,
@@ -210,27 +225,27 @@ export default function CronogramaActividades() {
       },
       22: { // Certificación Full Stack - Día 1
         disponible: true,
-        cuposDisponibles: 30,
-        cupoMaximo: 30,
+        cuposDisponibles: 50,
+        cupoMaximo: 60,
         inscritos: 0,
         actividad: "Certificación Full Stack: Spring Boot, Angular & AI",
-        mensaje: "Usuarios Registrados: 0/30"
+        mensaje: "Usuarios Registrados: 0/50"
       },
       23: { // Certificación Full Stack - Día 2
         disponible: true,
-        cuposDisponibles: 30,
-        cupoMaximo: 30,
+        cuposDisponibles: 50,
+        cupoMaximo: 60,
         inscritos: 0,
         actividad: "Certificación Full Stack: Frontend Empresarial con Angular + AI",
-        mensaje: "Usuarios Registrados: 0/30"
+        mensaje: "Usuarios Registrados: 0/60"
       },
       24: { // Certificación Full Stack - Día 3
         disponible: true,
-        cuposDisponibles: 30,
-        cupoMaximo: 30,
+        cuposDisponibles: 50,
+        cupoMaximo: 60,
         inscritos: 0,
         actividad: "Certificación Full Stack: Integración Full Stack con AI",
-        mensaje: "Usuarios Registrados: 0/30"
+        mensaje: "Usuarios Registrados: 0/50"
       },
     };
   };
@@ -256,7 +271,7 @@ export default function CronogramaActividades() {
       setCargandoCupos(true);
 
       // IDs de actividades que tienen registro
-      const actividadesConRegistro = [1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 21, 22, 23, 24];
+      const actividadesConRegistro = [1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 20, 21, 22, 23, 24];
 
       const promesasCupos = actividadesConRegistro.map(async (id) => {
         try {
@@ -304,6 +319,9 @@ export default function CronogramaActividades() {
               break;
             case 17: // WordPress
               endpoint = `${API_URL}/tallerwordpress/estado-registros`;
+              break;
+            case 20: // Clausura
+              endpoint = `${API_URL}/visitacarnicos/estado-registros`;
               break;
             case 21: // CDI Alimentos Cárnicos
               endpoint = `${API_URL}/visitacarnicos/estado-registros`;
@@ -547,12 +565,12 @@ export default function CronogramaActividades() {
       experiencia: "Profesional Especializado Grado 33, Corte Constitucional",
       linkTrayectoria: "https://www.linkedin.com/in/ximena-otero-pilonieta-73482339/"
     },
-    "P&D Julián Portocarrero Hermann": {
-      nombre: "P&D Julián Portocarrero Hermann",
-      titulo: "Ingeniero Mecánico",
+    "Dr. Julián Portocarrero Hermann": {
+      nombre: "Dr. Julián Portocarrero Hermann",
+      titulo: "Dr. en Ingeniería | Docente Investigador EMAVI",
       foto: JulianPortocarrero,
-      especialidad: "Ingeniero Mecánico",
-      experiencia: "Gerente Técnico, P&D Ingeniería SAS; Docente, UNICUCES & EMAVI; Gerente Técnico, Pincay Ingenieros SAS; Docente-Investigador UAO",
+      especialidad: "Ingeniería Mecánica y Materiales Compuestos",
+      experiencia: "Doctor en Ingeniería; Docente Investigador de la Escuela Militar de Aviación 'Marco Fidel Suárez' - EMAVI; Fundador del Grupo GIEA; 40 años de experiencia en ingeniería e investigación; Especialista en materiales compuestos, análisis de fallas y tecnología aeroespacial; Investigador reconocido por MinCiencias.",
       linkTrayectoria: "https://www.linkedin.com/in/juli%C3%A1n-portocarrero-77b95148/"
     },
     "Mag. Lorena Cerón": {
@@ -571,8 +589,8 @@ export default function CronogramaActividades() {
       experiencia: "Profesor de Ingeniería Informática, Unicatólica; Director de Proyectos de Ingeniería Informática, Redtauros y Prometheus Techs; Lider Formación y Desarrollo, Cafeto Software; Docente en Redes, Telecomunicaciones, Linux y Windows Server, Utap Cali",
       linkTrayectoria: "https://www.linkedin.com/in/carlos-eduardo-molina-contreras-455a0931/"
     },
-    "P&D Jorge Luis Bris": {
-      nombre: "P&D Jorge Luis Bris",
+    "Dr. Jorge Luis Bris": {
+      nombre: "Dr. Jorge Luis Bris",
       titulo: "Full Professor - Mechanical Engineering Department en Universidad del Norte",
       foto: JorgeBris,
       especialidad: "Formación en Ingeniería y Acreditación de Programas",
@@ -591,36 +609,36 @@ export default function CronogramaActividades() {
       foto: ComiteHackathon,
       especialidad: "Coordinación de Eventos Tecnológicos Interuniversitarios",
     },
-    "P&D Jorge Antonio Silva Leal": {
-      nombre: "P&D Jorge Antonio Silva Leal",
+    "Dr. Jorge Antonio Silva Leal": {
+      nombre: "Dr. Jorge Antonio Silva Leal",
       titulo: "Vicerrector Académico",
       foto: Vicerrector,
       especialidad: "Gestión Académica y Planeación Educativa",
       experiencia: "Vicerrector Académico, Unicatólica; Vicerrector Académico, Decano Facultad de Ingeniería, Universidad Santiago de Cali",
       linkTrayectoria: "https://www.linkedin.com/in/jorge-antonio-silva-leal-a36394326/"
     },
-    "P&D Jaime Adalberto López Vivas": {
-      nombre: "P&D Jaime Adalberto López Vivas",
+    "Mag. Jaime Adalberto López Vivas": {
+      nombre: "Mag. Jaime Adalberto López Vivas",
       titulo: "Senior VP of Engineering at SIIGO | Software Architect | Tech Mentor",
       foto: VicSiigo,
       especialidad: "Liderazgo Empresarial y Tecnología",
       experiencia: "Senior VP of Engineering at SIIGO, Software Architect, Software Engineer, SIIGO; University Teacher, Universidad del Cauca",
       linkTrayectoria: "https://www.linkedin.com/in/jaimelopezv/"
     },
-    "Ing. Clara Eugenia Satizabal Serna": {
-      nombre: "Ing. Clara Eugenia Satizabal Serna",
+    "Dra. Clara Eugenia Satizabal Serna": {
+      nombre: "Dra. Clara Eugenia Satizabal Serna",
       titulo: "Decana Facultad de Ingeniería",
       foto: DecanaClara,
-      especialidad: "Gerencia de Proyectos, Maestría en Gestión de Proyectos Tecnológicos y candidata a Doctora en Ciencias de la Educación",
+      especialidad: "Gerencia de Proyectos, Maestría en Gestión de Proyectos Tecnológicos y candidata a Dra en Ciencias de la Educación",
       experiencia: "Docente, Investigadora y Directora de Programas Académicos",
       linkTrayectoria: "https://lnkd.in/gqGwkJvX"
     },
-    "Ing. José Armando Ordóñez Córdoba": {
-      nombre: "Ing. José Armando Ordóñez Córdoba",
+    "Dr. José Armando Ordóñez Córdoba": {
+      nombre: "Dr. José Armando Ordóñez Córdoba",
       titulo: "Profesor del Dpto. Computación y Sistemas Inteligentes - Universidad ICESI",
       foto: ProfesorComputacion,
       especialidad: "Acompañando organizaciones en la adopción de IA, a través de diagnóstico, formación ejecutiva y desarrollo de soluciones con impacto medible",
-      experiencia: "Artificial Intelligence Masters Director, Director of Data Science Masters, Universidad ICESI; PostDoctoral AI Researcher, AI Researcher, Universidad del Cauca",
+      experiencia: "Artificial Intelligence Masters Director, Director of Data Science Masters, Universidad ICESI; PostDral AI Researcher, AI Researcher, Universidad del Cauca",
       linkTrayectoria: "https://www.linkedin.com/in/armandoordonez/"
     },
     "DevSeniorCode Academy": {
@@ -638,6 +656,30 @@ export default function CronogramaActividades() {
       especialidad: "Administración y atención al cliente. Experiencia como Administrador, Auxiliar administrativo, Auxiliar de apoyo y Ejecutivo de servicio.",
       experiencia: "Coordinadora Fundación Universitaria Católica Lumen Gentium; Docente Universitaria Corporación Universitaria Minuto de Dios",
       linkTrayectoria: "https://www.linkedin.com/in/jenny-alejandra-cadena-solarte-a60a2929/?trk=opento_nprofile_details"
+    },
+    "Ing. Alejandro Orejuela": {
+      nombre: "Ing. Alejandro Orejuela",
+      titulo: "Director del Personal Docente en UNICATÓLICA",
+      foto: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762448558/alejandro-orejuela_jmkgf8.png",
+      especialidad: "Jefe Departamento de Ciencias Básicas",
+      experiencia: "Director del Personal Docente en Fundación Universitaria Católica Lumen Gentium",
+      linkTrayectoria: "https://www.linkedin.com/in/alejandro-orejuela-9aa2221a3/?originalSubdomain=co"
+    },
+    "Monseñor Luis Fernando Rodríguez Velásquez": {
+      nombre: "Monseñor Luis Fernando Rodríguez Velásquez",
+      titulo: "Arzobispo de Cali | Doctor en Derecho Canónico",
+      foto: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762450261/38-mons-luis-fernando-rodriguez-velasquez_fsw7xw.jpg",
+      especialidad: "Derecho Canónico y Gestión Universitaria",
+      experiencia: "Arzobispo de Cali desde 2022; Doctor en Derecho Canónico de la Pontificia Universidad Javeriana y Licenciado en Educación Religiosa; Rector de la Universidad Pontificia Bolivariana durante 9 años; Experto en formación sacerdotal y gestión de instituciones educativas católicas; Reconocido líder eclesiástico con cuatro décadas de servicio.",
+      linkTrayectoria: "https://www.cec.org.co/episcopado/arzobispos/monse%C3%B1or-luis-fernando-rodr%C3%ADguez-vel%C3%A1squez"
+    },
+    "Mag. Francisco Dominguez": {
+      nombre: "Mag. Francisco Dominguez",
+      titulo: "Magister en Estudios Urbanos | Licenciado en Ciencias Sociales",
+      foto: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762451667/66db9f718d6b8-bpfull_wa8ntx.jpg",
+      especialidad: "Estudios Urbanos, Ciencias Sociales y Teatro Comunitario",
+      experiencia: "Magister en Investigación en Estudios Urbanos de FLACSO Ecuador; Licenciado en Ciencias Sociales de la Universidad del Valle; Docente-investigador con enfoque en problemáticas sociales y urbanas; Especialista en metodologías participativas e intervención sociocultural; Líder en proyectos que integran ciencias sociales y arte comunitario para la transformación social.",
+      linkTrayectoria: "https://www.linkedin.com/in/francisco-dominguez-1a9498199/?originalSubdomain=co"
     },
   };
 
@@ -691,7 +733,7 @@ export default function CronogramaActividades() {
           id: 3,
           hora: "7:20 pm - 8:20 pm",
           titulo: "Aplicaciones de La IA en La Educación",
-          ponente: "P&D Julián Portocarrero Hermann",
+          ponente: "Dr. Julián Portocarrero Hermann",
           lugar: "Auditorio Lumen – Sede Meléndez",
           tipo: "Conferencia",
           aliado: "Escuela Militar de Aviación Marco Fidel Suarez – EMAVI",
@@ -707,11 +749,13 @@ export default function CronogramaActividades() {
           tipo: "Conversatorio",
           destacado: false,
           participantes: [
-            "Ing. Clara Eugenia Satizabal Serna - Decana Facultad de Ingeniería",
-            "Ing. José Armando Ordóñez Córdoba - Profesor del Dpto. Computación y Sistemas Inteligentes - Universidad ICESI",
-            "P&D Jaime Adalberto López Vivas - Senior VP of Engineering at SIIGO",
-            "P&D Jorge Antonio Silva Leal - Vicerrector Académico",
-            "P&D Julián Portocarrero Hermann - Ingeniero Mecánico",
+            "Dra. Clara Eugenia Satizabal Serna - Decana Facultad de Ingeniería",
+            "Monseñor Luis Fernando Rodríguez Velásquez - Arzobispo de Cali",
+            "Dr. Jorge Antonio Silva Leal - Vicerrector Académico",
+            "Dr. José Armando Ordóñez Córdoba - Profesor del Dpto. Computación y Sistemas Inteligentes - Universidad ICESI",
+            "Dr. Julián Portocarrero Hermann - Ingeniero Mecánico",
+            "Mag. Francisco Dominguez - Magister en Estudios Urbanos | Licenciado en Ciencias Sociales",
+            "Mag. Jaime Adalberto López Vivas - Senior VP of Engineering at SIIGO",
           ]
         }
       ]
@@ -731,7 +775,7 @@ export default function CronogramaActividades() {
         },
         {
           id: 6,
-          hora: "8:00 am - 12:00 pm",
+          hora: "9:00 am - 12:00 pm",
           titulo: "Visita Empresarial - EMAVI",
           ponente: "",
           lugar: "Escuela Militar de Aviación - EMAVI",
@@ -745,7 +789,7 @@ export default function CronogramaActividades() {
           id: 7,
           hora: "10:00 am - 12:00 pm",
           titulo: "Taller Teórico – Práctico de Iniciación al Vuelo y a La Cohetería ",
-          ponente: "P&D Julián Portocarrero Hermann",
+          ponente: "Dr. Julián Portocarrero Hermann",
           lugar: "Auditorio 1 – Sede Pance",
           tipo: "Conferencia",
           destacado: true,
@@ -789,7 +833,8 @@ export default function CronogramaActividades() {
           destacado: true,
           botonRegistro: true,
           urlRegistro: "/formulario-industriaenaccion",
-          imagen: IndustriaAcImg
+          imagen: IndustriaAcImg,
+          organizador: "Docente Jenny Alejandra Cadena Solarte"
         },
         {
           id: 11,
@@ -835,18 +880,6 @@ export default function CronogramaActividades() {
       dia: "JUEVES 13 NOV",
       actividades: [
         {
-          id: 13,
-          hora: "10:00 am - 11:30 pm",
-          titulo: "Visita Empresarial – ZONAMERICA",
-          ponente: "",
-          lugar: "Zonamérica - Calle 36, Auto. Cali - Jamundi #760030 128-321",
-          tipo: "Visita",
-          destacado: true,
-          imagen: VisitaZonaAmerica,
-          botonRegistro: true,
-          urlRegistro: "/formulario-zona-america"
-        },
-        {
           id: 14,
           hora: "10:00 am - 12:00 pm",
           titulo: "Olimpiada en Lógica Matemática",
@@ -857,7 +890,7 @@ export default function CronogramaActividades() {
           botonRegistro: true,
           urlRegistro: "/formulario-olimpiadasmatematicas",
           imagen: OlimpiadaImg,
-          organizador: "Docente Jenny Alejandra Cadena Solarte"
+          organizador: "Ing. Alejandro Orejuela"
         },
         {
           id: 15,
@@ -869,7 +902,8 @@ export default function CronogramaActividades() {
           destacado: true,
           imagen: Technological,
           botonRegistro: true,
-          urlRegistro: "/formulario-technological"
+          urlRegistro: "/formulario-technological",
+          organizador: "Docente Jenny Alejandra Cadena Solarte"
         }
       ]
     },
@@ -877,14 +911,16 @@ export default function CronogramaActividades() {
       dia: "VIERNES 14 NOV",
       actividades: [
         {
-          id: 16,
-          hora: "9:00 am - 12:00 pm",
-          titulo: "Visita Empresarial",
+          id: 13,
+          hora: "9:30 am - 11:00 pm",
+          titulo: "Visita Empresarial – ZONAMERICA",
           ponente: "",
-          lugar: "Por Confirmar",
+          lugar: "Zonamérica - Calle 36, Auto. Cali - Jamundi #760030 128-321",
           tipo: "Visita",
-          destacado: false,
-          imagen: Visita14nov
+          destacado: true,
+          imagen: VisitaZonaAmerica,
+          botonRegistro: true,
+          urlRegistro: "/formulario-zona-america"
         },
         {
           id: 17,
@@ -902,7 +938,7 @@ export default function CronogramaActividades() {
           id: 18,
           hora: "11:00 am - 12:00 pm",
           titulo: "Entrevista: La Formación de Los Programas de Ingeniería. Caso Universidad del Norte",
-          ponente: "P&D Jorge Luis Bris",
+          ponente: "Dr. Jorge Luis Bris",
           lugar: "Estudio de Radio Lumen – Sede Meléndez",
           tipo: "Entrevista",
           destacado: false,
@@ -925,7 +961,9 @@ export default function CronogramaActividades() {
           lugar: "Auditorio LUMEN - Sede Meléndez",
           tipo: "Ceremonia",
           imagen: ActoClausuraImg,
-          destacado: false,
+          destacado: true,
+          botonRegistro: true,
+          urlRegistro: "/formulario-clausura"
         },
         {
           id: 24,
@@ -1200,7 +1238,7 @@ export default function CronogramaActividades() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283-.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
               </svg>
             </div>
-            <h4 className="text-sm font-semibold text-gray-800">Participantes</h4>
+            <h4 className="text-sm font-semibold text-gray-800">Panelistas</h4>
           </div>
 
           <div className="space-y-2">

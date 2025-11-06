@@ -804,7 +804,7 @@ const FormularioTallerVuelo: React.FC = () => {
                       <RocketIcon className="w-5 h-5 text-uniblue mt-0.5" />
                       <div>
                         <strong className="text-gray-700">Ponente:</strong>
-                        <p className="text-gray-600">P&D Julián Portocarrero Hermann</p>
+                        <p className="text-gray-600">Dr Julián Portocarrero Hermann</p>
                       </div>
                     </div>
                   </div>

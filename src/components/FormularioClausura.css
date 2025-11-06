@@ -1,0 +1,61 @@
+.formulario-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Estilos para los inputs y selects */
+  input, select {
+    transition: all 0.3s ease;
+  }
+  
+  input:focus, select:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+  
+  /* Animaciones */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .formulario-container > * {
+    animation: fadeIn 0.5s ease-out;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .formulario-container {
+      padding: 10px;
+    }
+    
+    .grid {
+      grid-template-columns: 1fr !important;
+    }
+  }
+  
+  /* Estilos para la barra de progreso */
+  .progress-bar {
+    transition: width 0.5s ease-in-out;
+  }
+  
+  /* Estilos para los estados de validación */
+  .input-valid {
+    border-color: #10b981 !important;
+    background-color: #ecfdf5 !important;
+  }
+  
+  .input-invalid {
+    border-color: #ef4444 !important;
+    background-color: #fef2f2 !important;
+  }

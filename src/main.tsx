@@ -19,6 +19,7 @@ import FormularioHackathonMonitoria from './components/FormularioHackathonMonito
 import FormularioTallerVuelo from './components/FormularioTallerVuelo.tsx'
 import FormularioIAPractica from './components/FormularioIAPractica.tsx'
 import FormularioTallerWordpress from './components/FormularioTallerWordpress.tsx'
+import FormularioClausura from './components/FormularioClausura.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -40,6 +41,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/formulario-tallervuelo" element={<FormularioTallerVuelo />} />
         <Route path="/formulario-ia-practica" element={<FormularioIAPractica />} />
         <Route path="/formulario-tallerwordpress" element={<FormularioTallerWordpress />} />
+        <Route path="/formulario-clausura" element={<FormularioClausura />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

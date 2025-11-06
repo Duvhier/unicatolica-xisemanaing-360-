@@ -1,38 +1,88 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./FormularioInscripcionLiderazgo.css";
-import ZonaAmericaImg from "@/assets/VISITA - EMPRESARIAL  -8 ZONAAMERICA.png";
-import LogoZonaAmerica from "@/assets/visitasevento.jpg";
+import EmaviImg from "@/assets/VISITA EMPRESARIAL -12-8.png";
+import LogoEmavi from "@/assets/publicidad/emavi.png"; 
 
-// Importar HeroIcons
-import {
-    ArrowLeftIcon,
-    ChevronDownIcon,
-    ChevronUpIcon,
-    MapPinIcon,
-    ClockIcon,
-    BuildingStorefrontIcon,
-    UserIcon,
-    IdentificationIcon,
-    EnvelopeIcon,
-    PhoneIcon,
-    BookOpenIcon,
-    HeartIcon,
-    TruckIcon,
-    CheckCircleIcon,
-    ExclamationTriangleIcon,
-    XCircleIcon,
-    QrCodeIcon,
-    BuildingOfficeIcon,
-    UserGroupIcon
-} from "@heroicons/react/24/outline";
+// 🔹 Importar los iconos que necesitas
+const MapPinIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+  </svg>
+);
 
-import {
-    CalendarDaysIcon,
-    BuildingStorefrontIcon as BuildingStorefrontSolidIcon
-} from "@heroicons/react/24/solid";
+const ClockIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+);
 
-const FormularioZonaAmerica: React.FC = () => {
+const TrophyIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+  </svg>
+);
+
+const UserIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+  </svg>
+);
+
+const DocumentIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+  </svg>
+);
+
+const MailIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+  </svg>
+);
+
+const PhoneIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+  </svg>
+);
+
+const AcademicCapIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14l9-5-9-5-9 5 9 5z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 14v6l9-5-9-5-9 5 9 5z" />
+  </svg>
+);
+
+const CarIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+  </svg>
+);
+
+const HealthIcon = ({ className }: { className?: string }) => (
+  <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+  </svg>
+);
+
+// 🔹 Interfaz para los programas académicos
+interface ProgramaAcademico {
+  id: string;
+  nombre: string;
+  facultad: string;
+}
+
+// 🔹 Interfaz para las facultades
+interface Facultad {
+  id: string;
+  nombre: string;
+  programas: ProgramaAcademico[];
+}
+
+const FormularioEmavi: React.FC = () => {
     const [formData, setFormData] = useState({
         nombre: "",
         tipoDocumento: "",
@@ -53,6 +103,11 @@ const FormularioZonaAmerica: React.FC = () => {
     const [qrSrc, setQrSrc] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
+    // 🔹 Estados para los datos del JSON
+    const [, setFacultades] = useState<Facultad[]>([]);
+    const [programasAcademicos, setProgramasAcademicos] = useState<ProgramaAcademico[]>([]);
+    const [isLoadingProgramas, setIsLoadingProgramas] = useState(true);
+
     // Estados para modales
     const [modalOpen, setModalOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
@@ -63,6 +118,47 @@ const FormularioZonaAmerica: React.FC = () => {
     const formularioRef = useRef<HTMLDivElement | null>(null);
 
     const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+
+    // 🔹 Cargar los programas académicos desde el JSON
+    useEffect(() => {
+        const cargarProgramasAcademicos = async () => {
+            try {
+                setIsLoadingProgramas(true);
+                const response = await fetch('/facultadesyprogramasacademicos.json');
+                
+                if (!response.ok) {
+                    throw new Error('No se pudo cargar el archivo de programas académicos');
+                }
+                
+                const data = await response.json();
+                
+                if (data.facultades && Array.isArray(data.facultades)) {
+                    setFacultades(data.facultades);
+                    
+                    // Crear una lista plana de todos los programas
+                    const todosLosProgramas: ProgramaAcademico[] = [];
+                    data.facultades.forEach((facultad: Facultad) => {
+                        if (facultad.programas && Array.isArray(facultad.programas)) {
+                            todosLosProgramas.push(...facultad.programas);
+                        }
+                    });
+                    
+                    setProgramasAcademicos(todosLosProgramas);
+                }
+            } catch (error) {
+                console.error('Error cargando programas académicos:', error);
+                showModal(
+                    "Error de carga",
+                    "No se pudieron cargar los programas académicos. Por favor, recargue la página.",
+                    "error"
+                );
+            } finally {
+                setIsLoadingProgramas(false);
+            }
+        };
+
+        cargarProgramasAcademicos();
+    }, []);
 
     // 🔹 Función para mostrar modales
     const showModal = (title: string, message: string, type: "error" | "warning" | "success" = "error") => {
@@ -79,7 +175,7 @@ const FormularioZonaAmerica: React.FC = () => {
         setModalMessage("");
     };
 
-    // ✅ Conexión con backend Zona América
+    // ✅ Conexión con backend EMAVI
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -111,7 +207,7 @@ const FormularioZonaAmerica: React.FC = () => {
 
             console.log('📤 Enviando payload:', payload);
 
-            const res = await fetch(`${API_URL}/visitazonaamerica/registro`, {
+            const res = await fetch(`${API_URL}/visitaemavi/registro`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(payload),
@@ -146,7 +242,7 @@ const FormularioZonaAmerica: React.FC = () => {
             // 🔹 Éxito
             setQrSrc(responseData?.qr || responseData?.qrData || null);
             setSuccessOpen(true);
-
+            
             // Limpiar formulario
             setFormData({
                 nombre: "",
@@ -210,44 +306,49 @@ const FormularioZonaAmerica: React.FC = () => {
 
         return (
             <>
-                <div className="relative">
+                <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-                        <IdentificationIcon className="w-4 h-4 text-green-600" />
-                        ID Estudiantil <span className="text-red-500">*</span>
+                        <UserIcon className="w-4 h-4 text-blue-500" />
+                        ID <span className="text-red-500">*</span>
                     </label>
-                    <div className="relative">
-                        <IdentificationIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                        <input
-                            type="text"
-                            name="id"
-                            value={formData.id}
-                            onChange={handleInputChange}
-                            required
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pl-10"
-                            placeholder="Ej: A00123456"
-                        />
-                    </div>
+                    <input
+                        type="text"
+                        name="id"
+                        value={formData.id}
+                        onChange={handleInputChange}
+                        required
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                        placeholder="Ej: A00123456"
+                    />
                 </div>
 
-                <div className="relative">
+                <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-                        <BookOpenIcon className="w-4 h-4 text-green-600" />
+                        <AcademicCapIcon className="w-4 h-4 text-blue-500" />
                         Programa Académico <span className="text-red-500">*</span>
                     </label>
-                    <div className="relative">
-                        <BookOpenIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                        <select
-                            name="programa"
-                            value={formData.programa}
-                            onChange={handleInputChange}
-                            required
-                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white pl-10"
-                        >
-                            <option value="">Seleccionar programa</option>
-                            <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
-                            <option value="Tecnología en Desarrollo de Software">Tecnología en Desarrollo de Software</option>
-                        </select>
-                    </div>
+                    <select
+                        name="programa"
+                        value={formData.programa}
+                        onChange={handleInputChange}
+                        required
+                        disabled={isLoadingProgramas}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    >
+                        <option value="">
+                            {isLoadingProgramas ? "Cargando programas..." : "Seleccionar programa"}
+                        </option>
+                        {programasAcademicos.map((programa) => (
+                            <option key={programa.id} value={programa.nombre}>
+                                {programa.nombre}
+                            </option>
+                        ))}
+                    </select>
+                    {isLoadingProgramas && (
+                        <p className="text-xs text-gray-500 mt-1">
+                            Cargando lista de programas académicos...
+                        </p>
+                    )}
                 </div>
             </>
         );
@@ -266,32 +367,32 @@ const FormularioZonaAmerica: React.FC = () => {
                     />
                     <Link
                         to="/"
-                        className="inline-flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-green-600 hover:bg-gray-50 rounded-lg transition-all duration-200 border border-gray-300 hover:border-gray-400 font-medium"
+                        className="inline-flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-uniblue hover:bg-gray-50 rounded-lg transition-all duration-200 border border-gray-300 hover:border-gray-400 font-medium"
                     >
-                        <ArrowLeftIcon className="w-5 h-5" />
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15 6L9 12L15 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
                         <span>Regresar</span>
                     </Link>
                 </div>
 
                 {/* Contenido principal */}
                 <div className="text-center">
-                    <div className="border-l-4 border-green-600 pl-4 mb-4 inline-block">
+                    <div className="border-l-4 border-blue-500 pl-4 mb-4 inline-block">
                         <h1 className="text-2xl md:text-3xl font-bold text-gray-800 leading-tight">
                             XI SEMANA DE LA INGENIERÍA
                         </h1>
                     </div>
 
-                    <p className="text-lg text-green-600 font-semibold mb-4">
+                    <p className="text-lg text-uniblue font-semibold mb-4">
                         "360°: Innovación, Liderazgo y Futuro"
                     </p>
 
-                    <div className="bg-green-100 rounded-full px-6 py-3 inline-block">
-                        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 leading-tight flex items-center justify-center gap-2">
-                            <BuildingStorefrontIcon className="w-8 h-8" />
-                            ZONA AMERICA
+                    <div className="bg-blue-100 rounded-full px-6 py-3 inline-block">
+                        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 leading-tight">
+                            ESCUELA MILITAR DE AVIACIÓN - EMAVI
                         </h1>
-                        <p className="text-sm font-medium text-gray-800 flex items-center justify-center gap-1 mt-1">
-                            <UserGroupIcon className="w-4 h-4" />
+                        <p className="text-sm font-medium text-gray-800">
                             Visita empresarial - Cupo limitado a 40 personas
                         </p>
                     </div>
@@ -301,7 +402,7 @@ const FormularioZonaAmerica: React.FC = () => {
             {/* CONTENIDO PRINCIPAL */}
             <main className="form-main-content">
                 <div className="flex items-center gap-3 mb-8">
-                    <div className="w-2 h-8 bg-green-500 rounded-full"></div>
+                    <div className="w-2 h-8 bg-blue-500 rounded-full"></div>
                     <h2 className="text-2xl font-bold text-gray-800">
                         AGENDA
                     </h2>
@@ -309,38 +410,40 @@ const FormularioZonaAmerica: React.FC = () => {
 
                 {/* Tarjeta Agenda */}
                 <section
-                    className={`bg-white rounded-lg border-l-4 transition-all duration-300 cursor-pointer ${showEvento ? "border-green-500 bg-green-50" : "border-gray-300 hover:border-green-500 hover:bg-gray-50"
+                    className={`bg-white rounded-lg border-l-4 transition-all duration-300 cursor-pointer ${showEvento ? "border-blue-500 bg-blue-50" : "border-gray-300 hover:border-blue-500 hover:bg-gray-50"
                         }`}
                     onClick={toggleEvento}
                 >
                     <div className="flex items-center gap-4 p-4">
                         {/* Fecha */}
                         <div className="flex flex-col items-center justify-center bg-gray-100 rounded-md w-14 h-14 flex-shrink-0">
-                            <CalendarDaysIcon className="w-6 h-6 text-green-600" />
-                            <div className="text-xs font-medium text-gray-600 uppercase mt-1">NOV</div>
+                            <div className="text-lg font-bold text-gray-800">12</div>
+                            <div className="text-xs font-medium text-gray-600 uppercase">NOV</div>
                         </div>
 
                         {/* Contenido */}
                         <div className="flex-1 min-w-0">
                             <h3 className="font-semibold text-gray-800 mb-1">
-                                Visita Empresarial: Zona América
+                                Visita Empresarial: Escuela Militar de Aviación - EMAVI
                             </h3>
-                            <div className="text-sm text-gray-600 flex items-center gap-4 flex-wrap">
-                                <span className="flex items-center gap-1">
-                                    <ClockIcon className="w-4 h-4" />
-                                    10:00 am - 11:30 am
-                                </span>
-                                <span className="flex items-center gap-1">
-                                    <MapPinIcon className="w-4 h-4" />
-                                    Zona América, Cali
-                                </span>
+                            <div className="text-sm text-gray-600 flex items-center gap-2">
+                                <ClockIcon className="w-4 h-4 text-blue-500" />
+                                <span>Horario: 9:00 am a 12:00 pm</span>
                             </div>
                         </div>
 
                         {/* Flecha */}
-                        <div className={`text-gray-400 transition-transform duration-300 ${showEvento ? "rotate-180 text-green-500" : ""
+                        <div className={`text-gray-400 transition-transform duration-300 ${showEvento ? "rotate-180 text-blue-500" : ""
                             }`}>
-                            <ChevronDownIcon className="w-6 h-6" />
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                                <path
+                                    d="M6 9L12 15L18 9"
+                                    stroke="currentColor"
+                                    strokeWidth="2"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
+                            </svg>
                         </div>
                     </div>
                 </section>
@@ -356,12 +459,12 @@ const FormularioZonaAmerica: React.FC = () => {
                                     <div className="flex-shrink-0 relative">
                                         <div className="relative">
                                             <img
-                                                src={LogoZonaAmerica}
-                                                alt="Zona América"
-                                                className="w-32 h-32 rounded-full object-cover border-4 border-green-500 shadow-md"
+                                                src={LogoEmavi}
+                                                alt="Escuela Militar de Aviación - EMAVI"
+                                                className="w-32 h-32 rounded-full object-cover border-4 border-blue-500 shadow-md"
                                             />
-                                            <div className="absolute -bottom-2 -right-2 bg-yellow-500 w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">
-                                                <BuildingStorefrontSolidIcon className="w-4 h-4 text-white" />
+                                            <div className="absolute -bottom-2 -right-2 bg-blue-400 w-8 h-8 rounded-full flex items-center justify-center border-2 border-white">
+                                                <span className="text-xs text-white">✈️</span>
                                             </div>
                                         </div>
                                     </div>
@@ -369,38 +472,29 @@ const FormularioZonaAmerica: React.FC = () => {
                                     {/* Contenido */}
                                     <div className="flex-1">
                                         <div className="flex items-center gap-2 mb-3">
-                                            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-                                            <span className="text-sm font-bold text-green-600 uppercase tracking-wide flex items-center gap-1">
-                                                <BuildingOfficeIcon className="w-4 h-4" />
+                                            <div className="w-3 h-3 bg-blue-500 rounded-full"></div>
+                                            <span className="text-sm font-bold text-blue-600 uppercase tracking-wide">
                                                 Visita Empresarial
                                             </span>
                                         </div>
 
                                         <h3 className="text-2xl font-bold text-gray-800 mb-3">
-                                            ZONA AMERICA
+                                            ESCUELA MILITAR DE AVIACIÓN - EMAVI
                                         </h3>
 
                                         <p className="text-gray-600 leading-relaxed mb-4">
-                                            <strong>Zona América</strong> te invita a descubrir cómo la programación puede marcar el futuro de los negocios. Vive una experiencia donde la programación se conecta con el mundo real de la empresa y la innovación.
+                                            <strong>EMAVI</strong> te invita a conocer las instalaciones y operaciones de una de las instituciones más prestigiosas de la Fuerza Aérea Colombiana. Descubre la tecnología, ingeniería y disciplina que hacen posible la formación de nuestros pilotos militares.
                                         </p>
 
-                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-500">
-                                            <div className="flex items-center gap-2">
-                                                <CalendarDaysIcon className="w-4 h-4 text-green-500" />
-                                                <span><strong>Fecha:</strong> 13 Nov 2025</span>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <MapPinIcon className="w-4 h-4 text-green-500" />
-                                                <span><strong>Lugar:</strong> Zona América, Cali</span>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <ClockIcon className="w-4 h-4 text-green-500" />
-                                                <span><strong>Horario:</strong> 10:00 am - 11:30 am</span>
-                                            </div>
-                                            <div className="flex items-center gap-2">
-                                                <UserGroupIcon className="w-4 h-4 text-green-500" />
-                                                <span><strong>Cupo:</strong> 40 personas</span>
-                                            </div>
+                                        <div className="flex items-center gap-4 text-sm text-gray-500">
+                                            <span className="flex items-center gap-1 font-medium">
+                                                <MapPinIcon className="w-4 h-4 text-blue-500" />
+                                                Base Aérea Marco Fidel Suárez, Cali
+                                            </span>
+                                            <span className="flex items-center gap-1 font-medium">
+                                                <ClockIcon className="w-4 h-4 text-blue-500" />
+                                                Hora: 9:00 am a 12:00 pm
+                                            </span>
                                         </div>
                                     </div>
                                 </div>
@@ -411,42 +505,41 @@ const FormularioZonaAmerica: React.FC = () => {
                                 {/* Imagen con overlay */}
                                 <div className="relative rounded-2xl overflow-hidden border border-gray-200 shadow-sm">
                                     <img
-                                        src={ZonaAmericaImg}
-                                        alt="Visita Zona América"
+                                        src={EmaviImg}
+                                        alt="Visita Escuela Militar de Aviación - EMAVI"
                                         className="w-full h-48 object-cover"
                                     />
                                     <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 to-transparent p-4">
-                                        <p className="text-white font-semibold text-sm flex items-center gap-2">
-                                            <BuildingStorefrontIcon className="w-4 h-4" />
-                                            Zona América - Centro Comercial y Empresarial
-                                        </p>
+                                        <p className="text-white font-semibold text-sm">Escuela Militar de Aviación - EMAVI</p>
                                     </div>
                                 </div>
 
                                 {/* Botón centrado */}
                                 <div className="text-center">
-                                    <div className="flex justify-center">
-                                        <button
-                                            className="bg-green-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-green-700 transition-all duration-300 shadow-lg hover:shadow-xl w-full max-w-md flex items-center justify-center gap-2"
-                                            onClick={toggleFormulario}
-                                        >
-                                            {showFormulario ? (
-                                                <>
-                                                    <ChevronUpIcon className="w-5 h-5" />
-                                                    Cerrar formulario
-                                                </>
-                                            ) : (
-                                                <>
-                                                    <BuildingStorefrontIcon className="w-5 h-5" />
-                                                    Reservar mi cupo
-                                                </>
-                                            )}
-                                        </button>
-                                    </div>
+                                    <button
+                                        className="bg-blue-600 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl w-full max-w-md"
+                                        onClick={toggleFormulario}
+                                    >
+                                        {showFormulario ? (
+                                            <span className="flex items-center justify-center gap-2">
+                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 15l7-7 7 7" />
+                                                </svg>
+                                                Cerrar formulario
+                                            </span>
+                                        ) : (
+                                            <span className="flex items-center justify-center gap-2">
+                                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                                                </svg>
+                                                Reservar mi cupo
+                                            </span>
+                                        )}
+                                    </button>
 
-                                    <p className="text-sm text-gray-500 mt-3 flex items-center justify-center gap-2">
-                                        <UserGroupIcon className="w-4 h-4" />
-                                        Cupo limitado a 40 personas
+                                    <p className="text-sm text-gray-500 mt-3 flex items-center justify-center gap-1">
+                                        <TrophyIcon className="w-4 h-4 text-blue-500" />
+                                        ⚡ Cupo limitado a 40 personas
                                     </p>
                                 </div>
                             </section>
@@ -457,116 +550,103 @@ const FormularioZonaAmerica: React.FC = () => {
                     {showFormulario && (
                         <section ref={formularioRef} className="bg-white rounded-xl shadow-md border border-gray-200 p-6 mt-6">
                             <form onSubmit={handleSubmit} className="space-y-6">
-                                <div className="border-l-4 border-green-500 pl-4">
-                                    <h3 className="text-xl font-bold text-gray-800 mb-1 flex items-center gap-2">
-                                        <UserIcon className="w-5 h-5 text-green-600" />
-                                        Formulario de Inscripción
-                                    </h3>
+                                <div className="border-l-4 border-blue-500 pl-4">
+                                    <h3 className="text-xl font-bold text-gray-800 mb-1">Formulario de Inscripción</h3>
                                     <p className="text-sm text-gray-600">Complete la información requerida para la visita</p>
                                 </div>
 
                                 <div className="grid gap-4">
                                     {/* Campos básicos */}
-                                    <div className="relative">
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                                            <UserIcon className="w-4 h-4 text-blue-500" />
                                             Nombre Completo <span className="text-red-500">*</span>
                                         </label>
-                                        <div className="relative">
-                                            <UserIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                                            <input
-                                                type="text"
-                                                name="nombre"
-                                                value={formData.nombre}
-                                                onChange={handleInputChange}
-                                                required
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pl-10"
-                                                placeholder="Ingrese su nombre completo"
-                                            />
-                                        </div>
+                                        <input
+                                            type="text"
+                                            name="nombre"
+                                            value={formData.nombre}
+                                            onChange={handleInputChange}
+                                            required
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Ingrese su nombre completo"
+                                        />
                                     </div>
 
                                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                        <div className="relative">
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                                                <DocumentIcon className="w-4 h-4 text-blue-500" />
                                                 Tipo de Documento <span className="text-red-500">*</span>
                                             </label>
-                                            <div className="relative">
-                                                <IdentificationIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                                                <select
-                                                    name="tipoDocumento"
-                                                    value={formData.tipoDocumento}
-                                                    onChange={handleInputChange}
-                                                    required
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white pl-10"
-                                                >
-                                                    <option value="">Seleccionar tipo</option>
-                                                    <option value="Cédula de Ciudadanía">Cédula de Ciudadanía</option>
-                                                    <option value="Tarjeta de Identidad">Tarjeta de Identidad</option>
-                                                    <option value="Cédula Digital">Cédula Digital</option>
-                                                    <option value="Cédula de Extranjería">Cédula de Extranjería</option>
-                                                    <option value="Pasaporte">Pasaporte</option>
-                                                </select>
-                                            </div>
+                                            <select
+                                                name="tipoDocumento"
+                                                value={formData.tipoDocumento}
+                                                onChange={handleInputChange}
+                                                required
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                            >
+                                                <option value="">Seleccionar tipo</option>
+                                                <option value="Cédula de Ciudadanía">Cédula de Ciudadanía</option>
+                                                <option value="Tarjeta de Identidad">Tarjeta de Identidad</option>
+                                                <option value="Cédula Digital">Cédula Digital</option>
+                                                <option value="Cédula de Extranjería">Cédula de Extranjería</option>
+                                                <option value="Pasaporte">Pasaporte</option>
+                                            </select>
                                         </div>
 
-                                        <div className="relative">
-                                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        <div>
+                                            <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                                                <DocumentIcon className="w-4 h-4 text-blue-500" />
                                                 Número de Documento <span className="text-red-500">*</span>
                                             </label>
-                                            <div className="relative">
-                                                <IdentificationIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                                                <input
-                                                    type="text"
-                                                    name="numeroDocumento"
-                                                    value={formData.numeroDocumento}
-                                                    onChange={handleInputChange}
-                                                    required
-                                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pl-10"
-                                                    placeholder="Número de documento"
-                                                />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div className="relative">
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                                            Correo Electrónico <span className="text-red-500">*</span>
-                                        </label>
-                                        <div className="relative">
-                                            <EnvelopeIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
                                             <input
-                                                type="email"
-                                                name="correo"
-                                                value={formData.correo}
+                                                type="text"
+                                                name="numeroDocumento"
+                                                value={formData.numeroDocumento}
                                                 onChange={handleInputChange}
                                                 required
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pl-10"
-                                                placeholder="correo@ejemplo.com"
-                                            />
-                                        </div>
-                                    </div>
-
-                                    <div className="relative">
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                                            Número de Celular <span className="text-red-500">*</span>
-                                        </label>
-                                        <div className="relative">
-                                            <PhoneIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                                            <input
-                                                type="tel"
-                                                name="telefono"
-                                                value={formData.telefono}
-                                                onChange={handleInputChange}
-                                                required
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pl-10"
-                                                placeholder="3001234567"
+                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                                placeholder="Número de documento"
                                             />
                                         </div>
                                     </div>
 
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-                                            <UserGroupIcon className="w-4 h-4 text-green-600" />
+                                            <MailIcon className="w-4 h-4 text-blue-500" />
+                                            Correo Electrónico <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="email"
+                                            name="correo"
+                                            value={formData.correo}
+                                            onChange={handleInputChange}
+                                            required
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="correo@ejemplo.com"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                                            <PhoneIcon className="w-4 h-4 text-blue-500" />
+                                            Número de Celular <span className="text-red-500">*</span>
+                                        </label>
+                                        <input
+                                            type="tel"
+                                            name="telefono"
+                                            value={formData.telefono}
+                                            onChange={handleInputChange}
+                                            required
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="3001234567"
+                                        />
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                                            <UserIcon className="w-4 h-4 text-blue-500" />
                                             Perfil <span className="text-red-500">*</span>
                                         </label>
                                         <select
@@ -574,7 +654,7 @@ const FormularioZonaAmerica: React.FC = () => {
                                             value={formData.perfil}
                                             onChange={handleInputChange}
                                             required
-                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent bg-white"
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
                                         >
                                             <option value="">Seleccionar perfil</option>
                                             <option value="Estudiante">Estudiante</option>
@@ -587,42 +667,35 @@ const FormularioZonaAmerica: React.FC = () => {
                                     {renderCamposEstudiante()}
 
                                     {/* Campos opcionales */}
-                                    <div className="relative">
+                                    <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-                                            <HeartIcon className="w-4 h-4 text-green-600" />
+                                            <HealthIcon className="w-4 h-4 text-blue-500" />
                                             EPS (Opcional)
                                         </label>
-                                        <div className="relative">
-                                            <HeartIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                                            <input
-                                                type="text"
-                                                name="eps"
-                                                value={formData.eps}
-                                                onChange={handleInputChange}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pl-10"
-                                                placeholder="Nombre de su EPS"
-                                            />
-                                        </div>
+                                        <input
+                                            type="text"
+                                            name="eps"
+                                            value={formData.eps}
+                                            onChange={handleInputChange}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Nombre de su EPS"
+                                        />
                                     </div>
 
-                                    <div className="relative">
+                                    <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-                                            <TruckIcon className="w-4 h-4 text-green-600" />
+                                            <CarIcon className="w-4 h-4 text-blue-500" />
                                             Placas del Vehículo (Opcional)
                                         </label>
-                                        <div className="relative">
-                                            <TruckIcon className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
-                                            <input
-                                                type="text"
-                                                name="placasVehiculo"
-                                                value={formData.placasVehiculo}
-                                                onChange={handleInputChange}
-                                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent pl-10"
-                                                placeholder="Ej: ABC123"
-                                            />
-                                        </div>
-                                        <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
-                                            <ExclamationTriangleIcon className="w-3 h-3" />
+                                        <input
+                                            type="text"
+                                            name="placasVehiculo"
+                                            value={formData.placasVehiculo}
+                                            onChange={handleInputChange}
+                                            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                            placeholder="Ej: ABC123"
+                                        />
+                                        <p className="text-xs text-gray-500 mt-1">
                                             Solo si planea llevar vehículo (estacionamiento sujeto a disponibilidad)
                                         </p>
                                     </div>
@@ -631,16 +704,20 @@ const FormularioZonaAmerica: React.FC = () => {
                                 <button
                                     type="submit"
                                     disabled={isSubmitting}
-                                    className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700 disabled:bg-gray-400 transition-colors duration-200 flex items-center justify-center gap-2"
+                                    className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition-colors duration-200 flex items-center justify-center gap-2"
                                 >
                                     {isSubmitting ? (
                                         <>
-                                            <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                                            <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2v4m0 12v4m8-10h-4M6 12H2" />
+                                            </svg>
                                             Enviando...
                                         </>
                                     ) : (
                                         <>
-                                            <CheckCircleIcon className="w-5 h-5" />
+                                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                            </svg>
                                             Confirmar Inscripción
                                         </>
                                     )}
@@ -648,7 +725,9 @@ const FormularioZonaAmerica: React.FC = () => {
 
                                 {error && (
                                     <div className="text-red-600 text-sm bg-red-50 p-3 rounded-lg flex items-center gap-2">
-                                        <ExclamationTriangleIcon className="w-4 h-4" />
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                        </svg>
                                         {error}
                                     </div>
                                 )}
@@ -666,28 +745,17 @@ const FormularioZonaAmerica: React.FC = () => {
                         onClick={() => setSuccessOpen(false)}
                     />
                     <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-8 text-center">
-                        <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <CheckCircleIcon className="w-8 h-8 text-green-600" />
-                        </div>
-                        <h3 className="text-2xl font-bold text-gray-800">¡Inscripción Exitosa!</h3>
-                        <p className="text-gray-600 mt-2">Tu registro para la visita a Zona América ha sido confirmado.</p>
+                        <h3 className="text-2xl font-bold text-blue-600">Inscripción registrada</h3>
+                        <p className="text-gray-600 mt-2">Guarda o escanea tu código para confirmar.</p>
                         <div className="mt-5 flex items-center justify-center">
                             {qrSrc ? (
-                                <div className="relative">
-                                    <img
-                                        src={qrSrc}
-                                        alt="Código QR de confirmación"
-                                        className="h-56 w-56 object-contain rounded-lg border border-gray-200 shadow-sm"
-                                    />
-                                    <div className="absolute -top-2 -right-2 bg-green-500 w-8 h-8 rounded-full flex items-center justify-center">
-                                        <QrCodeIcon className="w-4 h-4 text-white" />
-                                    </div>
-                                </div>
+                                <img
+                                    src={qrSrc}
+                                    alt="Código QR de confirmación"
+                                    className="h-56 w-56 object-contain rounded-lg border border-gray-200 shadow-sm"
+                                />
                             ) : (
-                                <div className="text-gray-500 text-sm flex items-center gap-2">
-                                    <ExclamationTriangleIcon className="w-4 h-4" />
-                                    QR no proporcionado por el servidor.
-                                </div>
+                                <div className="text-gray-500 text-sm">QR no proporcionado por el servidor.</div>
                             )}
                         </div>
                         <div className="mt-6 flex items-center justify-center gap-4">
@@ -696,9 +764,11 @@ const FormularioZonaAmerica: React.FC = () => {
                                     href={qrSrc}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    className="bg-green-600 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-green-700 transition-all flex items-center gap-2"
+                                    className="bg-blue-600 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-blue-700 transition-all flex items-center gap-2"
                                 >
-                                    <QrCodeIcon className="w-4 h-4" />
+                                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                    </svg>
                                     Abrir QR
                                 </a>
                             )}
@@ -707,7 +777,9 @@ const FormularioZonaAmerica: React.FC = () => {
                                 onClick={() => setSuccessOpen(false)}
                                 className="px-6 py-2.5 rounded-full border border-gray-300 font-semibold text-gray-700 hover:bg-gray-100 transition-all flex items-center gap-2"
                             >
-                                <XCircleIcon className="w-4 h-4" />
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
                                 Cerrar
                             </button>
                         </div>
@@ -727,17 +799,23 @@ const FormularioZonaAmerica: React.FC = () => {
                         <div className="flex justify-center mb-4">
                             {modalType === "error" && (
                                 <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
-                                    <XCircleIcon className="w-8 h-8 text-red-600" />
+                                    <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
                                 </div>
                             )}
                             {modalType === "warning" && (
                                 <div className="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center">
-                                    <ExclamationTriangleIcon className="w-8 h-8 text-yellow-600" />
+                                    <svg className="w-8 h-8 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                                    </svg>
                                 </div>
                             )}
                             {modalType === "success" && (
-                                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center">
-                                    <CheckCircleIcon className="w-8 h-8 text-green-600" />
+                                <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center">
+                                    <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                    </svg>
                                 </div>
                             )}
                         </div>
@@ -745,7 +823,7 @@ const FormularioZonaAmerica: React.FC = () => {
                         {/* Título y mensaje */}
                         <h3 className={`text-2xl font-bold ${modalType === "error" ? "text-red-600" :
                             modalType === "warning" ? "text-yellow-600" :
-                                "text-green-600"
+                                "text-blue-600"
                             }`}>
                             {modalTitle}
                         </h3>
@@ -758,10 +836,12 @@ const FormularioZonaAmerica: React.FC = () => {
                                 onClick={closeModal}
                                 className={`px-8 py-3 rounded-full font-semibold text-white transition-all flex items-center gap-2 ${modalType === "error" ? "bg-red-600 hover:bg-red-700" :
                                     modalType === "warning" ? "bg-yellow-600 hover:bg-yellow-700" :
-                                        "bg-green-600 hover:bg-green-700"
+                                        "bg-blue-600 hover:bg-blue-700"
                                     }`}
                             >
-                                <CheckCircleIcon className="w-4 h-4" />
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                </svg>
                                 Entendido
                             </button>
                         </div>
@@ -772,4 +852,4 @@ const FormularioZonaAmerica: React.FC = () => {
     );
 };
 
-export default FormularioZonaAmerica;
+export default FormularioEmavi;

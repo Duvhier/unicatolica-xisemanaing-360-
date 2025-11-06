@@ -40,11 +40,11 @@ interface FormData {
   cargo: string;
   empresa: string;
 
-  // Datos del equipo (solo para participantes)
+  // Datos del equipo (solo para participantes) - CAMPOS ELIMINADOS
   nombre_equipo: string;
-  nombre_proyecto: string;
-  descripcion_proyecto: string;
-  categoria_participacion: string;
+  // nombre_proyecto: string; // ELIMINADO
+  // descripcion_proyecto: string; // ELIMINADO
+  // categoria_participacion: string; // ELIMINADO
   institucion_equipo: string;
   email_equipo: string;
   telefono_equipo: string;
@@ -73,9 +73,9 @@ const FormularioInscripcion: React.FC = () => {
     cargo: '',
     empresa: '',
     nombre_equipo: '',
-    nombre_proyecto: '',
-    descripcion_proyecto: '',
-    categoria_participacion: '',
+    // nombre_proyecto: '', // ELIMINADO
+    // descripcion_proyecto: '', // ELIMINADO
+    // categoria_participacion: '', // ELIMINADO
     institucion_equipo: '',
     email_equipo: '',
     telefono_equipo: '',
@@ -192,7 +192,7 @@ const FormularioInscripcion: React.FC = () => {
           cedula: field === 'cedula' ? value : undefined,
           idEstudiante: field === 'idEstudiante' ? value : undefined,
           nombreEquipo: field === 'nombre_equipo' ? value : undefined,
-          nombreProyecto: field === 'nombre_proyecto' ? value : undefined,
+          // nombreProyecto: field === 'nombre_proyecto' ? value : undefined, // ELIMINADO
           correo: field === 'correo' ? value : undefined
         })
       });
@@ -211,9 +211,9 @@ const FormularioInscripcion: React.FC = () => {
         if (!data.disponibilidad.nombreEquipo && field === 'nombre_equipo') {
           newErrors.push({ field: 'nombre_equipo', message: 'El nombre del equipo ya está registrado' });
         }
-        if (!data.disponibilidad.nombreProyecto && field === 'nombre_proyecto') {
-          newErrors.push({ field: 'nombre_proyecto', message: 'El nombre del proyecto ya está registrado' });
-        }
+        // if (!data.disponibilidad.nombreProyecto && field === 'nombre_proyecto') { // ELIMINADO
+        //   newErrors.push({ field: 'nombre_proyecto', message: 'El nombre del proyecto ya está registrado' });
+        // }
         if (!data.disponibilidad.correo && field === 'correo') {
           newErrors.push({ field: 'correo', message: 'El correo electrónico ya está registrado' });
         }
@@ -315,19 +315,19 @@ const FormularioInscripcion: React.FC = () => {
         payload.facultad = formData.facultad;
         payload.programa = formData.programa;
         payload.semestre = formData.semestre;
-            // ✅ TODOS los estudiantes ahora envían datos de equipo
-          payload.grupo = {
-            nombre: formData.nombre_equipo.trim(),
-            integrantes: formData.integrantes.split(',').map(i => i.trim()).filter(i => i),
-            proyecto: {
-              nombre: formData.nombre_proyecto.trim(),
-              descripcion: formData.descripcion_proyecto.trim(),
-              categoria: formData.categoria_participacion
-            },
-            institucion: formData.institucion_equipo.trim(),
-            correo: formData.email_equipo.trim(),
-            telefono: formData.telefono_equipo?.trim() || ''
-          };        
+        // ✅ TODOS los estudiantes ahora envían datos de equipo (SIMPLIFICADO)
+        payload.grupo = {
+          nombre: formData.nombre_equipo.trim(),
+          integrantes: formData.integrantes.split(',').map(i => i.trim()).filter(i => i),
+          // proyecto: { // ELIMINADO
+          //   nombre: formData.nombre_proyecto.trim(),
+          //   descripcion: formData.descripcion_proyecto.trim(),
+          //   categoria: formData.categoria_participacion
+          // },
+          institucion: formData.institucion_equipo.trim(),
+          correo: formData.email_equipo.trim(),
+          telefono: formData.telefono_equipo?.trim() || ''
+        };        
       } else if (formData.rol === 'egresado') {
         payload.programa = formData.programa;
         if (formData.empresa.trim()) {
@@ -362,7 +362,7 @@ const FormularioInscripcion: React.FC = () => {
             if (errorMsg.includes('cédula')) return { field: 'cedula', message: errorMsg };
             if (errorMsg.includes('ID de estudiante')) return { field: 'idEstudiante', message: errorMsg };
             if (errorMsg.includes('nombre de equipo')) return { field: 'nombre_equipo', message: errorMsg };
-            if (errorMsg.includes('nombre de proyecto')) return { field: 'nombre_proyecto', message: errorMsg };
+            // if (errorMsg.includes('nombre de proyecto')) return { field: 'nombre_proyecto', message: errorMsg }; // ELIMINADO
             if (errorMsg.includes('correo')) return { field: 'correo', message: errorMsg };
             return { field: 'general', message: errorMsg };
           });
@@ -397,9 +397,9 @@ const FormularioInscripcion: React.FC = () => {
         cargo: '',
         empresa: '',
         nombre_equipo: '',
-        nombre_proyecto: '',
-        descripcion_proyecto: '',
-        categoria_participacion: '',
+        // nombre_proyecto: '', // ELIMINADO
+        // descripcion_proyecto: '', // ELIMINADO
+        // categoria_participacion: '', // ELIMINADO
         institucion_equipo: '',
         email_equipo: '',
         telefono_equipo: '',
@@ -455,7 +455,7 @@ const FormularioInscripcion: React.FC = () => {
                     <h3 className="font-semibold text-green-800">Modo Participante</h3>
                     <p className="text-sm text-green-700 mt-1">
                       Estás registrándote como <strong>participante activo</strong> en la competencia.
-                      Deberás formar equipo y presentar un proyecto.
+                      Deberás formar equipo para el hackathon.
                     </p>
                   </div>
                 </div>
@@ -701,7 +701,7 @@ const FormularioInscripcion: React.FC = () => {
     }
   };
 
-  // Renderizar datos del equipo solo para estudiantes participantes
+  // Renderizar datos del equipo solo para estudiantes participantes (SIMPLIFICADO)
   const renderDatosEquipo = () => {
     if (formData.rol === 'estudiante') {
       return (
@@ -712,7 +712,7 @@ const FormularioInscripcion: React.FC = () => {
               Datos del Equipo
             </h2>
             <p className="text-sm text-gray-600 mt-1">
-              Complete la información de su equipo para la competencia
+              Complete la información de su equipo para el hackathon
             </p>
           </div>
 
@@ -755,67 +755,6 @@ const FormularioInscripcion: React.FC = () => {
                 required
               />
               <p className="text-sm text-gray-500 mt-1">Separe cada nombre con una coma</p>
-            </div>
-
-            <div className="form-group md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <div className="flex items-center gap-2">
-                  <TrophyIcon className="w-5 h-5 text-uniblue mt-0.5" />
-                  Nombre del Proyecto <span className="text-red-500">*</span>
-                </div>
-              </label>
-              <input
-                type="text"
-                name="nombre_proyecto"
-                value={formData.nombre_proyecto}
-                onChange={handleInputChange}
-                onBlur={(e) => verificarDisponibilidad('nombre_proyecto', e.target.value)}
-                className={`w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 ${getFieldError('nombre_proyecto') ? 'border-red-300 bg-red-50' : 'border-gray-300'
-                  }`}
-                placeholder="Nombre del proyecto de ingeniería"
-                required
-              />
-              {renderFieldError('nombre_proyecto')}
-            </div>
-
-            <div className="form-group md:col-span-2">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <div className="flex items-center gap-2">
-                  <MapPinIcon className="w-5 h-5 text-uniblue mt-0.5" />
-                  Descripción del Proyecto <span className="text-red-500">*</span>
-                </div>
-              </label>
-              <textarea
-                name="descripcion_proyecto"
-                value={formData.descripcion_proyecto}
-                onChange={handleInputChange}
-                rows={4}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 resize-vertical"
-                placeholder="Breve descripción del concepto y los objetivos principales del proyecto"
-                required
-              />
-            </div>
-
-            <div className="form-group">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                <div className="flex items-center gap-2">
-                  <TrophyIcon className="w-5 h-5 text-uniblue mt-0.5" />
-                  Categoría de Participación <span className="text-red-500">*</span>
-                </div>
-              </label>
-              <select
-                name="categoria_participacion"
-                value={formData.categoria_participacion}
-                onChange={handleInputChange}
-                className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-uniblue focus:border-transparent transition-colors duration-200 bg-white"
-                required
-              >
-                <option value="">Seleccionar categoría</option>
-                <option value="proyecto-aula">Proyecto de Aula</option>
-                <option value="semillero-investigacion">Semillero de Investigación</option>
-                <option value="proyecto-grado">Proyecto de Grado</option>
-                <option value="emprendimiento">Emprendimiento</option>
-              </select>
             </div>
 
             <div className="form-group">
@@ -1096,7 +1035,7 @@ const FormularioInscripcion: React.FC = () => {
               {renderCamposPorRol()}
             </div>
 
-            {/* Datos del equipo solo para estudiantes participantes */}
+            {/* Datos del equipo solo para estudiantes participantes (SIMPLIFICADO) */}
             {renderDatosEquipo()}
 
             {/* ✅ Mostrar resumen de errores de duplicidad */}
@@ -1104,7 +1043,7 @@ const FormularioInscripcion: React.FC = () => {
               <div className="mt-6 p-4 bg-red-50 border border-red-200 rounded-lg">
                 <div className="flex items-center gap-2 text-red-800 font-medium mb-2">
                   <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                    <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0118 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
                   </svg>
                   Errores de duplicidad encontrados
                 </div>
