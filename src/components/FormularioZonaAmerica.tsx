@@ -3,6 +3,34 @@ import { Link } from "react-router-dom";
 import "./FormularioInscripcionLiderazgo.css";
 import EmaviImg from "@/assets/VISITA EMPRESARIAL -12-8.png";
 import LogoEmavi from "@/assets/publicidad/emavi.png"; 
+import facultadesData from '@/assets/facultadesyprogramasacademicos.json';
+
+// 🔹 Interfaz para los programas académicos
+interface ProgramaAcademico {
+  id: string;
+  nombre: string;
+  facultad: string;
+}
+
+// 🔹 Interfaz para las facultades
+interface Facultad {
+  id: string;
+  nombre: string;
+  programas: ProgramaAcademico[];
+}
+
+// 🔹 Interfaz para la estructura del JSON completo
+interface FacultadesData {
+  facultades: Facultad[];
+}
+
+// 🔹 Función de type guard
+const esFacultadesData = (data: any): data is FacultadesData => {
+    return data && 
+           typeof data === 'object' && 
+           'facultades' in data && 
+           Array.isArray(data.facultades);
+};
 
 // 🔹 Importar los iconos que necesitas
 const MapPinIcon = ({ className }: { className?: string }) => (
@@ -68,21 +96,7 @@ const HealthIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-// 🔹 Interfaz para los programas académicos
-interface ProgramaAcademico {
-  id: string;
-  nombre: string;
-  facultad: string;
-}
-
-// 🔹 Interfaz para las facultades
-interface Facultad {
-  id: string;
-  nombre: string;
-  programas: ProgramaAcademico[];
-}
-
-const FormularioEmavi: React.FC = () => {
+const FormularioZonaAmerica: React.FC = () => {
     const [formData, setFormData] = useState({
         nombre: "",
         tipoDocumento: "",
@@ -119,34 +133,31 @@ const FormularioEmavi: React.FC = () => {
 
     const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
-    // 🔹 Cargar los programas académicos desde el JSON
+    // 🔹 Cargar los programas académicos desde el JSON LOCAL
     useEffect(() => {
-        const cargarProgramasAcademicos = async () => {
+        const cargarProgramasAcademicos = () => {
             try {
                 setIsLoadingProgramas(true);
-                const response = await fetch('/facultadesyprogramasacademicos.json');
                 
-                if (!response.ok) {
-                    throw new Error('No se pudo cargar el archivo de programas académicos');
-                }
-                
-                const data = await response.json();
-                
-                if (data.facultades && Array.isArray(data.facultades)) {
-                    setFacultades(data.facultades);
+                // Usar type guard
+                if (esFacultadesData(facultadesData)) {
+                    setFacultades(facultadesData.facultades);
                     
                     // Crear una lista plana de todos los programas
                     const todosLosProgramas: ProgramaAcademico[] = [];
-                    data.facultades.forEach((facultad: Facultad) => {
+                    facultadesData.facultades.forEach((facultad: Facultad) => {
                         if (facultad.programas && Array.isArray(facultad.programas)) {
                             todosLosProgramas.push(...facultad.programas);
                         }
                     });
                     
                     setProgramasAcademicos(todosLosProgramas);
+                    console.log('✅ Programas académicos cargados:', todosLosProgramas.length);
+                } else {
+                    throw new Error('Estructura de datos inválida');
                 }
             } catch (error) {
-                console.error('Error cargando programas académicos:', error);
+                console.error('❌ Error cargando programas académicos:', error);
                 showModal(
                     "Error de carga",
                     "No se pudieron cargar los programas académicos. Por favor, recargue la página.",
@@ -347,6 +358,11 @@ const FormularioEmavi: React.FC = () => {
                     {isLoadingProgramas && (
                         <p className="text-xs text-gray-500 mt-1">
                             Cargando lista de programas académicos...
+                        </p>
+                    )}
+                    {!isLoadingProgramas && programasAcademicos.length === 0 && (
+                        <p className="text-xs text-yellow-600 mt-1">
+                            No se encontraron programas académicos
                         </p>
                     )}
                 </div>
@@ -852,4 +868,4 @@ const FormularioEmavi: React.FC = () => {
     );
 };
 
-export default FormularioEmavi;
+export default FormularioZonaAmerica;

@@ -226,7 +226,7 @@ export default function CronogramaActividades() {
       22: { // Certificación Full Stack - Día 1
         disponible: true,
         cuposDisponibles: 50,
-        cupoMaximo: 60,
+        cupoMaximo: 50,  // Cambiado de 60 a 50
         inscritos: 0,
         actividad: "Certificación Full Stack: Spring Boot, Angular & AI",
         mensaje: "Usuarios Registrados: 0/50"
@@ -234,15 +234,15 @@ export default function CronogramaActividades() {
       23: { // Certificación Full Stack - Día 2
         disponible: true,
         cuposDisponibles: 50,
-        cupoMaximo: 60,
+        cupoMaximo: 50,  // Cambiado de 60 a 50
         inscritos: 0,
         actividad: "Certificación Full Stack: Frontend Empresarial con Angular + AI",
-        mensaje: "Usuarios Registrados: 0/60"
+        mensaje: "Usuarios Registrados: 0/50"
       },
       24: { // Certificación Full Stack - Día 3
         disponible: true,
         cuposDisponibles: 50,
-        cupoMaximo: 60,
+        cupoMaximo: 50,  // Cambiado de 60 a 50
         inscritos: 0,
         actividad: "Certificación Full Stack: Integración Full Stack con AI",
         mensaje: "Usuarios Registrados: 0/50"
@@ -326,10 +326,14 @@ export default function CronogramaActividades() {
             case 21: // CDI Alimentos Cárnicos
               endpoint = `${API_URL}/visitacarnicos/estado-registros`;
               break;
-            case 22: // Certificación Full Stack Día 1
+              case 22: // Certificación Full Stack Día 1
+              endpoint = `${API_URL}/desarrollofullstack/estado-registros?dia=22`;
+              break;
             case 23: // Certificación Full Stack Día 2  
+              endpoint = `${API_URL}/desarrollofullstack/estado-registros?dia=23`;
+              break;
             case 24: // Certificación Full Stack Día 3
-              endpoint = `${API_URL}/desarrollofullstack/estado-registros`;
+              endpoint = `${API_URL}/desarrollofullstack/estado-registros?dia=24`;
               break;
             default:
               endpoint = `${API_URL}/api/actividades/estadisticas/${id}`;
