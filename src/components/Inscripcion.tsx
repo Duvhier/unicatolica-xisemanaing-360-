@@ -321,7 +321,7 @@ export default function CronogramaActividades() {
               endpoint = `${API_URL}/tallerwordpress/estado-registros`;
               break;
             case 20: // Clausura
-              endpoint = `${API_URL}/visitacarnicos/estado-registros`;
+              endpoint = `${API_URL}/clausura/estado-registros`;
               break;
             case 21: // CDI Alimentos Cárnicos
               endpoint = `${API_URL}/visitacarnicos/estado-registros`;
