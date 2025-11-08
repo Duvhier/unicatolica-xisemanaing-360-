@@ -1,8 +1,36 @@
-import facultadesData from '@/assets/facultadesyprogramasacademicos.json';
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./FormularioInscripcionLiderazgo.css";
 import EmaviImg from "@/assets/VISITA EMPRESARIAL -12-8.png";
+import LogoEmavi from "@/assets/emavi.png"; 
+import facultadesData from '@/assets/facultadesyprogramasacademicos.json';
+
+// 🔹 Interfaz para los programas académicos
+interface ProgramaAcademico {
+    id: string;
+    nombre: string;
+    facultad: string;
+}
+
+// 🔹 Interfaz para las facultades
+interface Facultad {
+    id: string;
+    nombre: string;
+    programas: ProgramaAcademico[];
+}
+
+// 🔹 Interfaz para la estructura del JSON completo
+interface FacultadesData {
+    facultades: Facultad[];
+}
+
+// 🔹 Función de type guard
+const esFacultadesData = (data: any): data is FacultadesData => {
+    return data &&
+        typeof data === 'object' &&
+        'facultades' in data &&
+        Array.isArray(data.facultades);
+};
 
 // 🔹 Importar los iconos que necesitas
 const MapPinIcon = ({ className }: { className?: string }) => (
@@ -68,40 +96,6 @@ const HealthIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
-// 🔹 Interfaces TypeScript
-interface ProgramaAcademico {
-  nombre: string;
-  facultad: string;
-  nivel: string;
-}
-
-interface Facultad {
-  nombre: string;
-  programas: ProgramaAcademico[];
-}
-
-interface FacultadesData {
-  facultades: Facultad[];
-}
-
-// 🔹 Type Guard para validar la estructura del JSON
-const esFacultadesData = (data: any): data is FacultadesData => {
-  return (
-    data &&
-    typeof data === 'object' &&
-    Array.isArray(data.facultades) &&
-    data.facultades.every((facultad: any) =>
-      typeof facultad.nombre === 'string' &&
-      Array.isArray(facultad.programas) &&
-      facultad.programas.every((programa: any) =>
-        typeof programa.nombre === 'string' &&
-        typeof programa.facultad === 'string' &&
-        typeof programa.nivel === 'string'
-      )
-    )
-  );
-};
-
 const FormularioEmavi: React.FC = () => {
     const [formData, setFormData] = useState({
         nombre: "",
@@ -123,9 +117,9 @@ const FormularioEmavi: React.FC = () => {
     const [qrSrc, setQrSrc] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
-    // 🔹 Nuevos estados para programas académicos
-    const [programasAcademicos, setProgramasAcademicos] = useState<ProgramaAcademico[]>([]);
+    // 🔹 Estados para los datos del JSON
     const [, setFacultades] = useState<Facultad[]>([]);
+    const [programasAcademicos, setProgramasAcademicos] = useState<ProgramaAcademico[]>([]);
     const [isLoadingProgramas, setIsLoadingProgramas] = useState(true);
 
     // Estados para modales
@@ -139,7 +133,7 @@ const FormularioEmavi: React.FC = () => {
 
     const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
-    // 🔹 Cargar programas académicos al montar el componente
+    // 🔹 Cargar los programas académicos desde el JSON LOCAL
     useEffect(() => {
         const cargarProgramasAcademicos = () => {
             try {
@@ -158,7 +152,7 @@ const FormularioEmavi: React.FC = () => {
                     });
 
                     setProgramasAcademicos(todosLosProgramas);
-                    console.log('✅ Programas académicos cargados:', todosLosProgramas.length);
+                    console.log('✅ Programas académicos cargados para EMAVI:', todosLosProgramas.length);
                 } else {
                     throw new Error('Estructura de datos inválida');
                 }
@@ -222,7 +216,7 @@ const FormularioEmavi: React.FC = () => {
                 payload.placasVehiculo = formData.placasVehiculo.trim();
             }
 
-            console.log('📤 Enviando payload:', payload);
+            console.log('📤 Enviando payload a EMAVI:', payload);
 
             const res = await fetch(`${API_URL}/visitaemavi/registro`, {
                 method: "POST",
@@ -344,36 +338,32 @@ const FormularioEmavi: React.FC = () => {
                         <AcademicCapIcon className="w-4 h-4 text-blue-500" />
                         Programa Académico <span className="text-red-500">*</span>
                     </label>
-                    
-                    {isLoadingProgramas ? (
-                        <div className="flex items-center gap-2 text-gray-500">
-                            <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
-                            <span className="text-sm">Cargando programas académicos...</span>
-                        </div>
-                    ) : (
-                        <>
-                            <select
-                                name="programa"
-                                value={formData.programa}
-                                onChange={handleInputChange}
-                                required
-                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                            >
-                                <option value="">Seleccionar programa académico</option>
-                                {programasAcademicos.map((programa, index) => (
-                                    <option 
-                                        key={index} 
-                                        value={programa.nombre}
-                                        title={`${programa.facultad} - ${programa.nivel}`}
-                                    >
-                                        {programa.nombre} - {programa.nivel}
-                                    </option>
-                                ))}
-                            </select>
-                            <p className="text-xs text-gray-500 mt-1">
-                                {programasAcademicos.length} programas disponibles
-                            </p>
-                        </>
+                    <select
+                        name="programa"
+                        value={formData.programa}
+                        onChange={handleInputChange}
+                        required
+                        disabled={isLoadingProgramas}
+                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white disabled:bg-gray-100 disabled:cursor-not-allowed"
+                    >
+                        <option value="">
+                            {isLoadingProgramas ? "Cargando programas..." : "Seleccionar programa"}
+                        </option>
+                        {programasAcademicos.map((programa) => (
+                            <option key={programa.id} value={programa.nombre}>
+                                {programa.nombre}
+                            </option>
+                        ))}
+                    </select>
+                    {isLoadingProgramas && (
+                        <p className="text-xs text-gray-500 mt-1">
+                            Cargando lista de programas académicos...
+                        </p>
+                    )}
+                    {!isLoadingProgramas && programasAcademicos.length === 0 && (
+                        <p className="text-xs text-yellow-600 mt-1">
+                            No se encontraron programas académicos
+                        </p>
                     )}
                 </div>
             </>
@@ -419,7 +409,7 @@ const FormularioEmavi: React.FC = () => {
                             ESCUELA MILITAR DE AVIACIÓN - EMAVI
                         </h1>
                         <p className="text-sm font-medium text-gray-800">
-                            Visita Empresarial - Cupo Limitado a 40 Personas
+                            Visita empresarial - Cupo limitado a 40 personas
                         </p>
                     </div>
                 </div>
@@ -485,7 +475,7 @@ const FormularioEmavi: React.FC = () => {
                                     <div className="flex-shrink-0 relative">
                                         <div className="relative">
                                             <img
-                                                src={"https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608302/emavi_akptyd.png"}
+                                                src={LogoEmavi}
                                                 alt="Escuela Militar de Aviación - EMAVI"
                                                 className="w-32 h-32 rounded-full object-cover border-4 border-blue-500 shadow-md"
                                             />
