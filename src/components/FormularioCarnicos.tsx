@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./FormularioInscripcionLiderazgo.css";
 import CarnicosImg from "@/assets/VISITA EMPRESARIAL -8.png";
-import LogoCarnicos from "@/assets/publicidad/alimentoscarnicos.png";
+
 
 const FormularioCarnicos: React.FC = () => {
     const [formData, setFormData] = useState({
@@ -269,7 +269,7 @@ const FormularioCarnicos: React.FC = () => {
                             CDI Alimentos Cárnicos
                         </h1>
                         <p className="text-sm font-medium text-gray-800">
-                            Visita empresarial - Cupo limitado a 20 personas
+                            Visita empresarial - Cupo limitado a 23 personas
                         </p>
                     </div>
                 </div>
@@ -334,7 +334,7 @@ const FormularioCarnicos: React.FC = () => {
                                     <div className="flex-shrink-0 relative">
                                         <div className="relative">
                                             <img
-                                                src={LogoCarnicos}
+                                                src={"https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608303/alimentoscarnicos_w1biva.png"}
                                                 alt="CDI Alimentos Cárnicos"
                                                 className="w-32 h-32 rounded-full object-cover border-4 border-orange-500 shadow-md"
                                             />
@@ -421,7 +421,7 @@ const FormularioCarnicos: React.FC = () => {
                                     </button>
 
                                     <p className="text-sm text-gray-500 mt-3">
-                                        ⚡ Cupo limitado a 20 personas
+                                        ⚡ Cupo limitado a 23 personas
                                     </p>
                                 </div>
                             </section>

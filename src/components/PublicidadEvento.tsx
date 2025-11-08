@@ -2,27 +2,6 @@
 import React, { useState } from "react";
 import "./PublicidadEvento.css";
 
-import EmaviLogo from "@/assets/publicidad/emavi.png";
-import FuerzaAereaLogo from "@/assets/publicidad/fuerzaaerea.png";
-import ZonaAmericaLogo from "@/assets/publicidad/Zonamerica - copia.png";
-import PriceSmartLogo from "@/assets/publicidad/pricesmart.png";
-import NutresaLogo from "@/assets/publicidad/gruponutresa.png";
-import CDICarnicosLogo from "@/assets/publicidad/alimentoscarnicos.png"; 
-
-import FondoEducacion from "@/assets/publicidad/fondo-escuelamarcofidel.jpg";
-import FondoDefensa from "@/assets/publicidad/fondo-educacion.jpg";
-import FondoTecnologia from "@/assets/publicidad/fondo-defensa.jpg";
-import FondoRetail from "@/assets/publicidad/fondo-retail.jpg";
-import FondoAlimentos from "@/assets/publicidad/fondo-alimentos.jpg";
-import FondoCarnicos from "@/assets/publicidad/fondo-carnicos.jpeg";
-
-import EmaviNombre from "@/assets/publicidad/emavitext.png";
-import FuerzaAereaNombre from "@/assets/publicidad/fuerzaaereatext.png";
-import ZonaAmericaNombre from "@/assets/publicidad/Zonamericatext.png";
-import PriceSmartNombre from "@/assets/publicidad/pricesmarttext.png";
-import NutresaNombre from "@/assets/publicidad/gruponutresatext.png";
-import CDICarnicosNombre from "@/assets/publicidad/alimentoscarnicosnombre.png"; 
-
 interface AliadoPatrocinador {
   id: number;
   nombre: string;
@@ -42,9 +21,9 @@ const PublicidadEvento: React.FC = () => {
       id: 1,
       nombre: "ESCUELA MILITAR DE AVIACION MARCO FIDEL SUAREZ",
       tipo: "aliado",
-      imagen: EmaviLogo,
-      imagenNombre: EmaviNombre,
-      fondo: FondoEducacion,
+      imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608302/emavi_akptyd.png",
+      imagenNombre: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608303/emavitext_aantxu.png",
+      fondo: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608303/fondo-escuelamarcofidel_z8cuxb.jpg",
       descripcion: "En la Escuela Militar de Aviación 'Marco Fidel Suárez' forjamos líderes íntegros, con excelencia militar, profesional y aeronáutica. ¡EMAVI La ciencia, mi ruta; mi meta, el espacio!",
       website: "https://www.emavi.edu.co",
     },
@@ -52,9 +31,9 @@ const PublicidadEvento: React.FC = () => {
       id: 2,
       nombre: "FUERZA AEROESPACIAL COLOMBIA",
       tipo: "aliado",
-      imagen: FuerzaAereaLogo,
-      imagenNombre: FuerzaAereaNombre,
-      fondo: FondoDefensa,
+      imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608307/fuerzaaerea_annear.png",
+      imagenNombre: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608304/fuerzaaereatext_pubhym.png",
+      fondo: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608303/fondo-educacion_eljnlp.jpg",
       descripcion: "Institución de defensa nacional y desarrollo aeroespacial comprometida con la protección del espacio aéreo colombiano y el desarrollo tecnológico del país. ¡FAC, Asi se va a las Estrellas!",
       website: "https://www.fac.mil.co",
     },
@@ -62,9 +41,9 @@ const PublicidadEvento: React.FC = () => {
       id: 3,
       nombre: "ZONA AMERICA",
       tipo: "patrocinador",
-      imagen: ZonaAmericaLogo,
-      imagenNombre: ZonaAmericaNombre,
-      fondo: FondoTecnologia,
+      imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762613895/zonamericalogo_wn3ahe.png",
+      imagenNombre: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608308/Zonamericatext_veedgm.png",
+      fondo: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608303/fondo-defensa_pfe2cq.jpg",
       descripcion: "Parque empresarial con infraestructura de clase mundial, espacios modernos y servicios integrales para empresas innovadoras y en crecimiento. ¡Zona América, tu mejor opción!",
       website: "https://web.zonamerica.com/colombia/",
     },
@@ -72,9 +51,9 @@ const PublicidadEvento: React.FC = () => {
       id: 4,
       nombre: "PRICESMART",
       tipo: "patrocinador",
-      imagen: PriceSmartLogo,
-      imagenNombre: PriceSmartNombre,
-      fondo: FondoRetail,
+      imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608310/pricesmart_vuatgm.png",
+      imagenNombre: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608308/pricesmarttext_vott9h.png",
+      fondo: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608304/fondo-retail_lbf07s.avif",
       descripcion: "Club de compras líder en América Latina y el Caribe, ofreciendo productos de calidad y experiencias únicas de compra para sus miembros. ¡Haz tus compras desde donde quiera que estés! ¡Pricemart, Servimos Confianza!",
       website: "https://www.pricesmart.com",
     },
@@ -82,9 +61,9 @@ const PublicidadEvento: React.FC = () => {
       id: 5,
       nombre: "GRUPO NUTRESA",
       tipo: "patrocinador",
-      imagen: NutresaLogo,
-      imagenNombre: NutresaNombre,
-      fondo: FondoAlimentos,
+      imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608304/gruponutresa_b2tu4u.png",
+      imagenNombre: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608304/gruponutresatext_mtbmvp.png",
+      fondo: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608302/fondo-alimentos_m5eido.jpg",
       descripcion: "Gestionamos nuestras actividades comprometidos con el desarrollo sostenible; con el mejor talento humano, la innovación sobresaliente y un comportamiento corporativo ejemplar. En Nutresa trabajamos día a día por nuestro propósito superior construir un mundo mejor donde el desarrollo sea para todos. ¡Nutresa, Tu Salud, Nuestra Prioridad!",
       website: "https://www.gruponutresa.com",
     },
@@ -92,9 +71,9 @@ const PublicidadEvento: React.FC = () => {
       id: 6,
       nombre: "CDI ALIMENTOS CÁRNICOS",
       tipo: "aliado",
-      imagen: CDICarnicosLogo,
-      imagenNombre: CDICarnicosNombre,
-      fondo: FondoCarnicos,
+      imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608303/alimentoscarnicos_w1biva.png",
+      imagenNombre: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608302/alimentoscarnicosnombre_yrgjgy.png",
+      fondo: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608302/fondo-carnicos_h0cczi.jpg",
       descripcion: "Líder en la producción y distribución de alimentos cárnicos de alta calidad, comprometidos con la excelencia, innovación y sostenibilidad en cada uno de nuestros procesos. ¡CDI Alimentos Cárnicos, Calidad que se siente!",
       website: "https://alimentoscarnicos.com.co/", // Ajusta la URL si es necesario
     }

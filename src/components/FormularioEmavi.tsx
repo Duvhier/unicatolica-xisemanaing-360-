@@ -1,8 +1,8 @@
-import React, { useState, useRef } from "react";
+import facultadesData from '@/assets/facultadesyprogramasacademicos.json';
+import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./FormularioInscripcionLiderazgo.css";
 import EmaviImg from "@/assets/VISITA EMPRESARIAL -12-8.png";
-import LogoEmavi from "@/assets/publicidad/emavi.png"; 
 
 // 🔹 Importar los iconos que necesitas
 const MapPinIcon = ({ className }: { className?: string }) => (
@@ -68,6 +68,40 @@ const HealthIcon = ({ className }: { className?: string }) => (
   </svg>
 );
 
+// 🔹 Interfaces TypeScript
+interface ProgramaAcademico {
+  nombre: string;
+  facultad: string;
+  nivel: string;
+}
+
+interface Facultad {
+  nombre: string;
+  programas: ProgramaAcademico[];
+}
+
+interface FacultadesData {
+  facultades: Facultad[];
+}
+
+// 🔹 Type Guard para validar la estructura del JSON
+const esFacultadesData = (data: any): data is FacultadesData => {
+  return (
+    data &&
+    typeof data === 'object' &&
+    Array.isArray(data.facultades) &&
+    data.facultades.every((facultad: any) =>
+      typeof facultad.nombre === 'string' &&
+      Array.isArray(facultad.programas) &&
+      facultad.programas.every((programa: any) =>
+        typeof programa.nombre === 'string' &&
+        typeof programa.facultad === 'string' &&
+        typeof programa.nivel === 'string'
+      )
+    )
+  );
+};
+
 const FormularioEmavi: React.FC = () => {
     const [formData, setFormData] = useState({
         nombre: "",
@@ -89,6 +123,11 @@ const FormularioEmavi: React.FC = () => {
     const [qrSrc, setQrSrc] = useState<string | null>(null);
     const [error, setError] = useState<string | null>(null);
 
+    // 🔹 Nuevos estados para programas académicos
+    const [programasAcademicos, setProgramasAcademicos] = useState<ProgramaAcademico[]>([]);
+    const [, setFacultades] = useState<Facultad[]>([]);
+    const [isLoadingProgramas, setIsLoadingProgramas] = useState(true);
+
     // Estados para modales
     const [modalOpen, setModalOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
@@ -99,6 +138,44 @@ const FormularioEmavi: React.FC = () => {
     const formularioRef = useRef<HTMLDivElement | null>(null);
 
     const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
+
+    // 🔹 Cargar programas académicos al montar el componente
+    useEffect(() => {
+        const cargarProgramasAcademicos = () => {
+            try {
+                setIsLoadingProgramas(true);
+
+                // Usar type guard
+                if (esFacultadesData(facultadesData)) {
+                    setFacultades(facultadesData.facultades);
+
+                    // Crear una lista plana de todos los programas
+                    const todosLosProgramas: ProgramaAcademico[] = [];
+                    facultadesData.facultades.forEach((facultad: Facultad) => {
+                        if (facultad.programas && Array.isArray(facultad.programas)) {
+                            todosLosProgramas.push(...facultad.programas);
+                        }
+                    });
+
+                    setProgramasAcademicos(todosLosProgramas);
+                    console.log('✅ Programas académicos cargados:', todosLosProgramas.length);
+                } else {
+                    throw new Error('Estructura de datos inválida');
+                }
+            } catch (error) {
+                console.error('❌ Error cargando programas académicos:', error);
+                showModal(
+                    "Error de carga",
+                    "No se pudieron cargar los programas académicos. Por favor, recargue la página.",
+                    "error"
+                );
+            } finally {
+                setIsLoadingProgramas(false);
+            }
+        };
+
+        cargarProgramasAcademicos();
+    }, []);
 
     // 🔹 Función para mostrar modales
     const showModal = (title: string, message: string, type: "error" | "warning" | "success" = "error") => {
@@ -267,20 +344,37 @@ const FormularioEmavi: React.FC = () => {
                         <AcademicCapIcon className="w-4 h-4 text-blue-500" />
                         Programa Académico <span className="text-red-500">*</span>
                     </label>
-                    <select
-                        name="programa"
-                        value={formData.programa}
-                        onChange={handleInputChange}
-                        required
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                    >
-                        <option value="">Seleccionar programa</option>
-                        <option value="Ingeniería de Sistemas">Ingeniería de Sistemas</option>
-                        <option value="Tecnología en Desarrollo de Software">Tecnología en Desarrollo de Software</option>
-                        <option value="Ingeniería Mecánica">Ingeniería Mecánica</option>
-                        <option value="Ingeniería Electrónica">Ingeniería Electrónica</option>
-                        <option value="Ingeniería Industrial">Ingeniería Industrial</option>
-                    </select>
+                    
+                    {isLoadingProgramas ? (
+                        <div className="flex items-center gap-2 text-gray-500">
+                            <div className="w-4 h-4 border-2 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+                            <span className="text-sm">Cargando programas académicos...</span>
+                        </div>
+                    ) : (
+                        <>
+                            <select
+                                name="programa"
+                                value={formData.programa}
+                                onChange={handleInputChange}
+                                required
+                                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                            >
+                                <option value="">Seleccionar programa académico</option>
+                                {programasAcademicos.map((programa, index) => (
+                                    <option 
+                                        key={index} 
+                                        value={programa.nombre}
+                                        title={`${programa.facultad} - ${programa.nivel}`}
+                                    >
+                                        {programa.nombre} - {programa.nivel}
+                                    </option>
+                                ))}
+                            </select>
+                            <p className="text-xs text-gray-500 mt-1">
+                                {programasAcademicos.length} programas disponibles
+                            </p>
+                        </>
+                    )}
                 </div>
             </>
         );
@@ -360,7 +454,7 @@ const FormularioEmavi: React.FC = () => {
                             </h3>
                             <div className="text-sm text-gray-600 flex items-center gap-2">
                                 <ClockIcon className="w-4 h-4 text-blue-500" />
-                                <span>Horario: 8:00 am a 12:00 pm</span>
+                                <span>Horario: 9:00 am a 12:00 pm</span>
                             </div>
                         </div>
 
@@ -391,7 +485,7 @@ const FormularioEmavi: React.FC = () => {
                                     <div className="flex-shrink-0 relative">
                                         <div className="relative">
                                             <img
-                                                src={LogoEmavi}
+                                                src={"https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608302/emavi_akptyd.png"}
                                                 alt="Escuela Militar de Aviación - EMAVI"
                                                 className="w-32 h-32 rounded-full object-cover border-4 border-blue-500 shadow-md"
                                             />
@@ -425,7 +519,7 @@ const FormularioEmavi: React.FC = () => {
                                             </span>
                                             <span className="flex items-center gap-1 font-medium">
                                                 <ClockIcon className="w-4 h-4 text-blue-500" />
-                                                Hora: 8:00 am a 12:00 pm
+                                                Hora: 9:00 am a 12:00 pm
                                             </span>
                                         </div>
                                     </div>
