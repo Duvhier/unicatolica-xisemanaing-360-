@@ -419,7 +419,7 @@ const FormularioEmavi: React.FC = () => {
                             ESCUELA MILITAR DE AVIACIÓN - EMAVI
                         </h1>
                         <p className="text-sm font-medium text-gray-800">
-                            Visita empresarial - Cupo limitado a 40 personas
+                            Visita Empresarial - Cupo Limitado a 40 Personas
                         </p>
                     </div>
                 </div>
