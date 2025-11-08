@@ -24,7 +24,7 @@ const PublicidadEvento: React.FC = () => {
       imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608302/emavi_akptyd.png",
       imagenNombre: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608303/emavitext_aantxu.png",
       fondo: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608303/fondo-escuelamarcofidel_z8cuxb.jpg",
-      descripcion: "En la Escuela Militar de Aviación 'Marco Fidel Suárez' forjamos líderes íntegros, con excelencia militar, profesional y aeronáutica. ¡EMAVI La ciencia, mi ruta; mi meta, el espacio!",
+      descripcion: "En la Escuela Militar de Aviación 'Marco Fidel Suárez' forjamos líderes íntegros, con excelencia militar, profesional y aeronáutica. ¡EMAVI La Ciencia, Mi Ruta; Mi Meta, El Espacio!",
       website: "https://www.emavi.edu.co",
     },
     {
