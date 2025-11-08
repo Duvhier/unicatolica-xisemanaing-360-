@@ -326,7 +326,7 @@ export default function CronogramaActividades() {
             case 21: // CDI Alimentos Cárnicos
               endpoint = `${API_URL}/visitacarnicos/estado-registros`;
               break;
-              case 22: // Certificación Full Stack Día 1
+            case 22: // Certificación Full Stack Día 1
               endpoint = `${API_URL}/desarrollofullstack/estado-registros?dia=22`;
               break;
             case 23: // Certificación Full Stack Día 2  
@@ -753,8 +753,7 @@ export default function CronogramaActividades() {
           tipo: "Conversatorio",
           destacado: false,
           participantes: [
-            "Dra. Clara Eugenia Satizabal Serna - Decana Facultad de Ingeniería",
-            "Monseñor Luis Fernando Rodríguez Velásquez - Arzobispo de Cali",
+            "Dra. Clara Eugenia Satizabal Serna - Decana Facultad de Ingeniería - Moderadora",
             "Dr. Jorge Antonio Silva Leal - Vicerrector Académico",
             "Dr. José Armando Ordóñez Córdoba - Profesor del Dpto. Computación y Sistemas Inteligentes - Universidad ICESI",
             "Dr. Julián Portocarrero Hermann - Ingeniero Mecánico",
@@ -916,7 +915,7 @@ export default function CronogramaActividades() {
       actividades: [
         {
           id: 13,
-          hora: "9:30 am - 11:00 pm",
+          hora: "9:30 am - 11:00 am",
           titulo: "Visita Empresarial – ZONAMERICA",
           ponente: "",
           lugar: "Zonamérica - Calle 36, Auto. Cali - Jamundi #760030 128-321",
@@ -1283,11 +1282,10 @@ export default function CronogramaActividades() {
                         {nombreCompleto}
                       </span>
                       {esModerador && (
-                        <span className="bg-unigold/10 text-unigold text-xs px-2 py-0.5 rounded-full font-semibold whitespace-nowrap flex-shrink-0">
-                          Mod
+                        <span className="bg-gradient-to-r from-unigold to-yellow-500 text-white text-xs px-3 py-1 rounded-full font-bold whitespace-nowrap flex-shrink-0 shadow-md">
+                          ⭐ MODERADORA
                         </span>
-                      )}
-                    </div>
+                      )}</div>
                     {participante.includes(' - ') && (
                       <p className="text-xs text-gray-600 mt-0.5 leading-tight">
                         {participante.split(' - ')[1]}
