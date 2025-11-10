@@ -538,26 +538,43 @@ export default function CronogramaActividades() {
 
   // ✅ NUEVA FUNCIÓN: Obtener estado del evento
   const getEstadoEvento = (actividad: Actividad) => {
+    if (actividad.estado === "cancelado") {
+      return "cancelado";
+    }
     if (actividad.estado === "activo") {
       return "activo";
     }
     return "normal";
   };
 
-  // ✅ NUEVA FUNCIÓN: Renderizar badge de estado
-  const renderBadgeEstado = (actividad: Actividad) => {
-    const estado = getEstadoEvento(actividad);
 
-    if (estado === "activo") {
-      return (
-        <span className="bg-red-100 text-red-800 text-xs px-3 py-1 rounded-full font-semibold border border-red-200 flex items-center gap-1 animate-pulse">
-          <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-          EN VIVO AHORA
-        </span>
-      );
-    }
-    return null;
-  };
+  // ✅ NUEVA FUNCIÓN: Renderizar badge de estado
+// ✅ NUEVA FUNCIÓN: Renderizar badge de estado - ACTUALIZADA
+const renderBadgeEstado = (actividad: Actividad) => {
+  const estado = getEstadoEvento(actividad);
+
+  if (estado === "activo") {
+    return (
+      <span className="bg-red-100 text-red-800 text-xs px-3 py-1 rounded-full font-semibold border border-red-200 flex items-center gap-1 animate-pulse">
+        <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+        EN VIVO AHORA
+      </span>
+    );
+  }
+  
+  if (estado === "cancelado") {
+    return (
+      <span className="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full font-semibold border border-gray-300 flex items-center gap-1">
+        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+        </svg>
+        EVENTO CANCELADO
+      </span>
+    );
+  }
+  
+  return null;
+};
 
   // Base de datos de ponentes con tipado
   const basePonentes: { [key: string]: Ponente } = {
@@ -783,10 +800,11 @@ export default function CronogramaActividades() {
           ponente: "",
           lugar: "Escuela Militar de Aviación - EMAVI",
           tipo: "Visita",
-          destacado: true,
+          destacado: false,
           imagen: VisitaEmpr12nov,
-          botonRegistro: true,
-          urlRegistro: "/formulario-visitaemavi"
+          botonRegistro: false,
+          urlRegistro: "",
+          estado: "cancelado"
         },
         {
           id: 7,
@@ -1144,12 +1162,18 @@ export default function CronogramaActividades() {
   };
 
   const handleRegistro = (actividad: Actividad): void => {
+    // Verificar si el evento está cancelado
+    if (actividad.estado === "cancelado") {
+      alert('Este evento ha sido cancelado. No es posible realizar inscripciones.');
+      return;
+    }
+  
     const infoCupos = obtenerInfoCupos(actividad.id);
     if (!infoCupos.disponible) {
       alert('Lo sentimos, no hay cupos disponibles para esta actividad.');
       return;
     }
-
+  
     if (actividad.urlRegistro) {
       window.location.href = actividad.urlRegistro;
     } else {
@@ -1166,12 +1190,16 @@ export default function CronogramaActividades() {
   };
 
   // Función para obtener el texto del botón unificado
-  const getTextoBoton = (_actividad: Actividad, infoCupos: CupoInfo): string => {
-    if (!infoCupos.disponible) {
-      return "Cupo Agotado";
-    }
-    return "Inscríbete";
-  };
+// Función para obtener el texto del botón unificado - ACTUALIZADA
+const getTextoBoton = (actividad: Actividad, infoCupos: CupoInfo): string => {
+  if (actividad.estado === "cancelado") {
+    return "Evento Cancelado";
+  }
+  if (!infoCupos.disponible) {
+    return "Cupo Agotado";
+  }
+  return "Inscríbete";
+};
 
   // Función para obtener la clase CSS del botón unificada
   const getClaseBoton = (infoCupos: CupoInfo): string => {
