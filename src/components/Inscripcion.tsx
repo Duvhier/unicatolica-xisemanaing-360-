@@ -825,11 +825,11 @@ const renderBadgeEstado = (actividad: Actividad) => {
           ponente: "",
           lugar: "Monitoría Remota",
           tipo: "Competencia",
-          destacado: true,
+          destacado: false,
           organizador: "Profesores Brandon Rosero - Ronald Rengifo",
           imagen: HackathonMonitoriaImg,
-          botonRegistro: true,
-          urlRegistro: "/formulario-hackathonmonitoria"
+          botonRegistro: false,
+          urlRegistro: ""
         },
         {
           id: 9,
