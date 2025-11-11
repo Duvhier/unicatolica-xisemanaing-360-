@@ -1,32 +1,29 @@
 import { useState, useEffect, useRef } from "react";
-import ConferenciaImg from "../assets/CONFERENCIA COACHING-8.jpg";
-import ActoInauguralImg from "../assets/ACTO INAUGURAL-8.jpg";
-import Technological from "../assets/TECNOLOGICAL TOUCH-8.jpg";
-import IndustriaAcImg from "../assets/INDUSTRIA EN ACCION-8.jpg";
-import VisitaEmpr12nov from "../assets/VISITA EMPRESARIAL -12-8.jpg";
-import VisitaZonaAmerica from "../assets/VISITA - EMPRESARIAL  -8 ZONAAMERICA.jpg";
-import Visita15nov from "../assets/VISITA EMPRESARIAL -8.jpg";
-import HackathonImg from "../assets/HACKATON copia-8.jpg";
-import HackathonMonitoriaImg from "../assets/HACKATON monitoria-8.jpg";
-import ActoClausuraImg from "../assets/ACTO CLAUSURA-8.jpg";
-import OlimpiadaImg from "../assets/OLIMPIADAS MATEMATICAS -8.jpg";
-import VueloImg from "../assets/INICIACION AL VUELO-8.jpg";
-import IAImg from "../assets/CONFERENCIA-IAPRACTICA-8.jpg";
-import EntrevistaImg from "../assets/ENTREVISTA-8.jpg";
-import XimenaOtero from "../assets/ponentes/ximena-otero.jpg";
-import WordpressImg from "../assets/WORDPRESS.jpg";
-import JulianPortocarrero from "../assets/ponentes/julian-portocarrero.jpg";
-import LorenaCeron from "../assets/ponentes/lorena-ceron.jpg";
-import CarlosMolina from "../assets/ponentes/carlos-molina.jpg";
-import JorgeBris from "../assets/ponentes/jorge-bris.jpg";
-import BrandoRonald from "../assets/ponentes/HACKATON copia-8.jpg";
-import ComiteHackathon from "../assets/ponentes/comite-hackaton.png";
-import Vicerrector from "../assets/ponentes/jorge-silva.jpg";
-import VicSiigo from "../assets/ponentes/jaime-adalberto-lópez.jpg";
-import DecanaClara from "../assets/ponentes/clara-eugenia-satizabal.png";
-import ProfesorComputacion from "../assets/ponentes/josé-ordóñez-córdoba.jpg";
-import ConstruccionImg from "../assets/CONSTRUCCION-RED_8.jpg";
 
+// ✅ MEJORADO: imageLoader actualizado
+// ✅ MEJORAR: Manejar casos edge en imageLoader
+const imageLoader = ({ src, width, quality = 75 }: { src: string; width: number; quality?: number }) => {
+  // Si ya es una URL completa de Cloudinary, optimízala
+  if (src.startsWith('https://res.cloudinary.com')) {
+    try {
+      const parts = src.split('/upload/');
+      if (parts.length === 2) {
+        return `https://res.cloudinary.com/dufzjm2mn/image/upload/w_${width},q_${quality},f_auto/${parts[1]}`;
+      }
+    } catch (error) {
+      console.warn('Error procesando URL de Cloudinary:', error);
+    }
+    return src;
+  }
+  
+  // Si es una ruta local, conviértela
+  // ✅ AGREGAR: Validación para URLs vacías o inválidas
+  if (!src || src.trim() === '') {
+    return `https://res.cloudinary.com/dufzjm2mn/image/upload/w_${width},q_${quality},f_auto/placeholder.jpg`;
+  }
+  
+  return `https://res.cloudinary.com/dufzjm2mn/image/upload/w_${width},q_${quality},f_auto/${src}`;
+};
 // Definir tipos TypeScript
 interface Ponente {
   nombre: string;
@@ -87,6 +84,9 @@ export default function CronogramaActividades() {
   const [cuposActividades, setCuposActividades] = useState<{ [key: number]: CupoInfo }>({});
   const [cargandoCupos, setCargandoCupos] = useState<boolean>(true);
 
+    // ✅ NUEVO ESTADO: Para estados automáticos
+    const [estadosAutomaticos, setEstadosAutomaticos] = useState<{ [key: number]: string }>({});
+
   // ✅ NUEVO ESTADO: Búsqueda
   const [terminoBusqueda, setTerminoBusqueda] = useState<string>("");
   const [resultadosBusqueda, setResultadosBusqueda] = useState<Actividad[]>([]);
@@ -100,6 +100,114 @@ export default function CronogramaActividades() {
   // Estados para el temporizador del tooltip
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
+
+   // ✅ NUEVA FUNCIÓN: Convertir fecha del cronograma a objeto Date
+   const parsearFechaEvento = (fechaStr: string): Date => {
+    // Asumimos que el año es 2024
+    const año = 2025;
+    const meses: { [key: string]: number } = {
+      'ENE': 0, 'FEB': 1, 'MAR': 2, 'ABR': 3, 'MAY': 4, 'JUN': 5,
+      'JUL': 6, 'AGO': 7, 'SEP': 8, 'OCT': 9, 'NOV': 10, 'DIC': 11
+    };
+    
+    const partes = fechaStr.split(' ');
+    const dia = parseInt(partes[1]);
+    const mes = meses[partes[2]];
+    
+    return new Date(año, mes, dia);
+  };
+
+  // ✅ NUEVA FUNCIÓN: Convertir hora a minutos desde medianoche
+  const convertirHoraAMinutos = (horaStr: string): number => {
+    // Formato: "3:00 pm - 5:00 pm" o "8:00 am - 10:00 am"
+    const horaInicio = horaStr.split(' - ')[0].trim();
+    const [hora, minutosYPeriodo] = horaInicio.split(':');
+    const minutos = minutosYPeriodo.split(' ')[0];
+    const periodo = horaInicio.includes('pm') ? 'pm' : 'am';
+    
+    let horaNum = parseInt(hora);
+    const minutosNum = parseInt(minutos);
+    
+    if (periodo === 'pm' && horaNum !== 12) {
+      horaNum += 12;
+    }
+    if (periodo === 'am' && horaNum === 12) {
+      horaNum = 0;
+    }
+    
+    return horaNum * 60 + minutosNum;
+  };
+
+  // ✅ NUEVA FUNCIÓN: Obtener estado automático del evento
+  const obtenerEstadoAutomatico = (actividad: Actividad, fechaDia: string): string => {
+    const ahora = new Date();
+    const fechaEvento = parsearFechaEvento(fechaDia);
+    
+    // Comparar fechas (solo día, mes y año)
+    const hoy = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate());
+    const diaEvento = new Date(fechaEvento.getFullYear(), fechaEvento.getMonth(), fechaEvento.getDate());
+    
+    // Si el evento es de un día anterior, marcarlo como finalizado
+    if (diaEvento < hoy) {
+      return "finalizado";
+    }
+    
+    // Si es hoy, verificar la hora
+    if (diaEvento.getTime() === hoy.getTime()) {
+      const horaActual = ahora.getHours() * 60 + ahora.getMinutes();
+      const horaInicioEvento = convertirHoraAMinutos(actividad.hora);
+      const horaFinStr = actividad.hora.split(' - ')[1];
+      const horaFinEvento = convertirHoraAMinutos(horaFinStr);
+      
+      // Si estamos dentro del rango del evento, está activo
+      if (horaActual >= horaInicioEvento && horaActual <= horaFinEvento) {
+        return "activo";
+      }
+      
+      // Si ya pasó la hora de finalización, está finalizado
+      if (horaActual > horaFinEvento) {
+        return "finalizado";
+      }
+    }
+    
+    // Por defecto, evento normal (futuro)
+    return "normal";
+  };
+
+    // ✅ NUEVO EFFECT: Calcular estados automáticos cada minuto
+ // ✅ CORREGIR: Agregar dependencias faltantes
+useEffect(() => {
+  const calcularEstados = () => {
+    const nuevosEstados: { [key: number]: string } = {};
+    
+    cronograma.forEach(dia => {
+      dia.actividades.forEach(actividad => {
+        if (actividad.estado !== "cancelado") {
+          nuevosEstados[actividad.id] = obtenerEstadoAutomatico(actividad, dia.dia);
+        }
+      });
+    });
+    
+    setEstadosAutomaticos(nuevosEstados);
+  };
+  
+  calcularEstados();
+  
+  const interval = setInterval(calcularEstados, 60000);
+  
+  return () => clearInterval(interval);
+}, []); 
+
+// ✅ AGREGAR cronograma como dependencia 
+    const getEstadoEvento = (actividad: Actividad) => {
+      // Si el estado está manualmente definido (cancelado), priorizar ese
+      if (actividad.estado === "cancelado") {
+        return "cancelado";
+      }
+      
+      // Usar el estado automático calculado
+      return estadosAutomaticos[actividad.id] || "normal";
+    };
 
   // ✅ NUEVA FUNCIÓN: Obtener cupos por defecto específicos para cada actividad
   const obtenerCuposPorDefecto = (): { [key: number]: CupoInfo } => {
@@ -399,26 +507,32 @@ export default function CronogramaActividades() {
   }, []);
 
   // Función para obtener información de cupos de una actividad 
-  const obtenerInfoCupos = (actividadId: number): CupoInfo => {
-    const info = cuposActividades[actividadId];
+ // ✅ CORREGIR: En la función obtenerInfoCupos
+const obtenerInfoCupos = (actividadId: number): CupoInfo => {
+  const info = cuposActividades[actividadId];
 
-    // ✅ SIEMPRE retorna un objeto CupoInfo, nunca null
-    if (!info) {
-      // ✅ NUEVO: Usar los valores por defecto específicos
-      const cuposPorDefecto = obtenerCuposPorDefecto();
-      return cuposPorDefecto[actividadId] || {
-        disponible: true,
-        cuposDisponibles: 40,
-        cupoMaximo: 40,
-        inscritos: 0,
-        actividad: `Actividad ${actividadId}`,
-        mensaje: "Usuarios Registrados: 0/40"
-      };
+  if (!info) {
+    const cuposPorDefecto = obtenerCuposPorDefecto();
+    const defaultCupo = cuposPorDefecto[actividadId];
+    
+    // ✅ ASEGURAR que siempre retorne un objeto válido
+    if (defaultCupo) {
+      return defaultCupo;
     }
+    
+    // ✅ VALOR por defecto más robusto
+    return {
+      disponible: true,
+      cuposDisponibles: 40,
+      cupoMaximo: 40,
+      inscritos: 0,
+      actividad: `Actividad ${actividadId}`,
+      mensaje: "Usuarios Registrados: 0/40"
+    };
+  }
 
-    return info;
-  };
-
+  return info;
+};
   // ✅ NUEVA FUNCIÓN: Buscar actividades
   const buscarActividades = (termino: string) => {
     if (!termino.trim()) {
@@ -540,64 +654,49 @@ export default function CronogramaActividades() {
     }));
   };
 
-  // ✅ NUEVA FUNCIÓN: Obtener estado del evento
-  const getEstadoEvento = (actividad: Actividad) => {
-    if (actividad.estado === "cancelado") {
-      return "cancelado";
+  // ✅ ACTUALIZAR FUNCIÓN: Renderizar badge de estado
+  const renderBadgeEstado = (actividad: Actividad) => {
+    const estado = getEstadoEvento(actividad);
+  
+    if (estado === "activo") {
+      return (
+        <span className="bg-red-100 text-red-800 text-xs px-3 py-1 rounded-full font-semibold border border-red-200 flex items-center gap-1 animate-pulse">
+          <div className="w-2 h-2 bg-red-500 rounded-full"></div>
+          EN VIVO AHORA
+        </span>
+      );
     }
-    if (actividad.estado === "activo") {
-      return "activo";
+  
+    if (estado === "cancelado") {
+      return (
+        <span className="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full font-semibold border border-gray-300 flex items-center gap-1">
+          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          </svg>
+          EVENTO CANCELADO
+        </span>
+      );
     }
-    if (actividad.estado === "finalizado") {
-      return "finalizado";
+  
+    if (estado === "finalizado") {
+      return (
+        <span className="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-semibold border border-green-200 flex items-center gap-1">
+          <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          EVENTO FINALIZADO
+        </span>
+      );
     }
-    return "normal";
+  
+    return null;
   };
-  // ✅ NUEVA FUNCIÓN: Renderizar badge de estado
-
-// ✅ ACTUALIZAR FUNCIÓN: Renderizar badge de estado
-const renderBadgeEstado = (actividad: Actividad) => {
-  const estado = getEstadoEvento(actividad);
-
-  if (estado === "activo") {
-    return (
-      <span className="bg-red-100 text-red-800 text-xs px-3 py-1 rounded-full font-semibold border border-red-200 flex items-center gap-1 animate-pulse">
-        <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-        EN VIVO AHORA
-      </span>
-    );
-  }
-  
-  if (estado === "cancelado") {
-    return (
-      <span className="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full font-semibold border border-gray-300 flex items-center gap-1">
-        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-        </svg>
-        EVENTO CANCELADO
-      </span>
-    );
-  }
-  
-  if (estado === "finalizado") {
-    return (
-      <span className="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-semibold border border-green-200 flex items-center gap-1">
-        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-        </svg>
-        EVENTO FINALIZADO
-      </span>
-    );
-  }
-  
-  return null;
-};
-  // Base de datos de ponentes con tipado
+  // Base de datos de ponentes con tipado - ✅ ACTUALIZADO: Todas las imágenes usan Cloudinary
   const basePonentes: { [key: string]: Ponente } = {
     "Coach Ximena Otero Pilonieta": {
       nombre: "Coach Ximena Otero Pilonieta",
       titulo: "Abogada & Coach en Eneagrama, Desarrollo Personal y Liderazgo",
-      foto: XimenaOtero,
+      foto: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762854524/ximena-otero_rgupms.webp",
       especialidad: "Desarrollo Personal y Liderazgo",
       experiencia: "Profesional Especializado Grado 33, Corte Constitucional",
       linkTrayectoria: "https://www.linkedin.com/in/ximena-otero-pilonieta-73482339/"
@@ -605,7 +704,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
     "Dr. Julián Portocarrero Hermann": {
       nombre: "Dr. Julián Portocarrero Hermann",
       titulo: "Dr. en Ingeniería | Docente Investigador EMAVI",
-      foto: JulianPortocarrero,
+      foto: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762854523/julian-portocarrero_ecimf0.jpg",
       especialidad: "Ingeniería Mecánica y Materiales Compuestos",
       experiencia: "Doctor en Ingeniería; Docente Investigador de la Escuela Militar de Aviación 'Marco Fidel Suárez' - EMAVI; Fundador del Grupo GIEA; 40 años de experiencia en ingeniería e investigación; Especialista en materiales compuestos, análisis de fallas y tecnología aeroespacial; Investigador reconocido por MinCiencias.",
       linkTrayectoria: "https://www.linkedin.com/in/juli%C3%A1n-portocarrero-77b95148/"
@@ -613,7 +712,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
     "Mag. Lorena Cerón": {
       nombre: "Ing. Lorena Cerón",
       titulo: "Ingeniera de Sistemas, Especialista y Magíster en Informática Educativa",
-      foto: LorenaCeron,
+      foto: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762854523/lorena-ceron_dinznv.jpg",
       especialidad: "IA Aplicada y Casos de Uso Empresarial",
       experiencia: "Profesora Facultad de Ingeniería, Programa Ingeniería de Sistemas, Modalidad Virtual y Sincrónica Universidad Santiago de Cali",
       linkTrayectoria: "https://www.linkedin.com/in/lorena-cer%C3%B3n-9b485247/"
@@ -621,7 +720,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
     "Mag. Carlos Molina": {
       nombre: "Ing. Carlos Molina",
       titulo: "Profesor de Ingeniería Informática",
-      foto: CarlosMolina,
+      foto: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762854524/carlos-molina_rz3zn3.jpg",
       especialidad: "Director de Proyectos de Ingeniería Informática, Redtauros",
       experiencia: "Profesor de Ingeniería Informática, Unicatólica; Director de Proyectos de Ingeniería Informática, Redtauros y Prometheus Techs; Lider Formación y Desarrollo, Cafeto Software; Docente en Redes, Telecomunicaciones, Linux y Windows Server, Utap Cali",
       linkTrayectoria: "https://www.linkedin.com/in/carlos-eduardo-molina-contreras-455a0931/"
@@ -629,7 +728,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
     "Dr. Jorge Luis Bris": {
       nombre: "Dr. Jorge Luis Bris",
       titulo: "Full Professor - Mechanical Engineering Department en Universidad del Norte",
-      foto: JorgeBris,
+      foto: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762854524/jorge-bris_qxupfn.jpg",
       especialidad: "Formación en Ingeniería y Acreditación de Programas",
       experiencia: "Sala de Ingeniería, Industria y Construcción CONACES, Ministerio de Educación Nacional; Full Professor - Mechanical Engineering Department, Universidad del Norte",
       linkTrayectoria: "https://www.linkedin.com/in/jorge-bris-4355a673/"
@@ -637,19 +736,19 @@ const renderBadgeEstado = (actividad: Actividad) => {
     "Profesores Brandon Rosero - Ronald Rengifo": {
       nombre: "Brandon Rosero y Ronald Rengifo",
       titulo: "Coordinadores de Competencias Tecnológicas",
-      foto: BrandoRonald,
+      foto: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762854523/HACKATON_copia-8_rutnnm.jpg",
       especialidad: "Hackathons y Competencias de Programación",
     },
     "Profesores José Hernando Mosquera & Nelson Andrade": {
       nombre: "Profesores José Hernando Mosquera & Nelson Andrade",
       titulo: "Comité de Hackathon Universidades",
-      foto: ComiteHackathon,
+      foto: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762854525/comite-hackaton_gt0ibf.png",
       especialidad: "Coordinación de Eventos Tecnológicos Interuniversitarios",
     },
     "Dr. Jorge Antonio Silva Leal": {
       nombre: "Dr. Jorge Antonio Silva Leal",
       titulo: "Vicerrector Académico",
-      foto: Vicerrector,
+      foto: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762854525/jorge-silva_pfubop.jpg",
       especialidad: "Gestión Académica y Planeación Educativa",
       experiencia: "Vicerrector Académico, Unicatólica; Vicerrector Académico, Decano Facultad de Ingeniería, Universidad Santiago de Cali",
       linkTrayectoria: "https://www.linkedin.com/in/jorge-antonio-silva-leal-a36394326/"
@@ -657,7 +756,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
     "Mag. Jaime Adalberto López Vivas": {
       nombre: "Mag. Jaime Adalberto López Vivas",
       titulo: "Senior VP of Engineering at SIIGO | Software Architect | Tech Mentor",
-      foto: VicSiigo,
+      foto: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762854523/jaime-adalberto-l%C3%B3pez_xvw3si.jpg",
       especialidad: "Liderazgo Empresarial y Tecnología",
       experiencia: "Senior VP of Engineering at SIIGO, Software Architect, Software Engineer, SIIGO; University Teacher, Universidad del Cauca",
       linkTrayectoria: "https://www.linkedin.com/in/jaimelopezv/"
@@ -665,7 +764,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
     "Dra. Clara Eugenia Satizabal Serna": {
       nombre: "Dra. Clara Eugenia Satizabal Serna",
       titulo: "Decana Facultad de Ingeniería",
-      foto: DecanaClara,
+      foto: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762854525/clara-eugenia-satizabal_g9uwor.png",
       especialidad: "Gerencia de Proyectos, Maestría en Gestión de Proyectos Tecnológicos y candidata a Dra en Ciencias de la Educación",
       experiencia: "Docente, Investigadora y Directora de Programas Académicos",
       linkTrayectoria: "https://lnkd.in/gqGwkJvX"
@@ -673,7 +772,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
     "Dr. José Armando Ordóñez Córdoba": {
       nombre: "Dr. José Armando Ordóñez Córdoba",
       titulo: "Profesor del Dpto. Computación y Sistemas Inteligentes - Universidad ICESI",
-      foto: ProfesorComputacion,
+      foto: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762854524/jos%C3%A9-ord%C3%B3%C3%B1ez-c%C3%B3rdoba_gmfq60.jpg",
       especialidad: "Acompañando organizaciones en la adopción de IA, a través de diagnóstico, formación ejecutiva y desarrollo de soluciones con impacto medible",
       experiencia: "Artificial Intelligence Masters Director, Director of Data Science Masters, Universidad ICESI; PostDral AI Researcher, AI Researcher, Universidad del Cauca",
       linkTrayectoria: "https://www.linkedin.com/in/armandoordonez/"
@@ -702,14 +801,6 @@ const renderBadgeEstado = (actividad: Actividad) => {
       experiencia: "Director del Personal Docente en Fundación Universitaria Católica Lumen Gentium",
       linkTrayectoria: "https://www.linkedin.com/in/alejandro-orejuela-9aa2221a3/?originalSubdomain=co"
     },
-    "Monseñor Luis Fernando Rodríguez Velásquez": {
-      nombre: "Monseñor Luis Fernando Rodríguez Velásquez",
-      titulo: "Arzobispo de Cali | Doctor en Derecho Canónico",
-      foto: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762450261/38-mons-luis-fernando-rodriguez-velasquez_fsw7xw.jpg",
-      especialidad: "Derecho Canónico y Gestión Universitaria",
-      experiencia: "Arzobispo de Cali desde 2022; Doctor en Derecho Canónico de la Pontificia Universidad Javeriana y Licenciado en Educación Religiosa; Rector de la Universidad Pontificia Bolivariana durante 9 años; Experto en formación sacerdotal y gestión de instituciones educativas católicas; Reconocido líder eclesiástico con cuatro décadas de servicio.",
-      linkTrayectoria: "https://www.cec.org.co/episcopado/arzobispos/monse%C3%B1or-luis-fernando-rodr%C3%ADguez-vel%C3%A1squez"
-    },
     "Mag. Francisco Dominguez": {
       nombre: "Mag. Francisco Dominguez",
       titulo: "Magister en Estudios Urbanos | Licenciado en Ciencias Sociales",
@@ -733,7 +824,6 @@ const renderBadgeEstado = (actividad: Actividad) => {
           tipo: "Conferencia",
           destacado: false,      
           exclusivo: "Docentes y Administrativos",
-          estado: "finalizado"
         },
         {
           id: 22,
@@ -742,12 +832,9 @@ const renderBadgeEstado = (actividad: Actividad) => {
           ponente: "DevSeniorCode Academy",
           lugar: "Modalidad Virtual",
           tipo: "Curso",
-          destacado: true,
+          destacado: false,
           exclusivo: "Estudiantes",
           aliado: "DevSeniorCode Academy",
-          botonRegistro: true,
-          urlRegistro: "/formulario-fullstack",
-          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762102414/devsenioform_rjas9y.jpg"
         }
       ]
     },
@@ -762,7 +849,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
           lugar: "Auditorio Lumen – Sede Meléndez",
           tipo: "Ceremonia",
           destacado: true,
-          imagen: ActoInauguralImg,
+          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762856921/ACTO_INAUGURAL-8_inv6tk.jpg",
           botonRegistro: true,
           urlRegistro: "/formulario-inaugural"
         },
@@ -817,7 +904,6 @@ const renderBadgeEstado = (actividad: Actividad) => {
           lugar: "Escuela Militar de Aviación - EMAVI",
           tipo: "Visita",
           destacado: false,
-          imagen: VisitaEmpr12nov,
           botonRegistro: false,
           urlRegistro: "",
           estado: "cancelado"
@@ -830,7 +916,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
           lugar: "Auditorio 1 – Sede Pance",
           tipo: "Conferencia",
           destacado: true,
-          imagen: VueloImg,
+          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762856951/INICIACION_AL_VUELO-8_edas3u.jpg",
           botonRegistro: true,
           urlRegistro: "/formulario-tallervuelo"
         },
@@ -843,7 +929,6 @@ const renderBadgeEstado = (actividad: Actividad) => {
           tipo: "Competencia",
           destacado: false,
           organizador: "Profesores Brandon Rosero - Ronald Rengifo",
-          imagen: HackathonMonitoriaImg,
           botonRegistro: false,
           urlRegistro: ""
         },
@@ -855,7 +940,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
           lugar: "Salas de Sistemas 1, 2, 3 – Bloque B – Sede Pance",
           tipo: "Competencia",
           destacado: true,
-          imagen: HackathonImg,
+          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762856944/HACKATON_copia-8_f2gcs0.jpg",
           botonRegistro: true,
           urlRegistro: "/formulario",
           organizador: "Profesores José Hernando Mosquera & Nelson Andrade"
@@ -870,7 +955,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
           destacado: true,
           botonRegistro: true,
           urlRegistro: "/formulario-industriaenaccion",
-          imagen: IndustriaAcImg,
+          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762856948/INDUSTRIA_EN_ACCION-8_nnwanj.jpg",
           organizador: "Docente Jenny Alejandra Cadena Solarte"
         },
         {
@@ -895,7 +980,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
           destacado: true,
           botonRegistro: true,
           urlRegistro: "/formulario-ia-practica",
-          imagen: IAImg
+          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762856929/CONFERENCIA-IAPRACTICA-8_jkc70d.jpg"
         },
         {
           id: 23,
@@ -907,8 +992,6 @@ const renderBadgeEstado = (actividad: Actividad) => {
           destacado: true,
           exclusivo: "Estudiantes",
           aliado: "DevSeniorCode Academy",
-          botonRegistro: true,
-          urlRegistro: "/formulario-fullstack",
           imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762102414/devsenioform_rjas9y.jpg"
         }
       ]
@@ -926,7 +1009,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
           destacado: true,
           botonRegistro: true,
           urlRegistro: "/formulario-olimpiadasmatematicas",
-          imagen: OlimpiadaImg,
+          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762856957/OLIMPIADAS_MATEMATICAS_-8_ave7ht.jpg",
           organizador: "Ing. Alejandro Orejuela"
         },
         {
@@ -937,7 +1020,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
           lugar: "Auditorio Lumen – Sede Meléndez",
           tipo: "Evento",
           destacado: true,
-          imagen: Technological,
+          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762856903/TECNOLOGICAL_TOUCH-8_gpey7q.jpg",
           botonRegistro: true,
           urlRegistro: "/formulario-technological",
           organizador: "Docente Jenny Alejandra Cadena Solarte"
@@ -955,7 +1038,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
           lugar: "Zonamérica - Calle 36, Auto. Cali - Jamundi #760030 128-321",
           tipo: "Visita",
           destacado: true,
-          imagen: VisitaZonaAmerica,
+          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762856906/VISITA_-_EMPRESARIAL_-8_ZONAAMERICA_mmubhq.jpg",
           botonRegistro: true,
           urlRegistro: "/formulario-zona-america"
         },
@@ -969,7 +1052,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
           destacado: true,
           botonRegistro: true,
           urlRegistro: "/formulario-tallerwordpress",
-          imagen: WordpressImg
+          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762856913/WORDPRESS_rpoxsg.jpg"
         },
         {
           id: 18,
@@ -979,7 +1062,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
           lugar: "Estudio de Radio Lumen – Sede Meléndez",
           tipo: "Entrevista",
           destacado: false,
-          imagen: EntrevistaImg
+          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762856936/ENTREVISTA-8_loung6.jpg"
         },
         {
           id: 19,
@@ -990,7 +1073,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
           tipo: "Networking",
           destacado: true,
           botonRegistro: true,
-          imagen: ConstruccionImg,
+          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762856931/CONSTRUCCION-RED_8_fpekgz.jpg",
           urlRegistro: "/formulario-construccion"
         },
         {
@@ -1000,7 +1083,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
           ponente: "",
           lugar: "Auditorio LUMEN - Sede Meléndez",
           tipo: "Ceremonia",
-          imagen: ActoClausuraImg,
+          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762856920/ACTO_CLAUSURA-8_ssrl2p.jpg",
           destacado: true,
           botonRegistro: true,
           urlRegistro: "/formulario-clausura"
@@ -1015,8 +1098,6 @@ const renderBadgeEstado = (actividad: Actividad) => {
           destacado: true,
           exclusivo: "Estudiantes",
           aliado: "DevSeniorCode Academy",
-          botonRegistro: true,
-          urlRegistro: "/formulario-fullstack",
           imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762102414/devsenioform_rjas9y.jpg"
         }
       ]
@@ -1034,7 +1115,7 @@ const renderBadgeEstado = (actividad: Actividad) => {
           destacado: true,
           botonRegistro: true,
           urlRegistro: "/formulario-visitacarnicos",
-          imagen: Visita15nov
+          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762856909/VISITA_EMPRESARIAL_-8_otiofe.jpg"
         }
       ]
     }
@@ -1181,9 +1262,15 @@ const renderBadgeEstado = (actividad: Actividad) => {
   };
 
   const handleRegistro = (actividad: Actividad): void => {
-    // Verificar si el evento está cancelado o finalizado
-    if (actividad.estado === "cancelado" || actividad.estado === "finalizado") {
-      alert('Este evento ha finalizado o ha sido cancelado. No es posible realizar inscripciones.');
+    const estado = getEstadoEvento(actividad);
+    
+    // Verificar si el evento está cancelado, finalizado o activo
+    if (estado === "cancelado" || estado === "finalizado" || estado === "activo") {
+      if (estado === "activo") {
+        alert('Este evento está actualmente en vivo. No es posible realizar inscripciones durante el evento.');
+      } else {
+        alert('Este evento ha finalizado o ha sido cancelado. No es posible realizar inscripciones.');
+      }
       return;
     }
   
@@ -1208,26 +1295,39 @@ const renderBadgeEstado = (actividad: Actividad) => {
   };
 
   // Función para obtener el texto del botón unificado
-const getTextoBoton = (actividad: Actividad, infoCupos: CupoInfo): string => {
-  if (actividad.estado === "cancelado" || actividad.estado === "finalizado") {
-    return actividad.estado === "finalizado" ? "Evento Finalizado" : "Evento Cancelado";
-  }
-  if (!infoCupos.disponible) {
-    return "Cupo Agotado";
-  }
-  return "Inscríbete";
-};
+  const getTextoBoton = (actividad: Actividad, infoCupos: CupoInfo): string => {
+    const estado = getEstadoEvento(actividad);
+    
+    if (estado === "cancelado") {
+      return "Evento Cancelado";
+    }
+    if (estado === "finalizado") {
+      return "Evento Finalizado";
+    }
+    if (estado === "activo") {
+      return "En Vivo Ahora";
+    }
+    if (!infoCupos.disponible) {
+      return "Cupo Agotado";
+    }
+    return "Inscríbete";
+  };
   // Función para obtener la clase CSS del botón unificada
-  const getClaseBoton = (infoCupos: CupoInfo): string => {
+  const getClaseBoton = (actividad: Actividad, infoCupos: CupoInfo): string => {
     const baseClass = "w-full py-3 px-6 rounded-lg transition-all duration-300 font-semibold border-b-4 text-base transform hover:scale-105 active:scale-95 ";
-
+    const estado = getEstadoEvento(actividad);
+  
+    if (estado === "cancelado" || estado === "finalizado" || estado === "activo") {
+      return baseClass + "bg-gray-400 text-gray-200 border-gray-500 cursor-not-allowed hover:scale-100";
+    }
+  
     if (!infoCupos.disponible) {
       return baseClass + "bg-gray-400 text-gray-200 border-gray-500 cursor-not-allowed hover:scale-100";
     }
-
+  
     return baseClass + "bg-gradient-to-r from-uniblue to-blue-600 text-white border-blue-800 hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl";
   };
-
+  
   // Función para renderizar la información del organizador o ponente
   const renderOrganizadorPonente = (actividad: Actividad) => {
     if (actividad.organizador) {
@@ -1275,76 +1375,89 @@ const getTextoBoton = (actividad: Actividad, infoCupos: CupoInfo): string => {
   };
 
   // Función para renderizar participantes de conversatorios - CON IMÁGENES REALES
-  const renderParticipantesConversatorio = (actividad: Actividad) => {
-    if (actividad.tipo === "Conversatorio" && actividad.participantes && actividad.participantes.length > 0) {
-      return (
-        <div className="space-y-3 mt-4">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-6 h-6 bg-uniblue/10 rounded flex items-center justify-center flex-shrink-0">
-              <svg className="w-3 h-3 text-uniblue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283-.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-              </svg>
-            </div>
-            <h4 className="text-sm font-semibold text-gray-800">Panelistas</h4>
+// ✅ CORREGIR: En renderParticipantesConversatorio
+const renderParticipantesConversatorio = (actividad: Actividad) => {
+  if (actividad.tipo === "Conversatorio" && actividad.participantes && actividad.participantes.length > 0) {
+    return (
+      <div className="space-y-3 mt-4">
+        <div className="flex items-center gap-2 mb-2">
+          <div className="w-6 h-6 bg-uniblue/10 rounded flex items-center justify-center flex-shrink-0">
+            <svg className="w-3 h-3 text-uniblue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283-.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            </svg>
           </div>
-
-          <div className="space-y-2">
-            {actividad.participantes.map((participante, index) => {
-              const nombreCompleto = participante.split(' - ')[0].trim();
-              const esModerador = participante.toLowerCase().includes('moderador');
-              const ponenteInfo = basePonentes[nombreCompleto];
-
-              return (
-                <div
-                  key={index}
-                  className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded transition-colors duration-200 group cursor-help"
-                  onMouseEnter={(e) => mostrarTooltipPonente(nombreCompleto, e)}
-                  onMouseLeave={ocultarTooltip}
-                >
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden ${esModerador ? 'ring-1 ring-unigold' : ''
-                    }`}>
-                    {ponenteInfo?.foto ? (
-                      <img
-                        src={ponenteInfo.foto}
-                        alt={nombreCompleto}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className={`w-full h-full flex items-center justify-center text-xs font-semibold ${esModerador
-                        ? 'bg-unigold/20 text-unigold'
-                        : 'bg-uniblue/10 text-uniblue'
-                        }`}>
-                        {nombreCompleto.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-baseline gap-2 flex-wrap">
-                      <span className={`text-sm font-semibold text-gray-900 break-words ${esModerador ? 'text-unigold-dark' : ''
-                        } group-hover:text-uniblue transition-colors duration-200`}>
-                        {nombreCompleto}
-                      </span>
-                      {esModerador && (
-                        <span className="bg-gradient-to-r from-unigold to-yellow-500 text-white text-xs px-3 py-1 rounded-full font-bold whitespace-nowrap flex-shrink-0 shadow-md">
-                          ⭐ MODERADORA
-                        </span>
-                      )}</div>
-                    {participante.includes(' - ') && (
-                      <p className="text-xs text-gray-600 mt-0.5 leading-tight">
-                        {participante.split(' - ')[1]}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <h4 className="text-sm font-semibold text-gray-800">Panelistas</h4>
         </div>
-      );
-    }
-    return null;
-  };
+
+        <div className="space-y-2">
+          {actividad.participantes.map((participante, index) => {
+            // ✅ MEJORAR: Manejo seguro de datos
+            if (!participante || typeof participante !== 'string') return null;
+            
+            const partes = participante.split(' - ');
+            const nombreCompleto = partes[0]?.trim() || 'Nombre no disponible';
+            const esModerador = participante.toLowerCase().includes('moderador');
+            const ponenteInfo = basePonentes[nombreCompleto];
+
+            return (
+              <div
+                key={index}
+                className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded transition-colors duration-200 group cursor-help"
+                onMouseEnter={(e) => mostrarTooltipPonente(nombreCompleto, e)}
+                onMouseLeave={ocultarTooltip}
+              >
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden ${
+                  esModerador ? 'ring-1 ring-unigold' : ''
+                }`}>
+                  {ponenteInfo?.foto ? (
+                    <img
+                      src={ponenteInfo.foto}
+                      alt={nombreCompleto}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                      onError={(e) => {
+                        // ✅ MANEJAR error de carga de imagen
+                        const target = e.target as HTMLImageElement;
+                        target.style.display = 'none';
+                      }}
+                    />
+                  ) : (
+                    <div className={`w-full h-full flex items-center justify-center text-xs font-semibold ${
+                      esModerador ? 'bg-unigold/20 text-unigold' : 'bg-uniblue/10 text-uniblue'
+                    }`}>
+                      {nombreCompleto.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
+                    </div>
+                  )}
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-baseline gap-2 flex-wrap">
+                    <span className={`text-sm font-semibold text-gray-900 break-words ${
+                      esModerador ? 'text-unigold-dark' : ''
+                    } group-hover:text-uniblue transition-colors duration-200`}>
+                      {nombreCompleto}
+                    </span>
+                    {esModerador && (
+                      <span className="bg-gradient-to-r from-unigold to-yellow-500 text-white text-xs px-3 py-1 rounded-full font-bold whitespace-nowrap flex-shrink-0 shadow-md">
+                        ⭐ MODERADORA
+                      </span>
+                    )}
+                  </div>
+                  {partes.length > 1 && (
+                    <p className="text-xs text-gray-600 mt-0.5 leading-tight">
+                      {partes[1]}
+                    </p>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+  return null;
+};
 
   return (
     <div className="w-full my-12 relative">
@@ -1373,6 +1486,7 @@ const getTextoBoton = (actividad: Actividad, infoCupos: CupoInfo): string => {
                     src={ponenteSeleccionado.foto}
                     alt={ponenteSeleccionado.nombre}
                     className="w-20 h-20 rounded-lg object-cover shadow-md border border-gray-200"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-br from-transparent to-gray-900/10 rounded-lg"></div>
                 </div>
@@ -1689,17 +1803,18 @@ const getTextoBoton = (actividad: Actividad, infoCupos: CupoInfo): string => {
               {eventosDestacados.map((evento) => {
                 const infoCupos = obtenerInfoCupos(evento.id);
                 const textoBoton = getTextoBoton(evento, infoCupos);
-                const claseBoton = getClaseBoton(infoCupos);
+                const claseBoton = getClaseBoton(evento,infoCupos);
 
                 return (
                   <div key={evento.id} className="w-full flex-shrink-0">
                     <div className="flex flex-col lg:flex-row items-center gap-6 p-6">
-                      {/* Imagen del evento */}
+                      {/* Imagen del evento - ✅ ACTUALIZADO: Usa imageLoader */}
                       <div className="flex-1">
                         <img
-                          src={evento.imagen || ConferenciaImg}
+                          src={evento.imagen ? imageLoader({ src: evento.imagen, width: 800 }) : imageLoader({ src: "CONFERENCIA COACHING-8.jpg", width: 800 })}
                           alt={evento.titulo}
                           className="w-full h-64 lg:h-80 object-cover rounded-2xl shadow-lg"
+                          loading="lazy"
                         />
                       </div>
 
@@ -1873,7 +1988,7 @@ const getTextoBoton = (actividad: Actividad, infoCupos: CupoInfo): string => {
                     {actividadesDelDia.map((actividad) => {
                       const infoCupos = obtenerInfoCupos(actividad.id);
                       const textoBoton = getTextoBoton(actividad, infoCupos);
-                      const claseBoton = getClaseBoton(infoCupos);
+                      const claseBoton = getClaseBoton(actividad, infoCupos);
 
                       return (
                         <div
@@ -1999,13 +2114,14 @@ const getTextoBoton = (actividad: Actividad, infoCupos: CupoInfo): string => {
                                 )}
                             </div>
 
-                            {/* Imagen de la actividad si existe */}
+                            {/* Imagen de la actividad si existe - ✅ ACTUALIZADO: Usa imageLoader */}
                             {actividad.imagen && (
                               <div className="mb-6">
                                 <img
-                                  src={actividad.imagen}
+                                  src={actividad.imagen.startsWith('https://') ? actividad.imagen : imageLoader({ src: actividad.imagen, width: 800 })}
                                   alt={actividad.titulo}
                                   className="w-full h-48 object-cover rounded-xl shadow-md"
+                                  loading="lazy"
                                 />
                               </div>
                             )}

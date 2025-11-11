@@ -26,8 +26,6 @@
   .form-group input:focus,
   .form-group select:focus {
     outline: none;
-    ring: 2px;
-    ring-color: #2563eb;
     border-color: #2563eb;
   }
   
