@@ -984,7 +984,7 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
           ponente: "DevSeniorCode Academy",
           lugar: "Modalidad Virtual",
           tipo: "Curso",
-          destacado: true,
+          destacado: false,
           exclusivo: "Estudiantes",
           aliado: "DevSeniorCode Academy",
         }
@@ -1089,10 +1089,9 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
           ponente: "DevSeniorCode Academy",
           lugar: "Modalidad Virtual",
           tipo: "Curso",
-          destacado: true,
+          destacado: false,
           exclusivo: "Estudiantes",
           aliado: "DevSeniorCode Academy",
-          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762102414/devsenioform_rjas9y.jpg"
         }
       ]
     },
