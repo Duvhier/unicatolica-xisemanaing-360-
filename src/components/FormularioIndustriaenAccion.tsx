@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './FormularioInscripcion.css';
-import IndustriaImg from '@/assets/INDUSTRIA EN ACCION-8.png'; // Asegúrate de tener esta imagen
+import IndustriaImg from '@/assets/INDUSTRIA EN ACCION-8.jpg'; // Asegúrate de tener esta imagen
 import facultadesData from '@/assets/facultadesyprogramasacademicos.json';
 
 // Interfaces para los tipos de datos

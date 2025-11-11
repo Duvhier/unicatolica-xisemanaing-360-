@@ -1,6 +1,6 @@
 import { motion, type Variants, useInView } from "framer-motion";
 import React from "react";
-import IntroduccionImg from "@/assets/introduccion.png";
+import IntroduccionImg from "@/assets/introduccion.jpg";
 import PoblacionObjetivoImg from "@/assets/poblacion.jpg";
 import SedesImg from "@/assets/sedes.webp";
 import TematicasImg from "@/assets/tematica.jpg";

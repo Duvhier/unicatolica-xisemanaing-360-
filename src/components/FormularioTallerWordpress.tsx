@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './FormularioInscripcion.css';
-import TallerWordPressImg from '@/assets/WORDPRESS-8.png'; // Asegúrate de tener esta imagen
+import TallerWordPressImg from '@/assets/WORDPRESS-8.jpg'; // Asegúrate de tener esta imagen
 import facultadesData from '@/assets/facultadesyprogramasacademicos.json';
 
 // Interfaces para los tipos de datos

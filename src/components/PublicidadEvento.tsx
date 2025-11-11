@@ -31,7 +31,7 @@ const PublicidadEvento: React.FC = () => {
       id: 2,
       nombre: "FUERZA AEROESPACIAL COLOMBIA",
       tipo: "aliado",
-      imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608307/fuerzaaerea_annear.png",
+      imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762811543/fuerzaaerea__xridua.webp",
       imagenNombre: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608304/fuerzaaereatext_pubhym.png",
       fondo: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762608303/fondo-educacion_eljnlp.jpg",
       descripcion: "Institución de defensa nacional y desarrollo aeroespacial comprometida con la protección del espacio aéreo colombiano y el desarrollo tecnológico del país. ¡FAC, Asi se va a las Estrellas!",

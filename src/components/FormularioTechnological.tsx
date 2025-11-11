@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './FormularioInscripcion.css';
-import TechnologicalImg from '@/assets/TECNOLOGICAL TOUCH-8.png'; 
+import TechnologicalImg from '@/assets/TECNOLOGICAL TOUCH-8.jpg'; 
 import facultadesData from '@/assets/facultadesyprogramasacademicos.json';
 
 // Importar iconos de Heroicons

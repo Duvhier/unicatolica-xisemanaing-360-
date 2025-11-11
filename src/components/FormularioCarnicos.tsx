@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./FormularioInscripcionLiderazgo.css";
-import CarnicosImg from "@/assets/VISITA EMPRESARIAL -8.png";
+import CarnicosImg from "@/assets/VISITA EMPRESARIAL -8.jpg";
 
 
 const FormularioCarnicos: React.FC = () => {

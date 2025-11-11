@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./FormularioInscripcionLiderazgo.css";
-import EmaviImg from "@/assets/VISITA EMPRESARIAL -12-8.png";
-import LogoEmavi from "@/assets/emavi.png"; 
+import EmaviImg from "@/assets/VISITA EMPRESARIAL -12-8.jpg";
+import LogoEmavi from "@/assets/emavi.jpg"; 
 import facultadesData from '@/assets/facultadesyprogramasacademicos.json';
 
 // 🔹 Interfaz para los programas académicos

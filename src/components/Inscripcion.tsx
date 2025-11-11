@@ -1,30 +1,31 @@
 import { useState, useEffect, useRef } from "react";
-import ConferenciaImg from "../assets/CONFERENCIA COACHING-8.png";
-import ActoInauguralImg from "../assets/ACTO INAUGURAL-8.png";
-import Technological from "../assets/TECNOLOGICAL TOUCH-8.png";
-import IndustriaAcImg from "../assets/INDUSTRIA EN ACCION-8.png";
-import VisitaEmpr12nov from "../assets/VISITA EMPRESARIAL -12-8.png";
-import VisitaZonaAmerica from "../assets/VISITA - EMPRESARIAL  -8 ZONAAMERICA.png";
-import Visita15nov from "../assets/VISITA EMPRESARIAL -8.png";
-import HackathonImg from "../assets/HACKATON copia-8.png";
-import HackathonMonitoriaImg from "../assets/HACKATON monitoria-8.png";
-import ActoClausuraImg from "../assets/ACTO CLAUSURA-8.png";
-import OlimpiadaImg from "../assets/OLIMPIADAS MATEMATICAS -8.png";
-import VueloImg from "../assets/INICIACION AL VUELO-8.png";
-import IAImg from "../assets/CONFERENCIA-IAPRACTICA-8.png";
-import EntrevistaImg from "../assets/ENTREVISTA-8.png";
+import ConferenciaImg from "../assets/CONFERENCIA COACHING-8.jpg";
+import ActoInauguralImg from "../assets/ACTO INAUGURAL-8.jpg";
+import Technological from "../assets/TECNOLOGICAL TOUCH-8.jpg";
+import IndustriaAcImg from "../assets/INDUSTRIA EN ACCION-8.jpg";
+import VisitaEmpr12nov from "../assets/VISITA EMPRESARIAL -12-8.jpg";
+import VisitaZonaAmerica from "../assets/VISITA - EMPRESARIAL  -8 ZONAAMERICA.jpg";
+import Visita15nov from "../assets/VISITA EMPRESARIAL -8.jpg";
+import HackathonImg from "../assets/HACKATON copia-8.jpg";
+import HackathonMonitoriaImg from "../assets/HACKATON monitoria-8.jpg";
+import ActoClausuraImg from "../assets/ACTO CLAUSURA-8.jpg";
+import OlimpiadaImg from "../assets/OLIMPIADAS MATEMATICAS -8.jpg";
+import VueloImg from "../assets/INICIACION AL VUELO-8.jpg";
+import IAImg from "../assets/CONFERENCIA-IAPRACTICA-8.jpg";
+import EntrevistaImg from "../assets/ENTREVISTA-8.jpg";
 import XimenaOtero from "../assets/ponentes/ximena-otero.jpg";
 import WordpressImg from "../assets/WORDPRESS.jpg";
 import JulianPortocarrero from "../assets/ponentes/julian-portocarrero.jpg";
 import LorenaCeron from "../assets/ponentes/lorena-ceron.jpg";
 import CarlosMolina from "../assets/ponentes/carlos-molina.jpg";
 import JorgeBris from "../assets/ponentes/jorge-bris.jpg";
-import BrandoRonald from "../assets/ponentes/HACKATON copia-8.png";
+import BrandoRonald from "../assets/ponentes/HACKATON copia-8.jpg";
 import ComiteHackathon from "../assets/ponentes/comite-hackaton.png";
 import Vicerrector from "../assets/ponentes/jorge-silva.jpg";
 import VicSiigo from "../assets/ponentes/jaime-adalberto-lópez.jpg";
 import DecanaClara from "../assets/ponentes/clara-eugenia-satizabal.png";
 import ProfesorComputacion from "../assets/ponentes/josé-ordóñez-córdoba.jpg";
+import ConstruccionImg from "../assets/CONSTRUCCION-RED_8.jpg";
 
 // Definir tipos TypeScript
 interface Ponente {
@@ -544,12 +545,14 @@ export default function CronogramaActividades() {
     if (actividad.estado === "activo") {
       return "activo";
     }
+    if (actividad.estado === "finalizado") {
+      return "finalizado";
+    }
     return "normal";
   };
-
-
   // ✅ NUEVA FUNCIÓN: Renderizar badge de estado
-// ✅ NUEVA FUNCIÓN: Renderizar badge de estado - ACTUALIZADA
+
+// ✅ ACTUALIZAR FUNCIÓN: Renderizar badge de estado
 const renderBadgeEstado = (actividad: Actividad) => {
   const estado = getEstadoEvento(actividad);
 
@@ -573,9 +576,19 @@ const renderBadgeEstado = (actividad: Actividad) => {
     );
   }
   
+  if (estado === "finalizado") {
+    return (
+      <span className="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-semibold border border-green-200 flex items-center gap-1">
+        <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        EVENTO FINALIZADO
+      </span>
+    );
+  }
+  
   return null;
 };
-
   // Base de datos de ponentes con tipado
   const basePonentes: { [key: string]: Ponente } = {
     "Coach Ximena Otero Pilonieta": {
@@ -715,9 +728,9 @@ const renderBadgeEstado = (actividad: Actividad) => {
           ponente: "Coach Ximena Otero Pilonieta",
           lugar: "Auditorio 1 – Sede Pance",
           tipo: "Conferencia",
-          destacado: true,
-          imagen: ConferenciaImg,
-          exclusivo: "Docentes y Administrativos"
+          destacado: false,      
+          exclusivo: "Docentes y Administrativos",
+          estado: "finalizado"
         },
         {
           id: 22,
@@ -972,7 +985,10 @@ const renderBadgeEstado = (actividad: Actividad) => {
           ponente: "",
           lugar: "Auditorio LUMEN - Sede Meléndez",
           tipo: "Networking",
-          destacado: false
+          destacado: true,
+          botonRegistro: true,
+          imagen: ConstruccionImg,
+          urlRegistro: "/formulario-construccion"
         },
         {
           id: 20,
@@ -1162,9 +1178,9 @@ const renderBadgeEstado = (actividad: Actividad) => {
   };
 
   const handleRegistro = (actividad: Actividad): void => {
-    // Verificar si el evento está cancelado
-    if (actividad.estado === "cancelado") {
-      alert('Este evento ha sido cancelado. No es posible realizar inscripciones.');
+    // Verificar si el evento está cancelado o finalizado
+    if (actividad.estado === "cancelado" || actividad.estado === "finalizado") {
+      alert('Este evento ha finalizado o ha sido cancelado. No es posible realizar inscripciones.');
       return;
     }
   
@@ -1180,7 +1196,6 @@ const renderBadgeEstado = (actividad: Actividad) => {
       window.location.href = `${FORM_URL}?actividad=${actividad.id}`;
     }
   };
-
   const parseFecha = (fechaStr: string): { diaNumero: string; mes: string } => {
     const partes = fechaStr.split(' ');
     return {
@@ -1190,17 +1205,15 @@ const renderBadgeEstado = (actividad: Actividad) => {
   };
 
   // Función para obtener el texto del botón unificado
-// Función para obtener el texto del botón unificado - ACTUALIZADA
 const getTextoBoton = (actividad: Actividad, infoCupos: CupoInfo): string => {
-  if (actividad.estado === "cancelado") {
-    return "Evento Cancelado";
+  if (actividad.estado === "cancelado" || actividad.estado === "finalizado") {
+    return actividad.estado === "finalizado" ? "Evento Finalizado" : "Evento Cancelado";
   }
   if (!infoCupos.disponible) {
     return "Cupo Agotado";
   }
   return "Inscríbete";
 };
-
   // Función para obtener la clase CSS del botón unificada
   const getClaseBoton = (infoCupos: CupoInfo): string => {
     const baseClass = "w-full py-3 px-6 rounded-lg transition-all duration-300 font-semibold border-b-4 text-base transform hover:scale-105 active:scale-95 ";

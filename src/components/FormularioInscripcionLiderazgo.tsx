@@ -1,7 +1,7 @@
 import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import "./FormularioInscripcionLiderazgo.css";
-import ConferenciaImg from "../assets/CONFERENCIA COACHING-8.png";
+import ConferenciaImg from "../assets/CONFERENCIA COACHING-8.jpg";
 import ximena from "@/assets/ximenaotero.jpg";
 
 // 🔹 Importar los iconos que necesitas

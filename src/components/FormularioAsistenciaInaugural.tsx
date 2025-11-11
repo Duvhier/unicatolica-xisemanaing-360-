@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './FormularioInscripcion.css';
-import InauguralImg from '@/assets/ACTO INAUGURAL-8.png';
+import InauguralImg from '@/assets/ACTO INAUGURAL-8.jpg';
 import facultadesData from '@/assets/facultadesyprogramasacademicos.json';
 
 // Interfaces para los tipos de datos

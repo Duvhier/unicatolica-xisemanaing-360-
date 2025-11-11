@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import './FormularioInscripcion.css';
-import IAPracticaImg from '@/assets/CONFERENCIA-IAPRACTICA-8.jpg'; 
+import './FormularioConstruccion.css';
+import ConstruccionImg from '@/assets/CONSTRUCCION-RED_8.jpg'; // Asegúrate de tener esta imagen
 import facultadesData from '@/assets/facultadesyprogramasacademicos.json';
 
 // Interfaces para los tipos de datos
@@ -42,7 +42,7 @@ interface FieldError {
   message: string;
 }
 
-// Componentes de Iconos SVG (los mismos del formulario inaugural)
+// Componentes de Iconos SVG (mismos que clausura)
 const CalendarIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
@@ -62,9 +62,9 @@ const MapPinIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const BrainIcon = (props: React.SVGProps<SVGSVGElement>) => (
+const NetworkIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
   </svg>
 );
 
@@ -94,7 +94,7 @@ const PhoneIcon = (props: React.SVGProps<SVGSVGElement>) => (
 
 const UserGroupIcon = (props: React.SVGProps<SVGSVGElement>) => (
   <svg {...props} fill="none" stroke="currentColor" viewBox="0 0 24 24">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
   </svg>
 );
 
@@ -122,7 +122,7 @@ const SpinnerIcon = (props: React.SVGProps<SVGSVGElement>) => (
   </svg>
 );
 
-const FormularioIAPractica: React.FC = () => {
+const FormularioConstruccion: React.FC = () => {
   const [formData, setFormData] = useState<FormData>({
     nombre: '',
     cedula: '',
@@ -261,7 +261,7 @@ const FormularioIAPractica: React.FC = () => {
 
     try {
       setIsCheckingDuplicates(true);
-      const response = await fetch(`${API_URL}/ia-practica/verificar-disponibilidad`, {
+      const response = await fetch(`${API_URL}/construccion/verificar-disponibilidad`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -389,7 +389,7 @@ const FormularioIAPractica: React.FC = () => {
         telefono: formData.telefono.trim(),
         rol: formData.rol,
         id: formData.idEstudiante.trim(),
-        actividades: ['ia-practica'] // ✅ Cambiado a ia-practica
+        actividades: ['construccion']
       };
 
       // Campos condicionales según el rol
@@ -415,7 +415,7 @@ const FormularioIAPractica: React.FC = () => {
 
       console.log('🚀 Enviando payload:', payload);
 
-      const res = await fetch(`${API_URL}/ia-practica/registro`, { // ✅ Cambiado a ia-practica
+      const res = await fetch(`${API_URL}/construccion/registro`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
@@ -698,7 +698,7 @@ const FormularioIAPractica: React.FC = () => {
   return (
     <>
       <div className="formulario-container">
-        {/* Encabezado - MODIFICADO PARA IA EN LA PRÁCTICA */}
+        {/* Encabezado */}
         <div className="bg-gradient-to-r from-gray-50 to-white rounded-xl p-8 relative mb-8 border">
           <div className="flex justify-between items-start mb-8">
             <img
@@ -720,7 +720,7 @@ const FormularioIAPractica: React.FC = () => {
 
           <div className="text-center">
             <h1 className="text-2xl font-bold text-gray-800 mb-2">
-              IA EN LA PRÁCTICA Y CASOS DE USO
+              CONSTRUCCIÓN RED DE INGENIEROS INTEGRADOS
             </h1>
             <p className="text-lg text-uniblue font-semibold mb-4">
               "XI Semana de la Ingeniería: 360°: Innovación, Liderazgo y Futuro"
@@ -728,24 +728,24 @@ const FormularioIAPractica: React.FC = () => {
 
             <div className="flex flex-col sm:flex-row justify-center items-center gap-4 mb-4">
               <span className="bg-uniblue text-white px-4 py-2 rounded-full text-sm font-medium">
-                Miércoles 12 de Noviembre
+                Viernes 14 de Noviembre
               </span>
               <span className="text-gray-600 font-medium">
-                7:00 pm - 8:00 pm
+                6:30 pm a 8:00 pm
               </span>
               <span className="text-gray-600 font-medium">
-                Salón A201 – Sede Pance
+                Sede Meléndez - Auditorio Lumen
               </span>
             </div>
 
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Conferencia sobre aplicaciones prácticas de Inteligencia Artificial en casos reales
+              Sesión de networking para construir una red sólida de profesionales en ingeniería. Conecta con colegas, comparte experiencias y fortalece la comunidad de ingenieros.
             </p>
           </div>
         </div>
 
         <form onSubmit={handleSubmit}>
-          {/* Información del Evento - Versión Mejorada PARA IA EN LA PRÁCTICA */}
+          {/* Información del Evento - Versión Mejorada */}
           <div className="mb-8">
             <div className="flex items-center gap-3 mb-6">
               <div className="w-2 h-8 bg-uniblue rounded-full"></div>
@@ -756,11 +756,11 @@ const FormularioIAPractica: React.FC = () => {
               <div className="relative">
                 <img
                   className="w-full h-48 object-cover"
-                  src={IAPracticaImg}
-                  alt="IA en la Práctica y Casos de Uso - XI Semana de la Ingeniería"
+                  src={ConstruccionImg}
+                  alt="Construcción Red de Ingenieros Integrados"
                 />
                 <div className="absolute top-4 left-4 bg-uniblue text-white px-3 py-1 rounded-full text-sm font-medium">
-                  Conferencia
+                  Evento de Networking
                 </div>
               </div>
 
@@ -768,20 +768,18 @@ const FormularioIAPractica: React.FC = () => {
                 <div className="flex items-center gap-2 text-sm text-gray-500 mb-3">
                   <span className="flex items-center gap-1">
                     <CalendarIcon className="w-4 h-4" />
-                    Mié, Nov 12
+                    Vie, Nov 14
                   </span>
                   <span>•</span>
                   <span className="flex items-center gap-1">
                     <ClockIcon className="w-4 h-4" />
-                    7:00 pm – 8:00 pm
+                    6:30 pm - 8:00 pm
                   </span>
                 </div>
 
-                <h3 className="text-xl font-bold text-gray-800 mb-3">IA en la Práctica y Casos de Uso</h3>
+                <h3 className="text-xl font-bold text-gray-800 mb-3">Construcción Red de Ingenieros Integrados</h3>
                 <p className="text-gray-600 leading-relaxed mb-4">
-                  Una conferencia especializada que explora aplicaciones reales de Inteligencia Artificial 
-                  en diversos sectores, mostrando casos de éxito y mejores prácticas para la implementación 
-                  de soluciones basadas en IA.
+                  Únete a nuestra sesión de networking para construir una red sólida de profesionales en ingeniería. Conecta con colegas, comparte experiencias y fortalece la comunidad de ingenieros integrados.
                 </p>
 
                 <div className="bg-gradient-to-r from-blue-50 to-indigo-50 border border-blue-200 rounded-lg p-4">
@@ -790,21 +788,21 @@ const FormularioIAPractica: React.FC = () => {
                       <MapPinIcon className="w-5 h-5 text-uniblue mt-0.5" />
                       <div>
                         <strong className="text-gray-700">Lugar:</strong>
-                        <p className="text-gray-600">Salón A201<br />Sede Pance</p>
+                        <p className="text-gray-600">Auditorio Lumen<br />Sede Meléndez</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-2">
                       <ClockIcon className="w-5 h-5 text-uniblue mt-0.5" />
                       <div>
                         <strong className="text-gray-700">Duración:</strong>
-                        <p className="text-gray-600">1 hora</p>
+                        <p className="text-gray-600">90 minutos</p>
                       </div>
                     </div>
                     <div className="flex items-start gap-2">
-                      <BrainIcon className="w-5 h-5 text-uniblue mt-0.5" />
+                      <NetworkIcon className="w-5 h-5 text-uniblue mt-0.5" />
                       <div>
-                        <strong className="text-gray-700">Ponente:</strong>
-                        <p className="text-gray-600">Mag. Lorena Cerón</p>
+                        <strong className="text-gray-700">Actividades:</strong>
+                        <p className="text-gray-600">Networking profesional y construcción de redes</p>
                       </div>
                     </div>
                   </div>
@@ -813,7 +811,7 @@ const FormularioIAPractica: React.FC = () => {
             </div>
           </div>
 
-          {/* Sección de Datos Personales - Mejorada (igual que inaugural) */}
+          {/* Sección de Datos Personales - Mejorada */}
           <div ref={formSectionRef} className="bg-white rounded-2xl shadow-lg border border-gray-200 p-8">
             <div className="mb-8">
               <div className="flex items-center gap-3 mb-6">
@@ -1150,4 +1148,4 @@ const FormularioIAPractica: React.FC = () => {
   );
 };
 
-export default FormularioIAPractica;
+export default FormularioConstruccion;

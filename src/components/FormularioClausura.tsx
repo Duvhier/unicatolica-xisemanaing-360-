@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import './FormularioClausura.css';
-import ClausuraImg from '@/assets/ACTO CLAUSURA-8.png';
+import ClausuraImg from '@/assets/ACTO CLAUSURA-8.jpg';
 import facultadesData from '@/assets/facultadesyprogramasacademicos.json';
 
 // Interfaces para los tipos de datos

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import xiSemanaImage from "@/assets/BANNER DE PAGINA-8.png";
+import xiSemanaImage from "@/assets/BANNER DE PAGINA-8.jpg";
 
 export default function Hero() {
   const images = [

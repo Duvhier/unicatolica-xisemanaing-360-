@@ -1,8 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link } from "react-router-dom";
 import "./FormularioInscripcionLiderazgo.css";
-import ZonaAmericaImg from "@/assets/VISITA - EMPRESARIAL  -8 ZONAAMERICA.png"; // Asegúrate de tener esta imagen
-import LogoZonaAmerica from "@/assets/Zonamerica.png";
+import ZonaAmericaImg from "@/assets/VISITA - EMPRESARIAL  -8 ZONAAMERICA.jpg"; // Asegúrate de tener esta imagen
+import LogoZonaAmerica from "@/assets/Zonamerica.jpg";
 import facultadesData from '@/assets/facultadesyprogramasacademicos.json';
 
 // 🔹 Interfaz para los programas académicos
