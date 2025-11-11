@@ -272,7 +272,7 @@ export default function CronogramaActividades() {
       setCargandoCupos(true);
 
       // IDs de actividades que tienen registro
-      const actividadesConRegistro = [1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 20, 21, 22, 23, 24];
+      const actividadesConRegistro = [1, 2, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 17, 19, 20, 21, 22, 23, 24];
 
       const promesasCupos = actividadesConRegistro.map(async (id) => {
         try {
@@ -317,6 +317,9 @@ export default function CronogramaActividades() {
               break;
             case 15: // Technological Touch
               endpoint = `${API_URL}/technological/estado-registros`;
+              break;
+            case 19: // Construcción Red
+              endpoint = `${API_URL}/construccion/estado-registros`;
               break;
             case 17: // WordPress
               endpoint = `${API_URL}/tallerwordpress/estado-registros`;
