@@ -662,7 +662,7 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
       return (
         <span className="bg-red-100 text-red-800 text-xs px-3 py-1 rounded-full font-semibold border border-red-200 flex items-center gap-1 animate-pulse">
           <div className="w-2 h-2 bg-red-500 rounded-full"></div>
-          EN VIVO AHORA
+          Evento En Vivo
         </span>
       );
     }
@@ -673,7 +673,7 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
           <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
           </svg>
-          EVENTO CANCELADO
+          Evento Cerrado
         </span>
       );
     }
@@ -684,7 +684,7 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
           <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          EVENTO FINALIZADO
+          Evento Finalizado
         </span>
       );
     }
@@ -915,10 +915,8 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
           ponente: "Dr. Julián Portocarrero Hermann",
           lugar: "Auditorio 1 – Sede Pance",
           tipo: "Conferencia",
-          destacado: true,
-          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762856951/INICIACION_AL_VUELO-8_edas3u.jpg",
-          botonRegistro: true,
-          urlRegistro: "/formulario-tallervuelo"
+          destacado: false,
+          estado: "cancelado"
         },
         {
           id: 8,
@@ -955,7 +953,6 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
           destacado: true,
           botonRegistro: true,
           urlRegistro: "/formulario-industriaenaccion",
-          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762856948/INDUSTRIA_EN_ACCION-8_nnwanj.jpg",
           organizador: "Docente Jenny Alejandra Cadena Solarte"
         },
         {
@@ -968,7 +965,6 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
           destacado: true,
           botonRegistro: true,
           urlRegistro: "/formulario-doblalumen",
-          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762091474/DOBLALUMEN-8_toblne.png",
         },
         {
           id: 12,
@@ -980,7 +976,6 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
           destacado: true,
           botonRegistro: true,
           urlRegistro: "/formulario-ia-practica",
-          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762856929/CONFERENCIA-IAPRACTICA-8_jkc70d.jpg"
         },
         {
           id: 23,
@@ -992,7 +987,6 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
           destacado: true,
           exclusivo: "Estudiantes",
           aliado: "DevSeniorCode Academy",
-          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762102414/devsenioform_rjas9y.jpg"
         }
       ]
     },
@@ -1115,7 +1109,6 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
           destacado: true,
           botonRegistro: true,
           urlRegistro: "/formulario-visitacarnicos",
-          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762856909/VISITA_EMPRESARIAL_-8_otiofe.jpg"
         }
       ]
     }
