@@ -1,0 +1,178 @@
+.formulario-confirmacion-asistencia {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  }
+  
+  .form-main-content {
+    margin-top: 20px;
+  }
+  
+  /* Estilos para los inputs y selects */
+  .w-full {
+    width: 100%;
+  }
+  
+  .px-3 {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+  
+  .py-2 {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  
+  .border {
+    border-width: 1px;
+  }
+  
+  .border-gray-300 {
+    border-color: #d1d5db;
+  }
+  
+  .rounded-lg {
+    border-radius: 8px;
+  }
+  
+  .focus\:outline-none:focus {
+    outline: none;
+  }
+  
+  .focus\:ring-2:focus {
+    ring-width: 2px;
+  }
+  
+  .focus\:ring-blue-500:focus {
+    --tw-ring-color: #3b82f6;
+  }
+  
+  .focus\:border-transparent:focus {
+    border-color: transparent;
+  }
+  
+  .bg-white {
+    background-color: #ffffff;
+  }
+  
+  /* Estados de deshabilitado */
+  .disabled\:bg-gray-100:disabled {
+    background-color: #f3f4f6;
+  }
+  
+  .disabled\:cursor-not-allowed:disabled {
+    cursor: not-allowed;
+  }
+  
+  /* Textos */
+  .text-sm {
+    font-size: 14px;
+  }
+  
+  .text-xs {
+    font-size: 12px;
+  }
+  
+  .font-medium {
+    font-weight: 500;
+  }
+  
+  .text-gray-700 {
+    color: #374151;
+  }
+  
+  .text-gray-500 {
+    color: #6b7280;
+  }
+  
+  .text-red-500 {
+    color: #ef4444;
+  }
+  
+  /* Botones */
+  .bg-blue-600 {
+    background-color: #2563eb;
+  }
+  
+  .hover\:bg-blue-700:hover {
+    background-color: #1d4ed8;
+  }
+  
+  .text-white {
+    color: #ffffff;
+  }
+  
+  .py-3 {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+  
+  .rounded-lg {
+    border-radius: 8px;
+  }
+  
+  .font-semibold {
+    font-weight: 600;
+  }
+  
+  /* Grid responsive */
+  .grid {
+    display: grid;
+  }
+  
+  .gap-6 {
+    gap: 24px;
+  }
+  
+  .md\:grid-cols-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  .md\:col-span-2 {
+    grid-column: span 2 / span 2;
+  }
+  
+  /* Animaciones */
+  @keyframes spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  
+  .animate-spin {
+    animation: spin 1s linear infinite;
+  }
+  
+  /* Transiciones */
+  .transition-colors {
+    transition-property: color, background-color, border-color;
+    transition-duration: 200ms;
+  }
+  
+  .transition-all {
+    transition-property: all;
+    transition-duration: 200ms;
+  }
+  
+  .duration-200 {
+    transition-duration: 200ms;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .md\:grid-cols-2 {
+      grid-template-columns: 1fr;
+    }
+    
+    .md\:col-span-2 {
+      grid-column: span 1 / span 1;
+    }
+    
+    .formulario-confirmacion-asistencia {
+      padding: 16px;
+    }
+  }

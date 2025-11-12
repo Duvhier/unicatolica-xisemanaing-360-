@@ -21,6 +21,7 @@ import FormularioIAPractica from './components/FormularioIAPractica.tsx'
 import FormularioTallerWordpress from './components/FormularioTallerWordpress.tsx'
 import FormularioClausura from './components/FormularioClausura.tsx'
 import FormularioConstruccion from './components/FormularioConstruccion.tsx'
+import FormularioConfirmacionAsistencia from './components/FormularioConfirmacion.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -44,6 +45,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/formulario-tallerwordpress" element={<FormularioTallerWordpress />} />
         <Route path="/formulario-clausura" element={<FormularioClausura />} />
         <Route path="/formulario-construccion" element={<FormularioConstruccion />} />
+        <Route path="/formulario-confirmacionactoinaugural" element={<FormularioConfirmacionAsistencia />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

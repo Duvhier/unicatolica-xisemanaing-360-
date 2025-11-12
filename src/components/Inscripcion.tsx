@@ -15,13 +15,13 @@ const imageLoader = ({ src, width, quality = 75 }: { src: string; width: number;
     }
     return src;
   }
-  
+
   // Si es una ruta local, conviértela
   // ✅ AGREGAR: Validación para URLs vacías o inválidas
   if (!src || src.trim() === '') {
     return `https://res.cloudinary.com/dufzjm2mn/image/upload/w_${width},q_${quality},f_auto/placeholder.jpg`;
   }
-  
+
   return `https://res.cloudinary.com/dufzjm2mn/image/upload/w_${width},q_${quality},f_auto/${src}`;
 };
 // Definir tipos TypeScript
@@ -84,8 +84,8 @@ export default function CronogramaActividades() {
   const [cuposActividades, setCuposActividades] = useState<{ [key: number]: CupoInfo }>({});
   const [cargandoCupos, setCargandoCupos] = useState<boolean>(true);
 
-    // ✅ NUEVO ESTADO: Para estados automáticos
-    const [estadosAutomaticos, setEstadosAutomaticos] = useState<{ [key: number]: string }>({});
+  // ✅ NUEVO ESTADO: Para estados automáticos
+  const [estadosAutomaticos, setEstadosAutomaticos] = useState<{ [key: number]: string }>({});
 
   // ✅ NUEVO ESTADO: Búsqueda
   const [terminoBusqueda, setTerminoBusqueda] = useState<string>("");
@@ -101,19 +101,19 @@ export default function CronogramaActividades() {
   const [timeoutId, setTimeoutId] = useState<NodeJS.Timeout | null>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
 
-   // ✅ NUEVA FUNCIÓN: Convertir fecha del cronograma a objeto Date
-   const parsearFechaEvento = (fechaStr: string): Date => {
+  // ✅ NUEVA FUNCIÓN: Convertir fecha del cronograma a objeto Date
+  const parsearFechaEvento = (fechaStr: string): Date => {
     // Asumimos que el año es 2024
     const año = 2025;
     const meses: { [key: string]: number } = {
       'ENE': 0, 'FEB': 1, 'MAR': 2, 'ABR': 3, 'MAY': 4, 'JUN': 5,
       'JUL': 6, 'AGO': 7, 'SEP': 8, 'OCT': 9, 'NOV': 10, 'DIC': 11
     };
-    
+
     const partes = fechaStr.split(' ');
     const dia = parseInt(partes[1]);
     const mes = meses[partes[2]];
-    
+
     return new Date(año, mes, dia);
   };
 
@@ -124,17 +124,17 @@ export default function CronogramaActividades() {
     const [hora, minutosYPeriodo] = horaInicio.split(':');
     const minutos = minutosYPeriodo.split(' ')[0];
     const periodo = horaInicio.includes('pm') ? 'pm' : 'am';
-    
+
     let horaNum = parseInt(hora);
     const minutosNum = parseInt(minutos);
-    
+
     if (periodo === 'pm' && horaNum !== 12) {
       horaNum += 12;
     }
     if (periodo === 'am' && horaNum === 12) {
       horaNum = 0;
     }
-    
+
     return horaNum * 60 + minutosNum;
   };
 
@@ -142,72 +142,72 @@ export default function CronogramaActividades() {
   const obtenerEstadoAutomatico = (actividad: Actividad, fechaDia: string): string => {
     const ahora = new Date();
     const fechaEvento = parsearFechaEvento(fechaDia);
-    
+
     // Comparar fechas (solo día, mes y año)
     const hoy = new Date(ahora.getFullYear(), ahora.getMonth(), ahora.getDate());
     const diaEvento = new Date(fechaEvento.getFullYear(), fechaEvento.getMonth(), fechaEvento.getDate());
-    
+
     // Si el evento es de un día anterior, marcarlo como finalizado
     if (diaEvento < hoy) {
       return "finalizado";
     }
-    
+
     // Si es hoy, verificar la hora
     if (diaEvento.getTime() === hoy.getTime()) {
       const horaActual = ahora.getHours() * 60 + ahora.getMinutes();
       const horaInicioEvento = convertirHoraAMinutos(actividad.hora);
       const horaFinStr = actividad.hora.split(' - ')[1];
       const horaFinEvento = convertirHoraAMinutos(horaFinStr);
-      
+
       // Si estamos dentro del rango del evento, está activo
       if (horaActual >= horaInicioEvento && horaActual <= horaFinEvento) {
         return "activo";
       }
-      
+
       // Si ya pasó la hora de finalización, está finalizado
       if (horaActual > horaFinEvento) {
         return "finalizado";
       }
     }
-    
+
     // Por defecto, evento normal (futuro)
     return "normal";
   };
 
-    // ✅ NUEVO EFFECT: Calcular estados automáticos cada minuto
- // ✅ CORREGIR: Agregar dependencias faltantes
-useEffect(() => {
-  const calcularEstados = () => {
-    const nuevosEstados: { [key: number]: string } = {};
-    
-    cronograma.forEach(dia => {
-      dia.actividades.forEach(actividad => {
-        if (actividad.estado !== "cancelado") {
-          nuevosEstados[actividad.id] = obtenerEstadoAutomatico(actividad, dia.dia);
-        }
-      });
-    });
-    
-    setEstadosAutomaticos(nuevosEstados);
-  };
-  
-  calcularEstados();
-  
-  const interval = setInterval(calcularEstados, 60000);
-  
-  return () => clearInterval(interval);
-}, []); 
+  // ✅ NUEVO EFFECT: Calcular estados automáticos cada minuto
+  // ✅ CORREGIR: Agregar dependencias faltantes
+  useEffect(() => {
+    const calcularEstados = () => {
+      const nuevosEstados: { [key: number]: string } = {};
 
-// ✅ AGREGAR cronograma como dependencia 
-    const getEstadoEvento = (actividad: Actividad) => {
-      // Si el estado está manualmente definido (cancelado), priorizar ese
-      if (actividad.estado === "cancelado") {
-        return "cancelado";
-      }
-      
-      // Usar el estado automático calculado
-      return estadosAutomaticos[actividad.id] || "normal";
+      cronograma.forEach(dia => {
+        dia.actividades.forEach(actividad => {
+          if (actividad.estado !== "cancelado") {
+            nuevosEstados[actividad.id] = obtenerEstadoAutomatico(actividad, dia.dia);
+          }
+        });
+      });
+
+      setEstadosAutomaticos(nuevosEstados);
     };
+
+    calcularEstados();
+
+    const interval = setInterval(calcularEstados, 60000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // ✅ AGREGAR cronograma como dependencia 
+  const getEstadoEvento = (actividad: Actividad) => {
+    // Si el estado está manualmente definido (cancelado), priorizar ese
+    if (actividad.estado === "cancelado") {
+      return "cancelado";
+    }
+
+    // Usar el estado automático calculado
+    return estadosAutomaticos[actividad.id] || "normal";
+  };
 
   // ✅ NUEVA FUNCIÓN: Obtener cupos por defecto específicos para cada actividad
   const obtenerCuposPorDefecto = (): { [key: number]: CupoInfo } => {
@@ -356,6 +356,14 @@ useEffect(() => {
         actividad: "Certificación Full Stack: Integración Full Stack con AI",
         mensaje: "Usuarios Registrados: 0/50"
       },
+      25: { // Confirmacion Acto Inaugural
+        disponible: true,
+        cuposDisponibles: 100,
+        cupoMaximo: 100,  
+        inscritos: 0,
+        actividad: "Confirmacion ACto Inaugural",
+        mensaje: "Usuarios Registrados: 0/100"
+      },
     };
   };
 
@@ -447,6 +455,9 @@ useEffect(() => {
             case 24: // Certificación Full Stack Día 3
               endpoint = `${API_URL}/desarrollofullstack/estado-registros?dia=24`;
               break;
+            case 25: // ConfirmacionActoInaugural
+              endpoint = `${API_URL}/desarrollofullstack/estado-registros?dia=24`;
+              break;
             default:
               endpoint = `${API_URL}/api/actividades/estadisticas/${id}`;
           }
@@ -507,32 +518,32 @@ useEffect(() => {
   }, []);
 
   // Función para obtener información de cupos de una actividad 
- // ✅ CORREGIR: En la función obtenerInfoCupos
-const obtenerInfoCupos = (actividadId: number): CupoInfo => {
-  const info = cuposActividades[actividadId];
+  // ✅ CORREGIR: En la función obtenerInfoCupos
+  const obtenerInfoCupos = (actividadId: number): CupoInfo => {
+    const info = cuposActividades[actividadId];
 
-  if (!info) {
-    const cuposPorDefecto = obtenerCuposPorDefecto();
-    const defaultCupo = cuposPorDefecto[actividadId];
-    
-    // ✅ ASEGURAR que siempre retorne un objeto válido
-    if (defaultCupo) {
-      return defaultCupo;
+    if (!info) {
+      const cuposPorDefecto = obtenerCuposPorDefecto();
+      const defaultCupo = cuposPorDefecto[actividadId];
+
+      // ✅ ASEGURAR que siempre retorne un objeto válido
+      if (defaultCupo) {
+        return defaultCupo;
+      }
+
+      // ✅ VALOR por defecto más robusto
+      return {
+        disponible: true,
+        cuposDisponibles: 40,
+        cupoMaximo: 40,
+        inscritos: 0,
+        actividad: `Actividad ${actividadId}`,
+        mensaje: "Usuarios Registrados: 0/40"
+      };
     }
-    
-    // ✅ VALOR por defecto más robusto
-    return {
-      disponible: true,
-      cuposDisponibles: 40,
-      cupoMaximo: 40,
-      inscritos: 0,
-      actividad: `Actividad ${actividadId}`,
-      mensaje: "Usuarios Registrados: 0/40"
-    };
-  }
 
-  return info;
-};
+    return info;
+  };
   // ✅ NUEVA FUNCIÓN: Buscar actividades
   const buscarActividades = (termino: string) => {
     if (!termino.trim()) {
@@ -657,7 +668,7 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
   // ✅ ACTUALIZAR FUNCIÓN: Renderizar badge de estado
   const renderBadgeEstado = (actividad: Actividad) => {
     const estado = getEstadoEvento(actividad);
-  
+
     if (estado === "activo") {
       return (
         <span className="bg-red-100 text-red-800 text-xs px-3 py-1 rounded-full font-semibold border border-red-200 flex items-center gap-1 animate-pulse">
@@ -666,7 +677,7 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
         </span>
       );
     }
-  
+
     if (estado === "cancelado") {
       return (
         <span className="bg-gray-100 text-gray-600 text-xs px-3 py-1 rounded-full font-semibold border border-gray-300 flex items-center gap-1">
@@ -677,7 +688,7 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
         </span>
       );
     }
-  
+
     if (estado === "finalizado") {
       return (
         <span className="bg-green-100 text-green-800 text-xs px-3 py-1 rounded-full font-semibold border border-green-200 flex items-center gap-1">
@@ -688,7 +699,7 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
         </span>
       );
     }
-  
+
     return null;
   };
   // Base de datos de ponentes con tipado - ✅ ACTUALIZADO: Todas las imágenes usan Cloudinary
@@ -822,7 +833,7 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
           ponente: "Coach Ximena Otero Pilonieta",
           lugar: "Auditorio 1 – Sede Pance",
           tipo: "Conferencia",
-          destacado: false,      
+          destacado: false,
           exclusivo: "Docentes y Administrativos",
         },
         {
@@ -852,6 +863,18 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
           imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762856921/ACTO_INAUGURAL-8_inv6tk.jpg",
           botonRegistro: true,
           urlRegistro: "/formulario-inaugural"
+        },
+        {
+          id: 25,
+          hora: "8:30 pm - 9:30 pm",
+          titulo: "Confirmacion Acto Inaugural",
+          ponente: "",
+          lugar: "Auditorio Lumen – Sede Meléndez",
+          tipo: "Ceremonia",
+          destacado: true,
+          imagen: "https://res.cloudinary.com/dufzjm2mn/image/upload/v1762856921/ACTO_INAUGURAL-8_inv6tk.jpg",
+          botonRegistro: true,
+          urlRegistro: "/formulario-confirmacionactoinaugural"
         },
         {
           id: 3,
@@ -1255,7 +1278,7 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
 
   const handleRegistro = (actividad: Actividad): void => {
     const estado = getEstadoEvento(actividad);
-    
+
     // Verificar si el evento está cancelado, finalizado o activo
     if (estado === "cancelado" || estado === "finalizado" || estado === "activo") {
       if (estado === "activo") {
@@ -1265,13 +1288,13 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
       }
       return;
     }
-  
+
     const infoCupos = obtenerInfoCupos(actividad.id);
     if (!infoCupos.disponible) {
       alert('Lo sentimos, no hay cupos disponibles para esta actividad.');
       return;
     }
-  
+
     if (actividad.urlRegistro) {
       window.location.href = actividad.urlRegistro;
     } else {
@@ -1289,7 +1312,7 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
   // Función para obtener el texto del botón unificado
   const getTextoBoton = (actividad: Actividad, infoCupos: CupoInfo): string => {
     const estado = getEstadoEvento(actividad);
-    
+
     if (estado === "cancelado") {
       return "Evento Cancelado";
     }
@@ -1308,18 +1331,18 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
   const getClaseBoton = (actividad: Actividad, infoCupos: CupoInfo): string => {
     const baseClass = "w-full py-3 px-6 rounded-lg transition-all duration-300 font-semibold border-b-4 text-base transform hover:scale-105 active:scale-95 ";
     const estado = getEstadoEvento(actividad);
-  
+
     if (estado === "cancelado" || estado === "finalizado" || estado === "activo") {
       return baseClass + "bg-gray-400 text-gray-200 border-gray-500 cursor-not-allowed hover:scale-100";
     }
-  
+
     if (!infoCupos.disponible) {
       return baseClass + "bg-gray-400 text-gray-200 border-gray-500 cursor-not-allowed hover:scale-100";
     }
-  
+
     return baseClass + "bg-gradient-to-r from-uniblue to-blue-600 text-white border-blue-800 hover:from-blue-700 hover:to-blue-800 shadow-lg hover:shadow-xl";
   };
-  
+
   // Función para renderizar la información del organizador o ponente
   const renderOrganizadorPonente = (actividad: Actividad) => {
     if (actividad.organizador) {
@@ -1367,89 +1390,86 @@ const obtenerInfoCupos = (actividadId: number): CupoInfo => {
   };
 
   // Función para renderizar participantes de conversatorios - CON IMÁGENES REALES
-// ✅ CORREGIR: En renderParticipantesConversatorio
-const renderParticipantesConversatorio = (actividad: Actividad) => {
-  if (actividad.tipo === "Conversatorio" && actividad.participantes && actividad.participantes.length > 0) {
-    return (
-      <div className="space-y-3 mt-4">
-        <div className="flex items-center gap-2 mb-2">
-          <div className="w-6 h-6 bg-uniblue/10 rounded flex items-center justify-center flex-shrink-0">
-            <svg className="w-3 h-3 text-uniblue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283-.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-            </svg>
+  // ✅ CORREGIR: En renderParticipantesConversatorio
+  const renderParticipantesConversatorio = (actividad: Actividad) => {
+    if (actividad.tipo === "Conversatorio" && actividad.participantes && actividad.participantes.length > 0) {
+      return (
+        <div className="space-y-3 mt-4">
+          <div className="flex items-center gap-2 mb-2">
+            <div className="w-6 h-6 bg-uniblue/10 rounded flex items-center justify-center flex-shrink-0">
+              <svg className="w-3 h-3 text-uniblue" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283-.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+              </svg>
+            </div>
+            <h4 className="text-sm font-semibold text-gray-800">Panelistas</h4>
           </div>
-          <h4 className="text-sm font-semibold text-gray-800">Panelistas</h4>
-        </div>
 
-        <div className="space-y-2">
-          {actividad.participantes.map((participante, index) => {
-            // ✅ MEJORAR: Manejo seguro de datos
-            if (!participante || typeof participante !== 'string') return null;
-            
-            const partes = participante.split(' - ');
-            const nombreCompleto = partes[0]?.trim() || 'Nombre no disponible';
-            const esModerador = participante.toLowerCase().includes('moderador');
-            const ponenteInfo = basePonentes[nombreCompleto];
+          <div className="space-y-2">
+            {actividad.participantes.map((participante, index) => {
+              // ✅ MEJORAR: Manejo seguro de datos
+              if (!participante || typeof participante !== 'string') return null;
 
-            return (
-              <div
-                key={index}
-                className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded transition-colors duration-200 group cursor-help"
-                onMouseEnter={(e) => mostrarTooltipPonente(nombreCompleto, e)}
-                onMouseLeave={ocultarTooltip}
-              >
-                <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden ${
-                  esModerador ? 'ring-1 ring-unigold' : ''
-                }`}>
-                  {ponenteInfo?.foto ? (
-                    <img
-                      src={ponenteInfo.foto}
-                      alt={nombreCompleto}
-                      className="w-full h-full object-cover"
-                      loading="lazy"
-                      onError={(e) => {
-                        // ✅ MANEJAR error de carga de imagen
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                      }}
-                    />
-                  ) : (
-                    <div className={`w-full h-full flex items-center justify-center text-xs font-semibold ${
-                      esModerador ? 'bg-unigold/20 text-unigold' : 'bg-uniblue/10 text-uniblue'
+              const partes = participante.split(' - ');
+              const nombreCompleto = partes[0]?.trim() || 'Nombre no disponible';
+              const esModerador = participante.toLowerCase().includes('moderador');
+              const ponenteInfo = basePonentes[nombreCompleto];
+
+              return (
+                <div
+                  key={index}
+                  className="flex items-center gap-3 p-2 hover:bg-gray-50 rounded transition-colors duration-200 group cursor-help"
+                  onMouseEnter={(e) => mostrarTooltipPonente(nombreCompleto, e)}
+                  onMouseLeave={ocultarTooltip}
+                >
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 overflow-hidden ${esModerador ? 'ring-1 ring-unigold' : ''
                     }`}>
-                      {nombreCompleto.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
-                    </div>
-                  )}
-                </div>
-
-                <div className="flex-1 min-w-0">
-                  <div className="flex items-baseline gap-2 flex-wrap">
-                    <span className={`text-sm font-semibold text-gray-900 break-words ${
-                      esModerador ? 'text-unigold-dark' : ''
-                    } group-hover:text-uniblue transition-colors duration-200`}>
-                      {nombreCompleto}
-                    </span>
-                    {esModerador && (
-                      <span className="bg-gradient-to-r from-unigold to-yellow-500 text-white text-xs px-3 py-1 rounded-full font-bold whitespace-nowrap flex-shrink-0 shadow-md">
-                        ⭐ MODERADORA
-                      </span>
+                    {ponenteInfo?.foto ? (
+                      <img
+                        src={ponenteInfo.foto}
+                        alt={nombreCompleto}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                        onError={(e) => {
+                          // ✅ MANEJAR error de carga de imagen
+                          const target = e.target as HTMLImageElement;
+                          target.style.display = 'none';
+                        }}
+                      />
+                    ) : (
+                      <div className={`w-full h-full flex items-center justify-center text-xs font-semibold ${esModerador ? 'bg-unigold/20 text-unigold' : 'bg-uniblue/10 text-uniblue'
+                        }`}>
+                        {nombreCompleto.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase()}
+                      </div>
                     )}
                   </div>
-                  {partes.length > 1 && (
-                    <p className="text-xs text-gray-600 mt-0.5 leading-tight">
-                      {partes[1]}
-                    </p>
-                  )}
+
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-baseline gap-2 flex-wrap">
+                      <span className={`text-sm font-semibold text-gray-900 break-words ${esModerador ? 'text-unigold-dark' : ''
+                        } group-hover:text-uniblue transition-colors duration-200`}>
+                        {nombreCompleto}
+                      </span>
+                      {esModerador && (
+                        <span className="bg-gradient-to-r from-unigold to-yellow-500 text-white text-xs px-3 py-1 rounded-full font-bold whitespace-nowrap flex-shrink-0 shadow-md">
+                          ⭐ MODERADORA
+                        </span>
+                      )}
+                    </div>
+                    {partes.length > 1 && (
+                      <p className="text-xs text-gray-600 mt-0.5 leading-tight">
+                        {partes[1]}
+                      </p>
+                    )}
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
-      </div>
-    );
-  }
-  return null;
-};
+      );
+    }
+    return null;
+  };
 
   return (
     <div className="w-full my-12 relative">
@@ -1795,7 +1815,7 @@ const renderParticipantesConversatorio = (actividad: Actividad) => {
               {eventosDestacados.map((evento) => {
                 const infoCupos = obtenerInfoCupos(evento.id);
                 const textoBoton = getTextoBoton(evento, infoCupos);
-                const claseBoton = getClaseBoton(evento,infoCupos);
+                const claseBoton = getClaseBoton(evento, infoCupos);
 
                 return (
                   <div key={evento.id} className="w-full flex-shrink-0">
