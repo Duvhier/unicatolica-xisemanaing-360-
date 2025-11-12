@@ -35,6 +35,18 @@ interface FacultadesData {
     facultades: Facultad[];
 }
 
+// 🔹 Interfaz para errores detallados
+interface ErrorDetail {
+    type?: string;
+    message: string;
+    existingData?: {
+        nombres?: string;
+        apellido?: string;
+        email?: string;
+        numeroDocumento?: string;
+    };
+}
+
 const FormularioCierreInaugural: React.FC = () => {
     const [formData, setFormData] = useState<FormData>({
         nombres: "",
@@ -53,6 +65,8 @@ const FormularioCierreInaugural: React.FC = () => {
     const [facultadesList, setFacultadesList] = useState<Facultad[]>([]);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [successOpen, setSuccessOpen] = useState(false);
+    const [errorOpen, setErrorOpen] = useState(false);
+    const [errorDetails, setErrorDetails] = useState<ErrorDetail[]>([]);
 
     // 🔹 Determinar si la facultad es requerida basado en el perfil
     const isFacultadRequerida = formData.perfil === "Estudiante" || formData.perfil === "Docente" || formData.perfil === "Egresado";
@@ -140,6 +154,32 @@ const FormularioCierreInaugural: React.FC = () => {
         setFormData((prev) => ({ ...prev, [name]: value }));
     };
 
+    // 🔹 Función para mostrar errores detallados
+    const showErrorDetails = (errors: ErrorDetail[]) => {
+        setErrorDetails(errors);
+        setErrorOpen(true);
+    };
+
+    // 🔹 Función para formatear mensajes de error
+    const formatErrorMessage = (error: ErrorDetail): string => {
+        let message = `• ${error.message}`;
+        
+        if (error.existingData) {
+            const { nombres, apellido, email, numeroDocumento } = error.existingData;
+            if (nombres && apellido) {
+                message += `\n  Registrado a: ${nombres} ${apellido}`;
+            }
+            if (email && error.type !== 'email') {
+                message += `\n  Email: ${email}`;
+            }
+            if (numeroDocumento && error.type !== 'documento') {
+                message += `\n  Documento: ${numeroDocumento}`;
+            }
+        }
+        
+        return message;
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setIsSubmitting(true);
@@ -167,11 +207,30 @@ const FormularioCierreInaugural: React.FC = () => {
                 body: JSON.stringify(payload),
             });
 
+            const responseData = await res.json();
+
             if (!res.ok) {
-                throw new Error(`Error ${res.status}: ${res.statusText}`);
+                // 🔥 MANEJO MEJORADO DE ERRORES
+                if (res.status === 409 && responseData.errors) {
+                    // Error de duplicados con detalles
+                    showErrorDetails(responseData.errors);
+                } else if (res.status === 400 && responseData.errors) {
+                    // Error de validación
+                    const validationErrors: ErrorDetail[] = responseData.errors.map((error: string) => ({
+                        message: error
+                    }));
+                    showErrorDetails(validationErrors);
+                } else if (res.status === 409 && responseData.error) {
+                    // Cupo agotado
+                    showErrorDetails([{
+                        message: `Cupo agotado: ${responseData.error}`
+                    }]);
+                } else {
+                    throw new Error(responseData.message || `Error ${res.status}: ${res.statusText}`);
+                }
+                return;
             }
 
-            const responseData = await res.json();
             console.log('✅ Registro exitoso:', responseData);
 
             // Mostrar confirmación exitosa
@@ -193,7 +252,10 @@ const FormularioCierreInaugural: React.FC = () => {
 
         } catch (error) {
             console.error('❌ Error al enviar formulario:', error);
-            alert("Error al enviar el formulario. Por favor, intente nuevamente.");
+            // Error genérico de red o servidor
+            showErrorDetails([{
+                message: `Error de conexión: ${error instanceof Error ? error.message : 'No se pudo conectar con el servidor'}`
+            }]);
         } finally {
             setIsSubmitting(false);
         }
@@ -551,8 +613,19 @@ const FormularioCierreInaugural: React.FC = () => {
                         </div>
 
                         <h3 className="text-2xl font-bold text-green-600 mb-2">¡Confirmación Exitosa!</h3>
-                        <p className="text-gray-600 mb-6">
-                            Su asistencia al Acto de Clausura de la XI Semana de la Ingeniería ha sido confirmada correctamente.
+                        <p className="text-gray-600 mb-4">
+                            Su asistencia al <strong>Acto de Clausura de la XI Semana de la Ingeniería</strong> ha sido confirmada correctamente.
+                        </p>
+                        
+                        <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4 text-left">
+                            <h4 className="font-semibold text-green-800 mb-2">📧 Correo de Confirmación</h4>
+                            <p className="text-sm text-green-700">
+                                Se ha enviado un correo electrónico a <strong>{formData.email}</strong> con su código QR de acceso.
+                            </p>
+                        </div>
+
+                        <p className="text-sm text-gray-500 mb-6">
+                            <strong>Recuerde:</strong> Presente su código QR en la entrada del evento para el acceso.
                         </p>
 
                         <button
@@ -565,6 +638,66 @@ const FormularioCierreInaugural: React.FC = () => {
                             </svg>
                             Aceptar
                         </button>
+                    </div>
+                </div>
+            )}
+
+            {/* MODAL DE ERROR DETALLADO */}
+            {errorOpen && (
+                <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center">
+                    <div
+                        className="absolute inset-0 bg-black/50"
+                        onClick={() => setErrorOpen(false)}
+                    />
+                    <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6">
+                        <div className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg className="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+
+                        <h3 className="text-2xl font-bold text-red-600 mb-4 text-center">Error en el Registro</h3>
+                        
+                        <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4 max-h-60 overflow-y-auto">
+                            <h4 className="font-semibold text-red-800 mb-3">Detalles del error:</h4>
+                            <div className="space-y-2 text-sm text-red-700">
+                                {errorDetails.map((error, index) => (
+                                    <div key={index} className="whitespace-pre-line">
+                                        {formatErrorMessage(error)}
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
+                            <p className="text-sm text-yellow-800">
+                                <strong>Sugerencia:</strong> {errorDetails.some(e => e.type === 'documento' || e.type === 'email') 
+                                    ? 'Verifique sus datos personales o contacte al administrador si cree que esto es un error.'
+                                    : 'Por favor, revise la información ingresada y vuelva a intentarlo.'}
+                            </p>
+                        </div>
+
+                        <div className="flex gap-3">
+                            <button
+                                type="button"
+                                onClick={() => setErrorOpen(false)}
+                                className="flex-1 bg-gray-500 text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-gray-600 transition-all"
+                            >
+                                Entendido
+                            </button>
+                            {errorDetails.some(e => e.type === 'documento' || e.type === 'email') && (
+                                <button
+                                    type="button"
+                                    onClick={() => {
+                                        setErrorOpen(false);
+                                        // Aquí podrías redirigir a una página de contacto o soporte
+                                    }}
+                                    className="flex-1 bg-blue-600 text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition-all"
+                                >
+                                    Contactar Soporte
+                                </button>
+                            )}
+                        </div>
                     </div>
                 </div>
             )}
