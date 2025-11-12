@@ -22,6 +22,7 @@ import FormularioTallerWordpress from './components/FormularioTallerWordpress.ts
 import FormularioClausura from './components/FormularioClausura.tsx'
 import FormularioConstruccion from './components/FormularioConstruccion.tsx'
 import FormularioConfirmacionAsistencia from './components/FormularioConfirmacion.tsx'
+import FormularioCierre from './components/FormularioCierre.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -46,6 +47,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/formulario-clausura" element={<FormularioClausura />} />
         <Route path="/formulario-construccion" element={<FormularioConstruccion />} />
         <Route path="/formulario-confirmacionactoinaugural" element={<FormularioConfirmacionAsistencia />} />
+        <Route path="/formulario-cierre" element={<FormularioCierre />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
