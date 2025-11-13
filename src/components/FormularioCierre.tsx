@@ -1,3 +1,4 @@
+// formulario inaugural
 import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "./FormularioCierreInaugural.css";
@@ -451,7 +452,7 @@ const FormularioCierreInaugural: React.FC = () => {
                     <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
                         <div className="border-l-4 border-blue-500 pl-3 md:pl-4 mb-4 md:mb-6">
                             <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-1">Datos Personales</h3>
-                            <p className="text-xs md:text-sm text-gray-600">Complete la información requerida para confirmar su asistencia al cierre del evento</p>
+                            <p className="text-xs md:text-sm text-gray-600">Complete la información requerida para confirmar su asistencia</p>
                         </div>
 
                         <div className="grid gap-4 md:gap-6 md:grid-cols-2">
@@ -695,7 +696,7 @@ const FormularioCierreInaugural: React.FC = () => {
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
-                                    Confirmar
+                                    Confirmar Asistencia
                                 </>
                             )}
                         </button>
@@ -720,7 +721,7 @@ const FormularioCierreInaugural: React.FC = () => {
                         </div>
                         <h3 className="text-2xl font-bold text-gray-900 mb-3">Confirmación Exitosa</h3>
                         <p className="text-gray-500 mb-8 leading-relaxed">
-                            Su asistencia al <span className="font-semibold text-gray-900">Cierre Inaugural</span> ha sido confirmada correctamente.
+                            Su asistencia al <span className="font-semibold text-gray-900">Technological Touch</span> ha sido confirmada correctamente.
                         </p>
                         <button
                             type="button"
