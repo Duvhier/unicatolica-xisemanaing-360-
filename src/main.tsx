@@ -23,6 +23,7 @@ import FormularioClausura from './components/FormularioClausura.tsx'
 import FormularioConstruccion from './components/FormularioConstruccion.tsx'
 import FormularioConfirmacionAsistencia from './components/FormularioConfirmacion.tsx'
 import FormularioCierre from './components/FormularioCierre.tsx'
+import FormularioCierreEventosMiercoles from './components/FormularioCierreEventosMiercoles.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -48,6 +49,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/formulario-construccion" element={<FormularioConstruccion />} />
         <Route path="/formulario-confirmacionactoinaugural" element={<FormularioConfirmacionAsistencia />} />
         <Route path="/formulario-cierre" element={<FormularioCierre />} />
+        <Route path="/formulario-cierreeventos" element={<FormularioCierreEventosMiercoles />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

@@ -1,0 +1,52 @@
+.formulario-cierre-eventos-miercoles {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.form-main-content {
+    margin-top: 20px;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    .formulario-cierre-eventos-miercoles {
+        padding: 10px;
+    }
+}
+
+/* Estilos para los inputs y selects */
+.formulario-cierre-eventos-miercoles input,
+.formulario-cierre-eventos-miercoles select {
+    transition: all 0.2s ease-in-out;
+}
+
+.formulario-cierre-eventos-miercoles input:focus,
+.formulario-cierre-eventos-miercoles select:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Estilos para los botones */
+.formulario-cierre-eventos-miercoles button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+/* Animaciones para los modales */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+.formulario-cierre-eventos-miercoles [role="dialog"] {
+    animation: fadeIn 0.2s ease-out;
+}
+
+.formulario-cierre-eventos-miercoles [role="dialog"] > div:last-child {
+    animation: slideIn 0.3s ease-out;
+}
