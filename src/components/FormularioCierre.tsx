@@ -70,7 +70,7 @@ const FormularioCierreInaugural: React.FC = () => {
 
     // 🔹 Determinar si la facultad es requerida basado en el perfil
     const isFacultadRequerida = formData.perfil === "Estudiante" || formData.perfil === "Docente" || formData.perfil === "Egresado";
-    
+
     // 🔹 Determinar si el programa académico es requerido basado en el perfil
     const isProgramaRequerido = formData.perfil === "Estudiante" || formData.perfil === "Docente" || formData.perfil === "Egresado";
 
@@ -123,26 +123,26 @@ const FormularioCierreInaugural: React.FC = () => {
     // 🔹 Resetear campos cuando cambie el perfil
     useEffect(() => {
         if (!isFacultadRequerida) {
-            setFormData(prev => ({ 
-                ...prev, 
+            setFormData(prev => ({
+                ...prev,
                 facultadArea: "",
-                programaAcademico: "" 
+                programaAcademico: ""
             }));
             setProgramasAcademicos([]);
         }
-        
+
         if (!isProgramaRequerido) {
-            setFormData(prev => ({ 
-                ...prev, 
-                programaAcademico: "" 
+            setFormData(prev => ({
+                ...prev,
+                programaAcademico: ""
             }));
         }
 
         // Resetear ID de estudiante si no es estudiante
         if (formData.perfil !== "Estudiante") {
-            setFormData(prev => ({ 
-                ...prev, 
-                idEstudiante: "" 
+            setFormData(prev => ({
+                ...prev,
+                idEstudiante: ""
             }));
         }
     }, [formData.perfil, isFacultadRequerida, isProgramaRequerido]);
@@ -163,7 +163,7 @@ const FormularioCierreInaugural: React.FC = () => {
     // 🔹 Función para formatear mensajes de error
     const formatErrorMessage = (error: ErrorDetail): string => {
         let message = `• ${error.message}`;
-        
+
         if (error.existingData) {
             const { nombres, apellido, email, numeroDocumento } = error.existingData;
             if (nombres && apellido) {
@@ -176,7 +176,7 @@ const FormularioCierreInaugural: React.FC = () => {
                 message += `\n  Documento: ${numeroDocumento}`;
             }
         }
-        
+
         return message;
     };
 
@@ -428,43 +428,6 @@ const FormularioCierreInaugural: React.FC = () => {
                                 />
                             </div>
 
-                            {/* ID Estudiantes */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-                                    <AcademicCapIcon className="w-4 h-4 text-blue-500" />
-                                    ID Estudiantes
-                                </label>
-                                <input
-                                    type="text"
-                                    name="idEstudiante"
-                                    value={formData.idEstudiante}
-                                    onChange={handleInputChange}
-                                    disabled={formData.perfil !== "Estudiante"}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:cursor-not-allowed"
-                                    placeholder={formData.perfil === "Estudiante" ? "Ingrese su ID de estudiante" : "Solo para estudiantes"}
-                                />
-                                <p className="text-xs text-gray-500 mt-1">
-                                    {formData.perfil === "Estudiante" ? "Requerido para estudiantes" : "Solo si eres estudiante"}
-                                </p>
-                            </div>
-
-                            {/* Teléfono */}
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
-                                    <PhoneIcon className="w-4 h-4 text-blue-500" />
-                                    Teléfono <span className="text-red-500">*</span>
-                                </label>
-                                <input
-                                    type="tel"
-                                    name="telefono"
-                                    value={formData.telefono}
-                                    onChange={handleInputChange}
-                                    required
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    placeholder="(000) 000-0000"
-                                />
-                            </div>
-
                             {/* Perfil */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
@@ -486,12 +449,46 @@ const FormularioCierreInaugural: React.FC = () => {
                                     <option value="Invitado">Invitado</option>
                                 </select>
                             </div>
-
+                            {/* ID Estudiantes */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                                    <AcademicCapIcon className="w-4 h-4 text-blue-500" />
+                                    ID Estudiantes
+                                </label>
+                                <input
+                                    type="text"
+                                    name="idEstudiante"
+                                    value={formData.idEstudiante}
+                                    onChange={handleInputChange}
+                                    disabled={formData.perfil !== "Estudiante"}
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:cursor-not-allowed"
+                                    placeholder={formData.perfil === "Estudiante" ? "Ingrese su ID de estudiante" : "Solo para estudiantes"}
+                                />
+                                <p className="text-xs text-gray-500 mt-1">
+                                    {formData.perfil === "Estudiante" ? "Requerido para estudiantes" : "Solo si eres estudiante"}
+                                </p>
+                            </div>
+                            {/* Teléfono */}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
+                                    <PhoneIcon className="w-4 h-4 text-blue-500" />
+                                    Teléfono <span className="text-red-500">*</span>
+                                </label>
+                                <input
+                                    type="tel"
+                                    name="telefono"
+                                    value={formData.telefono}
+                                    onChange={handleInputChange}
+                                    required
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    placeholder="(000) 000-0000"
+                                />
+                            </div>
                             {/* Facultad/Área */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
                                     <AcademicCapIcon className="w-4 h-4 text-blue-500" />
-                                    Facultad/Área 
+                                    Facultad/Área
                                     {isFacultadRequerida && <span className="text-red-500">*</span>}
                                 </label>
                                 <select
@@ -512,8 +509,8 @@ const FormularioCierreInaugural: React.FC = () => {
                                     ))}
                                 </select>
                                 <p className="text-xs text-gray-500 mt-1">
-                                    {isFacultadRequerida 
-                                        ? "Requerido para estudiantes, docentes y egresados" 
+                                    {isFacultadRequerida
+                                        ? "Requerido para estudiantes, docentes y egresados"
                                         : "No requerido para administrativos e invitados"}
                                 </p>
                             </div>
@@ -534,8 +531,8 @@ const FormularioCierreInaugural: React.FC = () => {
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white disabled:bg-gray-50 disabled:cursor-not-allowed"
                                 >
                                     <option value="">
-                                        {!isProgramaRequerido 
-                                            ? "No requerido para su perfil" 
+                                        {!isProgramaRequerido
+                                            ? "No requerido para su perfil"
                                             : !formData.facultadArea
                                                 ? "Primero seleccione una facultad"
                                                 : programasAcademicos.length === 0
@@ -549,8 +546,8 @@ const FormularioCierreInaugural: React.FC = () => {
                                     ))}
                                 </select>
                                 <p className="text-xs text-gray-500 mt-1">
-                                    {isProgramaRequerido 
-                                        ? "Requerido para estudiantes, docentes y egresados" 
+                                    {isProgramaRequerido
+                                        ? "Requerido para estudiantes, docentes y egresados"
                                         : "No requerido para administrativos e invitados"}
                                 </p>
                             </div>
@@ -616,7 +613,7 @@ const FormularioCierreInaugural: React.FC = () => {
                         <p className="text-gray-600 mb-4">
                             Su asistencia al <strong>Acto de Clausura de la XI Semana de la Ingeniería</strong> ha sido confirmada correctamente.
                         </p>
-                        
+
                         <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-4 text-left">
                             <h4 className="font-semibold text-green-800 mb-2">📧 Correo de Confirmación</h4>
                             <p className="text-sm text-green-700">
@@ -657,7 +654,7 @@ const FormularioCierreInaugural: React.FC = () => {
                         </div>
 
                         <h3 className="text-2xl font-bold text-red-600 mb-4 text-center">Error en el Registro</h3>
-                        
+
                         <div className="bg-red-50 border border-red-200 rounded-lg p-4 mb-4 max-h-60 overflow-y-auto">
                             <h4 className="font-semibold text-red-800 mb-3">Detalles del error:</h4>
                             <div className="space-y-2 text-sm text-red-700">
@@ -671,7 +668,7 @@ const FormularioCierreInaugural: React.FC = () => {
 
                         <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 mb-4">
                             <p className="text-sm text-yellow-800">
-                                <strong>Sugerencia:</strong> {errorDetails.some(e => e.type === 'documento' || e.type === 'email') 
+                                <strong>Sugerencia:</strong> {errorDetails.some(e => e.type === 'documento' || e.type === 'email')
                                     ? 'Verifique sus datos personales o contacte al administrador si cree que esto es un error.'
                                     : 'Por favor, revise la información ingresada y vuelva a intentarlo.'}
                             </p>
