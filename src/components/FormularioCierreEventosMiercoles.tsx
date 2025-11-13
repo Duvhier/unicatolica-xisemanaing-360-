@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "./FormularioCierreEventosMiercoles.css";
 import facultadesData from '@/assets/facultadesyprogramasacademicos.json';
@@ -47,6 +47,12 @@ interface ErrorDetail {
     };
 }
 
+// 🔹 Interfaz para errores de duplicidad
+interface DuplicateError {
+    message: string;
+    errors: string[];
+}
+
 const FormularioCierreEventosMiercoles: React.FC = () => {
     const [formData, setFormData] = useState<FormData>({
         nombres: "",
@@ -67,6 +73,9 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
     const [successOpen, setSuccessOpen] = useState(false);
     const [errorOpen, setErrorOpen] = useState(false);
     const [errorDetails, setErrorDetails] = useState<ErrorDetail[]>([]);
+    const [duplicateErrors, setDuplicateErrors] = useState<string[]>([]);
+    const [duplicateErrorOpen, setDuplicateErrorOpen] = useState(false);
+    const [isMobile, setIsMobile] = useState(false);
 
     // 🔹 Determinar si la facultad es requerida basado en el perfil
     const isFacultadRequerida = formData.perfil === "Estudiante" || formData.perfil === "Docente" || formData.perfil === "Egresado";
@@ -77,87 +86,161 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
     // 🔹 URL de la API para cierre de eventos del miércoles
     const API_URL = import.meta.env.VITE_API_URL || "http://localhost:4000";
 
+    // 🔹 Detectar dispositivo móvil
+    useEffect(() => {
+        const checkMobile = () => {
+            const mobile = window.innerWidth <= 768;
+            setIsMobile(mobile);
+        };
+
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
+
     // 🔹 Cargar facultades al inicializar el componente
     useEffect(() => {
-        try {
-            console.log('📂 Datos de facultades cargados:', facultadesData);
-            const data = facultadesData as FacultadesData;
-            setFacultadesList(data.facultades);
-            console.log('🎯 Facultades disponibles:', data.facultades);
-        } catch (error) {
-            console.error('❌ Error al cargar facultades:', error);
-        }
-    }, []);
+        let mounted = true;
+
+        const loadFacultades = async () => {
+            try {
+                console.log('📂 Cargando facultades...');
+
+                if (isMobile) {
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                }
+
+                if (mounted) {
+                    const data = facultadesData as FacultadesData;
+                    setFacultadesList(data.facultades);
+                    console.log('🎯 Facultades cargadas:', data.facultades.length);
+                }
+            } catch (error) {
+                console.error('❌ Error al cargar facultades:', error);
+            }
+        };
+
+        loadFacultades();
+
+        return () => {
+            mounted = false;
+        };
+    }, [isMobile]);
 
     // 🔹 Cargar programas académicos cuando cambie la facultad
     useEffect(() => {
         if (formData.facultadArea) {
-            try {
-                console.log('🔍 Buscando programas para:', formData.facultadArea);
+            const timer = setTimeout(() => {
+                try {
+                    console.log('🔍 Buscando programas para:', formData.facultadArea);
 
-                const facultadSeleccionada = facultadesList.find(
-                    (facultad: Facultad) => facultad.nombre === formData.facultadArea
-                );
+                    const facultadSeleccionada = facultadesList.find(
+                        (facultad: Facultad) => facultad.nombre === formData.facultadArea
+                    );
 
-                console.log('📊 Facultad encontrada:', facultadSeleccionada);
+                    if (facultadSeleccionada) {
+                        setProgramasAcademicos(facultadSeleccionada.programas);
+                    } else {
+                        setProgramasAcademicos([]);
+                    }
 
-                if (facultadSeleccionada) {
-                    setProgramasAcademicos(facultadSeleccionada.programas);
-                    console.log('📚 Programas encontrados:', facultadSeleccionada.programas);
-                } else {
-                    console.log('⚠️ No se encontró la facultad');
+                    setFormData(prev => ({ ...prev, programaAcademico: "" }));
+                } catch (error) {
+                    console.error('❌ Error al cargar programas:', error);
                     setProgramasAcademicos([]);
                 }
+            }, isMobile ? 50 : 0);
 
-                // Resetear programa académico si la facultad cambia
-                setFormData(prev => ({ ...prev, programaAcademico: "" }));
-            } catch (error) {
-                console.error('❌ Error al cargar programas:', error);
-                setProgramasAcademicos([]);
-            }
+            return () => clearTimeout(timer);
         } else {
             setProgramasAcademicos([]);
         }
-    }, [formData.facultadArea, facultadesList]);
+    }, [formData.facultadArea, facultadesList, isMobile]);
 
     // 🔹 Resetear campos cuando cambie el perfil
     useEffect(() => {
-        if (!isFacultadRequerida) {
-            setFormData(prev => ({
-                ...prev,
-                facultadArea: "",
-                programaAcademico: ""
-            }));
-            setProgramasAcademicos([]);
-        }
+        const timer = setTimeout(() => {
+            if (!isFacultadRequerida) {
+                setFormData(prev => ({
+                    ...prev,
+                    facultadArea: "",
+                    programaAcademico: ""
+                }));
+                setProgramasAcademicos([]);
+            }
 
-        if (!isProgramaRequerido) {
-            setFormData(prev => ({
-                ...prev,
-                programaAcademico: ""
-            }));
-        }
+            if (!isProgramaRequerido) {
+                setFormData(prev => ({
+                    ...prev,
+                    programaAcademico: ""
+                }));
+            }
 
-        // Resetear ID de estudiante si no es estudiante
-        if (formData.perfil !== "Estudiante") {
-            setFormData(prev => ({
-                ...prev,
-                idEstudiante: ""
-            }));
-        }
-    }, [formData.perfil, isFacultadRequerida, isProgramaRequerido]);
+            if (formData.perfil !== "Estudiante") {
+                setFormData(prev => ({
+                    ...prev,
+                    idEstudiante: ""
+                }));
+            }
+        }, isMobile ? 50 : 0);
 
-    const handleInputChange = (
+        return () => clearTimeout(timer);
+    }, [formData.perfil, isFacultadRequerida, isProgramaRequerido, isMobile]);
+
+    // 🔹 Optimizar handleInputChange con useCallback
+    const handleInputChange = useCallback((
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     ) => {
         const { name, value } = e.target;
-        setFormData((prev) => ({ ...prev, [name]: value }));
-    };
+
+        requestAnimationFrame(() => {
+            setFormData(prev => {
+                const newData = { ...prev, [name]: value };
+
+                if (isMobile) {
+                    console.log('📱 Mobile input change:', name, value);
+                }
+
+                return newData;
+            });
+        });
+    }, [isMobile]);
+
+    // 🔹 Manejo específico para inputs de texto en móviles
+    const handleTextInput = useCallback((
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        const { name, value } = e.target;
+
+        if (formData[name as keyof FormData] === value) return;
+
+        setTimeout(() => {
+            setFormData(prev => ({ ...prev, [name]: value }));
+        }, 0);
+    }, [formData]);
 
     // 🔹 Función para mostrar errores detallados
     const showErrorDetails = (errors: ErrorDetail[]) => {
         setErrorDetails(errors);
         setErrorOpen(true);
+    };
+
+    // 🔹 Función para mostrar errores de duplicidad
+    const showDuplicateErrors = (errors: string[]) => {
+        setDuplicateErrors(errors);
+        setDuplicateErrorOpen(true);
+    };
+
+    // 🔹 Función para manejar errores de duplicidad
+    const handleDuplicateErrors = (errorData: DuplicateError) => {
+        if (errorData.errors && errorData.errors.length > 0) {
+            showDuplicateErrors(errorData.errors);
+        } else {
+            showErrorDetails([{
+                message: errorData.message || "Error de duplicidad desconocido"
+            }]);
+        }
     };
 
     // 🔹 Función para formatear mensajes de error
@@ -180,8 +263,24 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
         return message;
     };
 
+    // 🔹 Función para formatear mensajes de duplicidad
+    const formatDuplicateMessage = (error: string): string => {
+        const docMatch = error.match(/(\d+)/);
+        const docNumber = docMatch ? docMatch[1] : null;
+
+        if (error.includes('número de documento') && docNumber) {
+            return `📋 ${error}\n   • El documento ${docNumber} ya tiene una reserva activa`;
+        } else if (error.includes('email')) {
+            return `📧 ${error}\n   • Este correo electrónico ya está registrado`;
+        } else {
+            return `⚠️ ${error}`;
+        }
+    };
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+
+        if (isSubmitting) return;
         setIsSubmitting(true);
 
         try {
@@ -201,31 +300,34 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
 
             console.log('📤 Enviando datos de cierre de eventos del miércoles:', payload);
 
-            // 🔹 CAMBIO: Se dirige al backend cierreeventos.js
+            const controller = new AbortController();
+            const timeoutId = setTimeout(() => controller.abort(), 30000);
+
             const res = await fetch(`${API_URL}/cierreeventos/registro`, {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
+                headers: {
+                    "Content-Type": "application/json",
+                },
                 body: JSON.stringify(payload),
+                signal: controller.signal
             });
+
+            clearTimeout(timeoutId);
 
             const responseData = await res.json();
 
             if (!res.ok) {
-                // 🔥 MANEJO MEJORADO DE ERRORES
                 if (res.status === 409 && responseData.errors) {
-                    // Error de duplicados con detalles
-                    showErrorDetails(responseData.errors);
+                    handleDuplicateErrors(responseData);
+                } else if (res.status === 409 && responseData.error) {
+                    showErrorDetails([{
+                        message: `Cupo agotado: ${responseData.error}`
+                    }]);
                 } else if (res.status === 400 && responseData.errors) {
-                    // Error de validación
                     const validationErrors: ErrorDetail[] = responseData.errors.map((error: string) => ({
                         message: error
                     }));
                     showErrorDetails(validationErrors);
-                } else if (res.status === 409 && responseData.error) {
-                    // Cupo agotado
-                    showErrorDetails([{
-                        message: `Cupo agotado: ${responseData.error}`
-                    }]);
                 } else {
                     throw new Error(responseData.message || `Error ${res.status}: ${res.statusText}`);
                 }
@@ -233,27 +335,25 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
             }
 
             console.log('✅ Registro exitoso:', responseData);
-
-            // Mostrar confirmación exitosa
             setSuccessOpen(true);
 
-            // Limpiar formulario
-            setFormData({
-                nombres: "",
-                apellido: "",
-                tipoDocumento: "",
-                numeroDocumento: "",
-                idEstudiante: "",
-                telefono: "",
-                facultadArea: "",
-                perfil: "",
-                programaAcademico: "",
-                email: ""
-            });
+            setTimeout(() => {
+                setFormData({
+                    nombres: "",
+                    apellido: "",
+                    tipoDocumento: "",
+                    numeroDocumento: "",
+                    idEstudiante: "",
+                    telefono: "",
+                    facultadArea: "",
+                    perfil: "",
+                    programaAcademico: "",
+                    email: ""
+                });
+            }, isMobile ? 200 : 0);
 
         } catch (error) {
             console.error('❌ Error al enviar formulario:', error);
-            // Error genérico de red o servidor
             showErrorDetails([{
                 message: `Error de conexión: ${error instanceof Error ? error.message : 'No se pudo conectar con el servidor'}`
             }]);
@@ -262,7 +362,7 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
         }
     };
 
-    // 🔹 Iconos (reutilizados del formulario anterior)
+    // 🔹 Iconos
     const UserIcon = ({ className }: { className?: string }) => (
         <svg className={className} fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
@@ -296,51 +396,49 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
     );
 
     return (
-        <div className="formulario-cierre-eventos-miercoles">
+        <div className={`formulario-cierre-eventos-miercoles ${isMobile ? 'mobile-device' : ''}`}>
             {/* HEADER */}
-            <header className="bg-white rounded-2xl shadow-sm border border-gray-200 p-8 relative mb-8">
-                {/* Logo y botón de regresar */}
-                <div className="flex justify-between items-start mb-6">
+            <header className="bg-white rounded-2xl shadow-sm border border-gray-200 p-4 md:p-8 relative mb-6 md:mb-8">
+                <div className="flex justify-between items-start mb-4 md:mb-6">
                     <img
                         src="/unicatolica-logo.svg"
                         alt="UNICATÓLICA"
-                        className="h-16 w-auto"
+                        className="h-12 md:h-16 w-auto"
                     />
                     <Link
                         to="/"
-                        className="inline-flex items-center gap-2 px-4 py-2 text-gray-600 hover:text-uniblue hover:bg-gray-50 rounded-lg transition-all duration-200 border border-gray-300 hover:border-gray-400 font-medium"
+                        className="inline-flex items-center gap-2 px-3 py-1.5 md:px-4 md:py-2 text-sm md:text-base text-gray-600 hover:text-uniblue hover:bg-gray-50 rounded-lg transition-all duration-200 border border-gray-300 hover:border-gray-400 font-medium"
                     >
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
                             <path d="M15 6L9 12L15 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                         </svg>
                         <span>Regresar</span>
                     </Link>
                 </div>
 
-                {/* Contenido principal */}
                 <div className="text-center">
-                    <div className="border-l-4 border-blue-500 pl-4 mb-4 inline-block">
-                        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 leading-tight">
+                    <div className="border-l-4 border-blue-500 pl-3 md:pl-4 mb-3 md:mb-4 inline-block">
+                        <h1 className="text-xl md:text-2xl lg:text-3xl font-bold text-gray-800 leading-tight">
                             CONFIRMACIÓN DE ASISTENCIA
                         </h1>
                     </div>
 
-                    {/* Banner de la imagen */}
-                    <div className="mb-6 rounded-xl overflow-hidden shadow-lg">
+                    <div className="mb-4 md:mb-6 rounded-xl overflow-hidden shadow-lg">
                         <img
                             src="https://res.cloudinary.com/dufzjm2mn/image/upload/v1762982095/bannerportadasemanaingenieria_vambgb.jpg"
                             alt="XI Semana de la Ingeniería - UNICATÓLICA"
-                            className="w-full h-auto max-h-64 object-cover"
+                            className="w-full h-auto max-h-48 md:max-h-64 object-cover"
+                            loading="eager"
                         />
                     </div>
 
-                    <div className="bg-blue-50 border border-blue-200 rounded-full px-8 py-4 inline-block shadow-sm">
-                        <div className="flex items-center gap-3">
-                            <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <div className="rounded-full px-4 md:px-8 py-3 md:py-4 inline-block">
+                        <div className="flex items-center gap-2 md:gap-3">
+                            <svg className="w-5 h-5 md:w-6 md:h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            <h2 className="text-xl font-bold text-blue-700">
-                                Miércoles, 12 de Noviembre
+                            <h2 className="text-lg md:text-xl font-bold text-blue-700">
+                                Jueves, 13 de Noviembre
                             </h2>
                         </div>
                     </div>
@@ -349,14 +447,14 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
 
             {/* FORMULARIO PRINCIPAL */}
             <main className="form-main-content">
-                <section className="bg-white rounded-xl shadow-md border border-gray-200 p-6">
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div className="border-l-4 border-blue-500 pl-4 mb-6">
-                            <h3 className="text-xl font-bold text-gray-800 mb-1">Datos Personales</h3>
-                            <p className="text-sm text-gray-600">Complete la información requerida para confirmar su asistencia al cierre de los eventos de este Miércoles</p>
+                <section className="bg-white rounded-xl shadow-md border border-gray-200 p-4 md:p-6">
+                    <form onSubmit={handleSubmit} className="space-y-4 md:space-y-6">
+                        <div className="border-l-4 border-blue-500 pl-3 md:pl-4 mb-4 md:mb-6">
+                            <h3 className="text-lg md:text-xl font-bold text-gray-800 mb-1">Datos Personales</h3>
+                            <p className="text-xs md:text-sm text-gray-600">Complete la información requerida para confirmar su asistencia</p>
                         </div>
 
-                        <div className="grid gap-6 md:grid-cols-2">
+                        <div className="grid gap-4 md:gap-6 md:grid-cols-2">
                             {/* Nombres */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
@@ -367,10 +465,12 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                                     type="text"
                                     name="nombres"
                                     value={formData.nombres}
-                                    onChange={handleInputChange}
+                                    onChange={handleTextInput}
                                     required
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base md:text-sm"
                                     placeholder="Ingrese sus nombres"
+                                    autoComplete="given-name"
+                                    inputMode="text"
                                 />
                             </div>
 
@@ -378,16 +478,18 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
                                     <UserIcon className="w-4 h-4 text-blue-500" />
-                                    Apellido <span className="text-red-500">*</span>
+                                    Apellidos <span className="text-red-500">*</span>
                                 </label>
                                 <input
                                     type="text"
                                     name="apellido"
                                     value={formData.apellido}
-                                    onChange={handleInputChange}
+                                    onChange={handleTextInput}
                                     required
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    placeholder="Ingrese su apellido"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base md:text-sm"
+                                    placeholder="Ingrese sus apellidos"
+                                    autoComplete="family-name"
+                                    inputMode="text"
                                 />
                             </div>
 
@@ -402,7 +504,7 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                                     value={formData.tipoDocumento}
                                     onChange={handleInputChange}
                                     required
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-base md:text-sm"
                                 >
                                     <option value="">Seleccionar tipo</option>
                                     <option value="Cédula de Ciudadanía">Cédula de Ciudadanía</option>
@@ -422,10 +524,12 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                                     type="text"
                                     name="numeroDocumento"
                                     value={formData.numeroDocumento}
-                                    onChange={handleInputChange}
+                                    onChange={handleTextInput}
                                     required
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base md:text-sm"
                                     placeholder="Número de documento"
+                                    autoComplete="off"
+                                    inputMode="numeric"
                                 />
                             </div>
 
@@ -440,7 +544,7 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                                     value={formData.perfil}
                                     onChange={handleInputChange}
                                     required
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white text-base md:text-sm"
                                 >
                                     <option value="">Seleccionar perfil</option>
                                     <option value="Estudiante">Estudiante</option>
@@ -450,6 +554,7 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                                     <option value="Invitado">Invitado</option>
                                 </select>
                             </div>
+
                             {/* ID Estudiantes */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
@@ -460,15 +565,16 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                                     type="text"
                                     name="idEstudiante"
                                     value={formData.idEstudiante}
-                                    onChange={handleInputChange}
+                                    onChange={handleTextInput}
                                     disabled={formData.perfil !== "Estudiante"}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:cursor-not-allowed"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:cursor-not-allowed text-base md:text-sm"
                                     placeholder={formData.perfil === "Estudiante" ? "Ingrese su ID de estudiante" : "Solo para estudiantes"}
                                 />
                                 <p className="text-xs text-gray-500 mt-1">
                                     {formData.perfil === "Estudiante" ? "Requerido para estudiantes" : "Solo si eres estudiante"}
                                 </p>
                             </div>
+
                             {/* Teléfono */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
@@ -479,12 +585,13 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                                     type="tel"
                                     name="telefono"
                                     value={formData.telefono}
-                                    onChange={handleInputChange}
+                                    onChange={handleTextInput}
                                     required
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    placeholder="(000) 000-0000"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base md:text-sm"
+                                    placeholder="3012345678"
                                 />
                             </div>
+
                             {/* Facultad/Área */}
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-1 flex items-center gap-2">
@@ -498,7 +605,7 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                                     onChange={handleInputChange}
                                     required={isFacultadRequerida}
                                     disabled={!isFacultadRequerida}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white disabled:bg-gray-50 disabled:cursor-not-allowed"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white disabled:bg-gray-50 disabled:cursor-not-allowed text-base md:text-sm"
                                 >
                                     <option value="">
                                         {isFacultadRequerida ? "Seleccionar facultad/área" : "No requerido para su perfil"}
@@ -529,7 +636,7 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                                     onChange={handleInputChange}
                                     disabled={!formData.facultadArea || programasAcademicos.length === 0 || !isProgramaRequerido}
                                     required={isProgramaRequerido}
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white disabled:bg-gray-50 disabled:cursor-not-allowed"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white disabled:bg-gray-50 disabled:cursor-not-allowed text-base md:text-sm"
                                 >
                                     <option value="">
                                         {!isProgramaRequerido
@@ -563,10 +670,10 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                                     type="email"
                                     name="email"
                                     value={formData.email}
-                                    onChange={handleInputChange}
+                                    onChange={handleTextInput}
                                     required
-                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                                    placeholder="example@unicatolica.edu.co"
+                                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base md:text-sm"
+                                    placeholder="nombre.apellido0X@unicatolica.edu.co"
                                 />
                             </div>
                         </div>
@@ -574,11 +681,11 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                         <button
                             type="submit"
                             disabled={isSubmitting}
-                            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition-colors duration-200 flex items-center justify-center gap-2 mt-6"
+                            className="w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 disabled:bg-gray-400 transition-colors duration-200 flex items-center justify-center gap-2 mt-4 md:mt-6 text-base md:text-sm"
                         >
                             {isSubmitting ? (
                                 <>
-                                    <svg className="w-5 h-5 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <svg className="w-5 h-5 spin-y" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 2v4m0 12v4m8-10h-4M6 12H2" />
                                     </svg>
                                     Enviando...
@@ -588,7 +695,7 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                                     </svg>
-                                    Confirmar Asistencia - Salida
+                                    Confirmar Asistencia
                                 </>
                             )}
                         </button>
@@ -603,28 +710,107 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                         className="absolute inset-0 bg-black/50"
                         onClick={() => setSuccessOpen(false)}
                     />
-                    <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-8 text-center">
-                        <div className="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                            <svg className="w-8 h-8 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                            </svg>
+                    <div className="relative bg-white rounded-3xl shadow-xl w-full max-w-md mx-4 p-10 text-center border border-gray-100">
+                        <div className="w-24 h-24 border-4 border-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
+                            <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center">
+                                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
                         </div>
-
-                        <h3 className="text-2xl font-bold text-blue-600 mb-2">¡Confirmación Exitosa!</h3>
-                        <p className="text-gray-600 mb-4">
-                            Su asistencia para el cierre de los <strong>eventos del miércoles de la XI Semana de la Ingeniería</strong> ha sido confirmada correctamente.
+                        <h3 className="text-2xl font-bold text-gray-900 mb-3">Confirmación Exitosa</h3>
+                        <p className="text-gray-500 mb-8 leading-relaxed">
+                            Su asistencia al <span className="font-semibold text-gray-900">Technological Touch</span> ha sido confirmada correctamente.
                         </p>
-
                         <button
                             type="button"
                             onClick={() => setSuccessOpen(false)}
-                            className="bg-blue-600 text-white px-6 py-2.5 rounded-full font-semibold hover:bg-blue-700 transition-all flex items-center gap-2 mx-auto"
+                            className="bg-gray-900 text-white px-8 py-4 rounded-2xl font-medium hover:bg-black transition-all duration-200 flex items-center gap-3 mx-auto border border-gray-900 hover:shadow-lg"
                         >
-                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                            </svg>
-                            Aceptar
+                            Continuar
                         </button>
+                    </div>
+                </div>
+            )}
+
+            {/* MODAL DE ERROR DE DUPLICIDAD */}
+            {duplicateErrorOpen && (
+                <div role="dialog" aria-modal="true" className="fixed inset-0 z-50 flex items-center justify-center">
+                    <div
+                        className="absolute inset-0 bg-black/50"
+                        onClick={() => setDuplicateErrorOpen(false)}
+                    />
+                    <div className="relative bg-white rounded-2xl shadow-2xl w-full max-w-md mx-4 p-6 duplicate-modal-enter">
+                        <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                            <svg className="w-8 h-8 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                            </svg>
+                        </div>
+
+                        <h3 className="text-2xl font-bold text-orange-600 mb-4 text-center">
+                            Registro Duplicado
+                        </h3>
+
+                        <div className="bg-orange-50 border border-orange-200 rounded-lg p-4 mb-4">
+                            <h4 className="font-semibold text-orange-800 mb-3 flex items-center gap-2">
+                                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Se encontraron los siguientes conflictos:
+                            </h4>
+                            <div className="space-y-3 text-sm text-orange-700 max-h-60 overflow-y-auto">
+                                {duplicateErrors.map((error, index) => (
+                                    <div
+                                        key={index}
+                                        className="p-3 bg-white rounded-lg border border-orange-100 duplicate-error-item"
+                                    >
+                                        <div className="whitespace-pre-line leading-relaxed">
+                                            {formatDuplicateMessage(error)}
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+
+                        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+                            <div className="flex items-start gap-3">
+                                <svg className="w-5 h-5 text-blue-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                <div>
+                                    <h5 className="font-semibold text-blue-800 mb-1">¿Qué significa esto?</h5>
+                                    <p className="text-sm text-blue-700">
+                                        Ya existe un registro con sus datos personales. Cada persona solo puede registrarse una vez para los eventos del miércoles.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex flex-col gap-3">
+                            <button
+                                type="button"
+                                onClick={() => setDuplicateErrorOpen(false)}
+                                className="bg-orange-600 text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-orange-700 transition-all flex items-center justify-center gap-2"
+                            >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                                Entendido
+                            </button>
+
+                            <button
+                                type="button"
+                                onClick={() => {
+                                    setDuplicateErrorOpen(false);
+                                }}
+                                className="bg-gray-500 text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-gray-600 transition-all flex items-center justify-center gap-2"
+                            >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                                Necesito Ayuda
+                            </button>
+                        </div>
                     </div>
                 </div>
             )}
@@ -677,7 +863,6 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                                     type="button"
                                     onClick={() => {
                                         setErrorOpen(false);
-                                        // Aquí podrías redirigir a una página de contacto o soporte
                                     }}
                                     className="flex-1 bg-blue-600 text-white px-4 py-2.5 rounded-lg font-semibold hover:bg-blue-700 transition-all"
                                 >

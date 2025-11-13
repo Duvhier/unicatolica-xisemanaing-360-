@@ -49,7 +49,7 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/formulario-construccion" element={<FormularioConstruccion />} />
         <Route path="/formulario-confirmacionactoinaugural" element={<FormularioConfirmacionAsistencia />} />
         <Route path="/formulario-cierre" element={<FormularioCierre />} />
-        <Route path="/formulario-cierreeventos" element={<FormularioCierreEventosMiercoles />} />
+        <Route path="/formulario-cierretechnological" element={<FormularioCierreEventosMiercoles />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

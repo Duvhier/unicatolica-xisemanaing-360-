@@ -1,17 +1,59 @@
+/* FormularioCierreEventosMiercoles.css */
+
 .formulario-cierre-eventos-miercoles {
     max-width: 1200px;
     margin: 0 auto;
     padding: 20px;
+    -webkit-overflow-scrolling: touch;
 }
 
 .form-main-content {
     margin-top: 20px;
 }
 
+/* Estilos para móviles */
+.formulario-cierre-eventos-miercoles.mobile-device {
+    font-size: 16px;
+}
+
+.formulario-cierre-eventos-miercoles.mobile-device input,
+.formulario-cierre-eventos-miercoles.mobile-device select,
+.formulario-cierre-eventos-miercoles.mobile-device textarea {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    perspective: 1000;
+}
+
+/* Prevenir highlight azul en móviles */
+.formulario-cierre-eventos-miercoles input:focus,
+.formulario-cierre-eventos-miercoles select:focus {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
 /* Estilos responsivos */
 @media (max-width: 768px) {
     .formulario-cierre-eventos-miercoles {
         padding: 10px;
+    }
+    
+    .formulario-cierre-eventos-miercoles * {
+        transition: none !important;
+        animation: none !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .formulario-cierre-eventos-miercoles {
+        padding: 8px;
+    }
+    
+    .formulario-cierre-eventos-miercoles input,
+    .formulario-cierre-eventos-miercoles select {
+        font-size: 16px !important;
+        min-height: 44px;
     }
 }
 
@@ -32,6 +74,16 @@
     opacity: 0.6;
 }
 
+/* Estilos específicos para el modal de duplicidad */
+.duplicate-error-item {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    border-left: 4px solid #ff9800;
+}
+
+.duplicate-error-item:hover {
+    background: linear-gradient(135deg, #ffe0b2 0%, #ffcc80 100%);
+}
+
 /* Animaciones para los modales */
 @keyframes fadeIn {
     from { opacity: 0; }
@@ -43,6 +95,17 @@
     to { transform: translateY(0); opacity: 1; }
 }
 
+@keyframes slideInDuplicate {
+    from {
+        opacity: 0;
+        transform: translateY(-10px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
 .formulario-cierre-eventos-miercoles [role="dialog"] {
     animation: fadeIn 0.2s ease-out;
 }
@@ -50,3 +113,31 @@
 .formulario-cierre-eventos-miercoles [role="dialog"] > div:last-child {
     animation: slideIn 0.3s ease-out;
 }
+
+.duplicate-modal-enter {
+    animation: slideInDuplicate 0.3s ease-out;
+}
+
+/* Responsive para móviles en modales */
+@media (max-width: 480px) {
+    .duplicate-error-item {
+        margin-bottom: 8px;
+        padding: 12px;
+    }
+    
+    .duplicate-modal-content {
+        margin: 10px;
+        padding: 16px;
+    }
+}
+
+.spin-y {
+    animation: spinY 1s linear infinite;
+  }
+  
+  @keyframes spinY {
+    from { transform: rotateY(0deg); }
+    to { transform: rotateY(360deg); }
+  }
+
+  
