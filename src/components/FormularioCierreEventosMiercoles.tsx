@@ -3,6 +3,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "./FormularioCierreEventosMiercoles.css";
 import facultadesData from '@/assets/facultadesyprogramasacademicos.json';
+import iconoUnicatolica from '../assets/iconounicatolica.svg';
 
 // 🔹 Interfaz para los datos del formulario
 interface FormData {
@@ -711,17 +712,19 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                         className="absolute inset-0 bg-black/50"
                         onClick={() => setSuccessOpen(false)}
                     />
-                    <div className="relative bg-white rounded-3xl shadow-xl w-full max-w-md mx-4 p-10 text-center border border-gray-100">
-                        <div className="w-24 h-24 border-4 border-blue-500 rounded-full flex items-center justify-center mx-auto mb-6">
-                            <div className="w-16 h-16 bg-blue-500 rounded-full flex items-center justify-center">
-                                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d="M5 13l4 4L19 7" />
-                                </svg>
+                    <div className="relative bg-white rounded-2xl shadow-xl w-full max-w-md mx-4 p-10 text-center border border-gray-100">
+                        <div className="w-24 h-24 flex items-center justify-center mx-auto mb-6 animate-pulse">
+                            <div className="w-16 h-16 flex items-center justify-center">
+                                <img
+                                    src={iconoUnicatolica}
+                                    alt="Icono Unicatólica"
+                                    className="w-30 h-30"
+                                />
                             </div>
                         </div>
                         <h3 className="text-2xl font-bold text-gray-900 mb-3">Confirmación Exitosa</h3>
                         <p className="text-gray-500 mb-8 leading-relaxed">
-                            Su asistencia al <span className="font-semibold text-gray-900">Technological Touch</span> ha sido confirmada correctamente.
+                            Su asistencia al cierre del evento <span className="font-semibold text-gray-900">Technological Touch</span> ha sido confirmada correctamente.
                         </p>
                         <button
                             type="button"
