@@ -1,4 +1,4 @@
-// formulario cierre
+// formulario cierre - VERSIÓN CORREGIDA
 import React, { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router-dom";
 import "./FormularioCierreEventosMiercoles.css";
@@ -190,37 +190,15 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
         return () => clearTimeout(timer);
     }, [formData.perfil, isFacultadRequerida, isProgramaRequerido, isMobile]);
 
-    // 🔹 Optimizar handleInputChange con useCallback
+    // 🔹 ✅ MANEJADOR UNIFICADO Y OPTIMIZADO PARA TODOS LOS INPUTS
     const handleInputChange = useCallback((
         e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
     ) => {
         const { name, value } = e.target;
-
-        requestAnimationFrame(() => {
-            setFormData(prev => {
-                const newData = { ...prev, [name]: value };
-
-                if (isMobile) {
-                    console.log('📱 Mobile input change:', name, value);
-                }
-
-                return newData;
-            });
-        });
-    }, [isMobile]);
-
-    // 🔹 Manejo específico para inputs de texto en móviles
-    const handleTextInput = useCallback((
-        e: React.ChangeEvent<HTMLInputElement>
-    ) => {
-        const { name, value } = e.target;
-
-        if (formData[name as keyof FormData] === value) return;
-
-        setTimeout(() => {
-            setFormData(prev => ({ ...prev, [name]: value }));
-        }, 0);
-    }, [formData]);
+        
+        // Actualización inmediata sin delays para mejor respuesta
+        setFormData(prev => ({ ...prev, [name]: value }));
+    }, []);
 
     // 🔹 Función para mostrar errores detallados
     const showErrorDetails = (errors: ErrorDetail[]) => {
@@ -352,7 +330,7 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                     programaAcademico: "",
                     email: ""
                 });
-            }, isMobile ? 200 : 0);
+            }, 200);
 
         } catch (error) {
             console.error('❌ Error al enviar formulario:', error);
@@ -440,7 +418,7 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
                             <h2 className="text-lg md:text-xl font-bold text-blue-700">
-                                Jueves, 13 de Noviembre
+                                Viernes, 14 de Noviembre
                             </h2>
                         </div>
                     </div>
@@ -467,12 +445,11 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                                     type="text"
                                     name="nombres"
                                     value={formData.nombres}
-                                    onChange={handleTextInput}
+                                    onChange={handleInputChange}
                                     required
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base md:text-sm"
                                     placeholder="Ingrese sus nombres"
                                     autoComplete="given-name"
-                                    inputMode="text"
                                 />
                             </div>
 
@@ -486,12 +463,11 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                                     type="text"
                                     name="apellido"
                                     value={formData.apellido}
-                                    onChange={handleTextInput}
+                                    onChange={handleInputChange}
                                     required
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base md:text-sm"
                                     placeholder="Ingrese sus apellidos"
                                     autoComplete="family-name"
-                                    inputMode="text"
                                 />
                             </div>
 
@@ -526,7 +502,7 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                                     type="text"
                                     name="numeroDocumento"
                                     value={formData.numeroDocumento}
-                                    onChange={handleTextInput}
+                                    onChange={handleInputChange}
                                     required
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base md:text-sm"
                                     placeholder="Número de documento"
@@ -567,7 +543,7 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                                     type="text"
                                     name="idEstudiante"
                                     value={formData.idEstudiante}
-                                    onChange={handleTextInput}
+                                    onChange={handleInputChange}
                                     disabled={formData.perfil !== "Estudiante"}
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-50 disabled:cursor-not-allowed text-base md:text-sm"
                                     placeholder={formData.perfil === "Estudiante" ? "Ingrese su ID de estudiante" : "Solo para estudiantes"}
@@ -587,10 +563,11 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                                     type="tel"
                                     name="telefono"
                                     value={formData.telefono}
-                                    onChange={handleTextInput}
+                                    onChange={handleInputChange}
                                     required
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base md:text-sm"
                                     placeholder="3012345678"
+                                    inputMode="numeric"
                                 />
                             </div>
 
@@ -672,10 +649,11 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                                     type="email"
                                     name="email"
                                     value={formData.email}
-                                    onChange={handleTextInput}
+                                    onChange={handleInputChange}
                                     required
                                     className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base md:text-sm"
                                     placeholder="nombre.apellido0X@unicatolica.edu.co"
+                                    autoComplete="email"
                                 />
                             </div>
                         </div>
@@ -724,7 +702,7 @@ const FormularioCierreEventosMiercoles: React.FC = () => {
                         </div>
                         <h3 className="text-2xl font-bold text-gray-900 mb-3">Confirmación Exitosa</h3>
                         <p className="text-gray-500 mb-8 leading-relaxed">
-                            Su asistencia al cierre del evento <span className="font-semibold text-gray-900">Technological Touch</span> ha sido confirmada correctamente.
+                            Su asistencia al cierre del evento de la <span className="font-semibold text-gray-900"> Clausura de la XI Semana de La Ingeniería, </span> ha sido confirmada correctamente.
                         </p>
                         <button
                             type="button"

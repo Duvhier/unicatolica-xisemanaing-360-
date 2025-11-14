@@ -1,3 +1,5 @@
+/* FormularioCierreInaugural.css - VERSIÓN CORREGIDA */
+
 :root {
   --primary: #2563eb;
   --primary-dark: #1d4ed8;
@@ -15,6 +17,12 @@
   margin: 0 auto;
   padding: 20px;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ✅ NUEVO: Optimización para dispositivos móviles */
+.formulario-cierre-inaugural.mobile-device {
+  font-size: 16px; /* Previene zoom automático en iOS */
 }
 
 .form-main-content {
@@ -32,13 +40,20 @@ header:hover {
   box-shadow: var(--shadow-lg);
 }
 
+/* ✅ MEJORADO: Deshabilitar hover en dispositivos táctiles */
+@media (hover: none) {
+  header:hover {
+    box-shadow: none;
+  }
+}
+
 /* Formulario limpio */
 .form-main-content section {
   border: 1px solid var(--border);
   transition: all 0.3s ease;
 }
 
-/* Inputs minimalistas con línea inferior */
+/* ✅ CRÍTICO: Inputs minimalistas CORREGIDOS para móviles */
 input, select {
   border: none;
   border-bottom: 2px solid var(--border);
@@ -46,7 +61,15 @@ input, select {
   padding: 12px 4px;
   background: transparent;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  font-size: 1rem;
+  font-size: 16px; /* ✅ CRÍTICO: Previene zoom en iOS/Android */
+  /* ✅ NUEVO: Permitir selección de texto */
+  -webkit-user-select: text;
+  user-select: text;
+  /* ✅ NUEVO: Mejorar rendimiento */
+  transform: translateZ(0);
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
 }
 
 input:focus, select:focus {
@@ -54,11 +77,46 @@ input:focus, select:focus {
   border-bottom-color: var(--primary);
   background: var(--primary-light);
   padding-left: 12px;
+  /* ✅ NUEVO: Prevenir highlight azul en móviles */
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Efecto de elevación en hover */
-input:hover, select:hover {
-  background: #f9fafb;
+/* ✅ MEJORADO: Efecto de elevación solo en desktop */
+@media (hover: hover) and (pointer: fine) {
+  input:hover, select:hover {
+    background: #f9fafb;
+  }
+}
+
+/* ✅ NUEVO: Fix para dispositivos móviles específicos */
+@media (max-width: 768px) {
+  input, select {
+    min-height: 48px; /* ✅ Tamaño táctil adecuado */
+    line-height: 1.5;
+    /* ✅ CRÍTICO: Asegurar que los inputs sean editables */
+    pointer-events: auto;
+    touch-action: manipulation;
+  }
+  
+  /* ✅ Remover efectos costosos en móviles */
+  input:hover, select:hover {
+    background: transparent;
+  }
+}
+
+/* ✅ NUEVO: Fix específico para Xiaomi/Motorola/Honor */
+@media (max-width: 480px) {
+  input, select {
+    font-size: 16px !important; /* ✅ Forzar para prevenir zoom */
+    padding: 14px 4px; /* ✅ Más espaciado vertical */
+    -webkit-appearance: none;
+    appearance: none;
+  }
+  
+  /* ✅ Mejorar área de toque */
+  input:focus, select:focus {
+    padding: 14px 12px;
+  }
 }
 
 /* Labels con tipografía mejorada */
@@ -71,6 +129,13 @@ label {
   gap: 8px;
   margin-bottom: 8px;
   transition: color 0.2s ease;
+  /* ✅ NUEVO: Asegurar que el label no interfiera con el input */
+  pointer-events: none;
+}
+
+/* ✅ MEJORADO: Permitir clicks en iconos si es necesario */
+label svg {
+  pointer-events: auto;
 }
 
 /* Iconos sutiles */
@@ -79,12 +144,15 @@ svg {
   transition: all 0.2s ease;
 }
 
-label:hover svg {
-  opacity: 1;
-  color: var(--primary);
+/* ✅ MEJORADO: Solo en desktop */
+@media (hover: hover) {
+  label:hover svg {
+    opacity: 1;
+    color: var(--primary);
+  }
 }
 
-/* Botón minimalista */
+/* ✅ MEJORADO: Botón optimizado para móviles */
 button[type="submit"] {
   background: var(--text-primary);
   border: 2px solid var(--text-primary);
@@ -92,13 +160,28 @@ button[type="submit"] {
   letter-spacing: 0.025em;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: none;
+  /* ✅ NUEVO: Mejorar accesibilidad táctil */
+  min-height: 48px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
-button[type="submit"]:hover:not(:disabled) {
-  background: white;
-  color: var(--text-primary);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
+/* ✅ CORREGIDO: Solo hover en desktop */
+@media (hover: hover) and (pointer: fine) {
+  button[type="submit"]:hover:not(:disabled) {
+    background: white;
+    color: var(--text-primary);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+}
+
+/* ✅ NUEVO: Feedback táctil en móviles */
+@media (hover: none) {
+  button[type="submit"]:active:not(:disabled) {
+    transform: scale(0.98);
+    background: var(--primary-dark);
+  }
 }
 
 button[type="submit"]:active:not(:disabled) {
@@ -111,6 +194,7 @@ button[type="submit"]:disabled {
   border-color: var(--border);
   color: var(--text-secondary);
   cursor: not-allowed;
+  pointer-events: none; /* ✅ Prevenir clicks */
 }
 
 /* Grid con espaciado consistente */
@@ -119,6 +203,7 @@ button[type="submit"]:disabled {
   gap: 2rem;
 }
 
+/* ✅ MEJORADO: Grid responsivo optimizado */
 @media (min-width: 768px) {
   .grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -129,6 +214,27 @@ button[type="submit"]:disabled {
   }
 }
 
+/* ✅ NUEVO: Reducir gap en móviles */
+@media (max-width: 768px) {
+  .grid {
+    gap: 1.5rem;
+  }
+  
+  .formulario-cierre-inaugural {
+    padding: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid {
+    gap: 1rem;
+  }
+  
+  .formulario-cierre-inaugural {
+    padding: 12px;
+  }
+}
+
 /* Separadores visuales */
 .border-l-4 {
   border-left: 4px solid var(--primary);
@@ -136,11 +242,18 @@ button[type="submit"]:disabled {
   margin-left: -1rem;
 }
 
-/* Modal elegante */
+/* ✅ MEJORADO: Modal optimizado para móviles */
 [role="dialog"] .relative {
   border: none;
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
   animation: fadeIn 0.3s ease;
+}
+
+/* ✅ NUEVO: Animaciones reducidas en móviles */
+@media (max-width: 768px) {
+  [role="dialog"] .relative {
+    animation: fadeInMobile 0.2s ease;
+  }
 }
 
 @keyframes fadeIn {
@@ -154,9 +267,23 @@ button[type="submit"]:disabled {
   }
 }
 
-/* Efecto de foco en formulario */
+/* ✅ NUEVO: Animación simplificada para móviles */
+@keyframes fadeInMobile {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ✅ MEJORADO: Efecto de foco optimizado */
 .form-main-content section:focus-within {
   box-shadow: 0 0 0 3px var(--primary-light);
+  transition: box-shadow 0.2s ease;
+}
+
+/* ✅ NUEVO: Reducir efecto en móviles */
+@media (max-width: 768px) {
+  .form-main-content section:focus-within {
+    box-shadow: 0 0 0 2px var(--primary-light);
+  }
 }
 
 /* Tipografía mejorada */
@@ -178,13 +305,25 @@ p {
   font-style: italic;
 }
 
-/* Estados de validación */
-input:valid {
+/* ✅ NUEVO: Mejorar contraste de placeholder en móviles */
+@media (max-width: 768px) {
+  ::placeholder {
+    opacity: 0.6;
+  }
+}
+
+/* ✅ MEJORADO: Estados de validación (solo visual, no bloquear) */
+input:valid:not(:focus) {
   border-bottom-color: #10b981;
 }
 
-input:invalid:not(:placeholder-shown) {
+input:invalid:not(:placeholder-shown):not(:focus) {
   border-bottom-color: #ef4444;
+}
+
+/* ✅ NUEVO: No mostrar validación mientras se escribe */
+input:focus:invalid {
+  border-bottom-color: var(--primary);
 }
 
 /* Botón de regresar minimalista */
@@ -192,12 +331,81 @@ input:invalid:not(:placeholder-shown) {
   border: 1px solid var(--border);
   transition: all 0.2s ease;
   font-weight: 500;
+  /* ✅ NUEVO: Mejorar táctil */
+  min-height: 40px;
+  touch-action: manipulation;
 }
 
-.inline-flex.items-center.gap-2:hover {
-  border-color: var(--text-primary);
-  background: var(--text-primary);
-  color: white;
+/* ✅ MEJORADO: Solo hover en desktop */
+@media (hover: hover) {
+  .inline-flex.items-center.gap-2:hover {
+    border-color: var(--text-primary);
+    background: var(--text-primary);
+    color: white;
+  }
+}
+
+/* ✅ NUEVO: Feedback táctil en móviles */
+@media (hover: none) {
+  .inline-flex.items-center.gap-2:active {
+    transform: scale(0.97);
+    background: #f3f4f6;
+  }
+}
+
+/* ✅ NUEVO: Prevenir problemas de scroll en iOS */
+@supports (-webkit-overflow-scrolling: touch) {
+  .formulario-cierre-inaugural input,
+  .formulario-cierre-inaugural select {
+    -webkit-appearance: none;
+  }
+}
+
+/* ✅ NUEVO: Optimización de rendimiento */
+@media (max-width: 768px) {
+  /* Deshabilitar transiciones costosas en móviles */
+  .formulario-cierre-inaugural *:not(input):not(select):not(button) {
+    transition: none !important;
+  }
+  
+  /* Mantener transiciones importantes */
+  .formulario-cierre-inaugural input:focus,
+  .formulario-cierre-inaugural select:focus,
+  .formulario-cierre-inaugural button:active {
+    transition: all 0.15s ease-in-out !important;
+  }
+}
+
+/* ✅ NUEVO: Soporte para modo de movimiento reducido */
+@media (prefers-reduced-motion: reduce) {
+  .formulario-cierre-inaugural * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+/* ✅ NUEVO: Fix para teclados flotantes en Android */
+@media (max-width: 768px) {
+  .formulario-cierre-inaugural {
+    min-height: 100vh;
+    position: relative;
+  }
+  
+  /* Asegurar que los modales estén por encima del teclado */
+  .formulario-cierre-inaugural [role="dialog"] {
+    position: fixed;
+    z-index: 9999;
+  }
+}
+
+/* ✅ NUEVO: Animación de envío */
+.spin-y {
+  animation: spinY 1s linear infinite;
+}
+
+@keyframes spinY {
+  from { transform: rotateY(0deg); }
+  to { transform: rotateY(360deg); }
 }
 
 /* Utilidades básicas */
@@ -229,3 +437,73 @@ input:invalid:not(:placeholder-shown) {
 .bg-black\/50 { background-color: rgba(0, 0, 0, 0.5); }
 .max-w-md { max-width: 28rem; }
 .mx-4 { margin-left: 1rem; margin-right: 1rem; }
+
+/* ✅ NUEVO: Responsivo para tipografía */
+@media (max-width: 768px) {
+  .text-3xl { font-size: 1.5rem; }
+  .text-2xl { font-size: 1.25rem; }
+  .text-xl { font-size: 1.125rem; }
+}
+
+@media (max-width: 480px) {
+  .text-3xl { font-size: 1.25rem; }
+  .text-2xl { font-size: 1.125rem; }
+  .text-xl { font-size: 1rem; }
+}
+
+@keyframes confetti {
+  0% { transform: translateY(0) rotateZ(0deg); opacity: 1; }
+  100% { transform: translateY(100vh) rotateZ(720deg); opacity: 0; }
+}
+
+@keyframes fall {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(150vh) rotate(360deg); opacity: 0; }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes checkmark {
+  0% { stroke-dasharray: 0, 100; }
+  100% { stroke-dasharray: 100, 100; }
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-confetti { animation: confetti 4s ease-out forwards; }
+.animate-fall { animation: fall linear forwards; }
+.animate-fadeIn { animation: fadeIn 0.3s ease-out; }
+.animate-scaleIn { animation: scaleIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.animate-checkmark { animation: checkmark 0.6s ease-out 0.2s forwards; stroke-dasharray: 0, 100; }
+.animate-spin-slow { animation: spin-slow 3s linear infinite; }
+.delay-500 { animation-delay: 0.5s; }
+
+@keyframes bounce-number {
+  0%, 100% {
+    transform: scale(1);
+  }
+  25% {
+    transform: scale(1.1);
+  }
+  50% {
+    transform: scale(0.95);
+  }
+  75% {
+    transform: scale(1.05);
+  }
+}
+
+.animate-bounce-number {
+  animation: bounce-number 0.6s ease-out;
+}

@@ -48,8 +48,8 @@ createRoot(document.getElementById('root')!).render(
         <Route path="/formulario-clausura" element={<FormularioClausura />} />
         <Route path="/formulario-construccion" element={<FormularioConstruccion />} />
         <Route path="/formulario-confirmacionactoinaugural" element={<FormularioConfirmacionAsistencia />} />
-        <Route path="/formulario-cierre" element={<FormularioCierre />} />
-        <Route path="/formulario-cierretechnological" element={<FormularioCierreEventosMiercoles />} />
+        <Route path="/formulario-cierreinicio" element={<FormularioCierre />} />
+        <Route path="/formulario-cierreteclausura" element={<FormularioCierreEventosMiercoles />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

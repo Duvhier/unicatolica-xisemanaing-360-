@@ -1,4 +1,4 @@
-/* FormularioCierreEventosMiercoles.css */
+/* FormularioCierreEventosMiercoles.css - VERSIÓN CORREGIDA */
 
 .formulario-cierre-eventos-miercoles {
     max-width: 1200px;
@@ -11,40 +11,67 @@
     margin-top: 20px;
 }
 
-/* Estilos para móviles */
+/* ✅ CRÍTICO: Estilos para móviles optimizados */
 .formulario-cierre-eventos-miercoles.mobile-device {
-    font-size: 16px;
+    font-size: 16px; /* Previene zoom automático en iOS */
 }
 
+/* ✅ MEJORADO: Aceleración de hardware sin bloquear interacción */
 .formulario-cierre-eventos-miercoles.mobile-device input,
 .formulario-cierre-eventos-miercoles.mobile-device select,
 .formulario-cierre-eventos-miercoles.mobile-device textarea {
     transform: translateZ(0);
+    -webkit-transform: translateZ(0);
     backface-visibility: hidden;
-    perspective: 1000;
+    -webkit-backface-visibility: hidden;
+    /* Removido 'perspective' que puede causar problemas en algunos Android */
 }
 
-/* Prevenir highlight azul en móviles */
+/* ✅ CORREGIDO: Permitir selección de texto en inputs */
 .formulario-cierre-eventos-miercoles input:focus,
 .formulario-cierre-eventos-miercoles select:focus {
     -webkit-tap-highlight-color: transparent;
     -webkit-touch-callout: none;
+    /* ❌ REMOVIDO: user-select que impedía escribir en algunos dispositivos
     -webkit-user-select: none;
     user-select: none;
+    */
 }
 
-/* Estilos responsivos */
+/* ✅ NUEVO: Permitir selección de texto dentro de inputs */
+.formulario-cierre-eventos-miercoles input {
+    -webkit-user-select: text;
+    user-select: text;
+}
+
+/* ✅ MEJORADO: Prevenir zoom en dispositivos problemáticos */
+.formulario-cierre-eventos-miercoles input[type="text"],
+.formulario-cierre-eventos-miercoles input[type="email"],
+.formulario-cierre-eventos-miercoles input[type="tel"],
+.formulario-cierre-eventos-miercoles select {
+    font-size: 16px; /* Mínimo para prevenir zoom en iOS/Android */
+}
+
+/* ✅ NUEVO: Mejorar rendimiento en Xiaomi/Motorola/Honor */
 @media (max-width: 768px) {
     .formulario-cierre-eventos-miercoles {
         padding: 10px;
     }
     
-    .formulario-cierre-eventos-miercoles * {
+    /* ✅ CORREGIDO: Solo deshabilitar transiciones costosas, no todas */
+    .formulario-cierre-eventos-miercoles *:not(input):not(select):not(button) {
         transition: none !important;
-        animation: none !important;
+    }
+    
+    /* Mantener transiciones importantes para UX */
+    .formulario-cierre-eventos-miercoles input:focus,
+    .formulario-cierre-eventos-miercoles select:focus,
+    .formulario-cierre-eventos-miercoles button:hover {
+        transition: all 0.15s ease-in-out !important;
     }
 }
 
+/* ✅ MEJORADO: Tamaños táctiles óptimos */
 @media (max-width: 480px) {
     .formulario-cierre-eventos-miercoles {
         padding: 8px;
@@ -52,8 +79,15 @@
     
     .formulario-cierre-eventos-miercoles input,
     .formulario-cierre-eventos-miercoles select {
-        font-size: 16px !important;
-        min-height: 44px;
+        font-size: 16px !important; /* Previene zoom */
+        min-height: 48px; /* Aumentado de 44px a 48px para mejor UX */
+        line-height: 1.5; /* Mejora legibilidad */
+    }
+    
+    /* ✅ NUEVO: Espaciado para dedos en móviles */
+    .formulario-cierre-eventos-miercoles button {
+        min-height: 48px;
+        padding: 12px 16px;
     }
 }
 
@@ -61,23 +95,49 @@
 .formulario-cierre-eventos-miercoles input,
 .formulario-cierre-eventos-miercoles select {
     transition: all 0.2s ease-in-out;
+    /* ✅ NUEVO: Prevenir problemas de renderizado */
+    will-change: auto; /* No forzar will-change, causa problemas en Android */
 }
 
 .formulario-cierre-eventos-miercoles input:focus,
 .formulario-cierre-eventos-miercoles select:focus {
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    outline: none; /* ✅ Agregado para consistencia */
+}
+
+/* ✅ NUEVO: Prevenir comportamientos extraños en inputs de número */
+.formulario-cierre-eventos-miercoles input[type="text"][inputmode="numeric"] {
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+/* ✅ NUEVO: Mejorar visibilidad de placeholder en móviles */
+.formulario-cierre-eventos-miercoles input::placeholder,
+.formulario-cierre-eventos-miercoles select::placeholder {
+    opacity: 0.6;
+    color: #9ca3af;
 }
 
 /* Estilos para los botones */
 .formulario-cierre-eventos-miercoles button:disabled {
     cursor: not-allowed;
     opacity: 0.6;
+    pointer-events: none; /* ✅ Prevenir clicks durante submit */
+}
+
+/* ✅ MEJORADO: Feedback táctil en móviles */
+@media (max-width: 768px) {
+    .formulario-cierre-eventos-miercoles button:active:not(:disabled) {
+        transform: scale(0.98);
+        transition: transform 0.1s ease-in-out;
+    }
 }
 
 /* Estilos específicos para el modal de duplicidad */
 .duplicate-error-item {
     background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
     border-left: 4px solid #ff9800;
+    transition: background 0.2s ease-in-out; /* ✅ Agregado para suavidad */
 }
 
 .duplicate-error-item:hover {
@@ -103,6 +163,24 @@
     to {
         opacity: 1;
         transform: translateY(0) scale(1);
+    }
+}
+
+/* ✅ MEJORADO: Reducir animaciones en móviles para mejor rendimiento */
+@media (max-width: 768px) {
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes slideIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+    
+    @keyframes slideInDuplicate {
+        from { opacity: 0; }
+        to { opacity: 1; }
     }
 }
 
@@ -133,11 +211,48 @@
 
 .spin-y {
     animation: spinY 1s linear infinite;
-  }
-  
-  @keyframes spinY {
+}
+
+@keyframes spinY {
     from { transform: rotateY(0deg); }
     to { transform: rotateY(360deg); }
-  }
+}
 
-  
+/* ✅ NUEVO: Prevenir problemas de scroll en iOS */
+@supports (-webkit-overflow-scrolling: touch) {
+    .formulario-cierre-eventos-miercoles input,
+    .formulario-cierre-eventos-miercoles select {
+        -webkit-appearance: none;
+        border-radius: 0.5rem; /* Mantener border-radius de Tailwind */
+    }
+}
+
+/* ✅ NUEVO: Mejorar rendimiento en dispositivos de gama baja */
+@media (max-width: 768px) and (prefers-reduced-motion: reduce) {
+    .formulario-cierre-eventos-miercoles * {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* ✅ NUEVO: Fix para teclados flotantes en Android */
+@media (max-width: 768px) {
+    .formulario-cierre-eventos-miercoles {
+        min-height: 100vh;
+        position: relative;
+    }
+    
+    /* Asegurar que los modales estén por encima del teclado */
+    .formulario-cierre-eventos-miercoles [role="dialog"] {
+        position: fixed;
+        z-index: 9999;
+    }
+}
+
+/* ✅ NUEVO: Mejorar contraste en modo oscuro (si aplica) */
+@media (prefers-color-scheme: dark) {
+    .formulario-cierre-eventos-miercoles input::placeholder,
+    .formulario-cierre-eventos-miercoles select::placeholder {
+        opacity: 0.5;
+    }
+}
